@@ -1,0 +1,33 @@
+{
+  "name": "memoricle",
+  "version": "1.0.0",
+  "description": "Document your travel memories effortlessly and elegantly.",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "parcel ./src/index.html",
+    "build": "parcel build src/index.html -d build/ --public-url ./",
+    "deploy": "yarn build && yarn deploy-surge",
+    "deploy-surge": "surge --project build --domain https://memoricle.surge.sh",
+    "clean": "rimraf dist && rimraf build"
+  },
+  "dependencies": {
+    "moment": "^2.21.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-toggle": "^4.0.2",
+    "styled-components": "^3.2.3",
+    "styled-flex-component": "^2.2.2"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^3.1.0",
+    "parcel-bundler": "^1.6.2",
+    "rimraf": "^2.6.2",
+    "surge": "^0.20.1"
+  }
+}
