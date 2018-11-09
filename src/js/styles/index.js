@@ -12,7 +12,10 @@ export const colors = {
 
 export const fonts = {
   serif: 'Lora',
-  'sans-serif': 'Open Sans'
+  'sans-serif': 'Open Sans',
+  small: '1em',
+  medium: '1.2em',
+  large: '1.4em'
 }
 
 export const breakpoints = {
