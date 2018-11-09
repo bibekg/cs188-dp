@@ -51,11 +51,11 @@ export default () => {
 
   const LoginButton = ButtonBase.extend`
     color: ${colors.white};
-    background-color: ${colors.blue};
+    background-color: ${colors.green};
     border: none;
 
     &:hover {
-      color: ${colors.blue};
+      color: ${colors.green};
       background-color: ${colors.white};
     }
   `

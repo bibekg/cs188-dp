@@ -1,5 +1,5 @@
 export const colors = {
-  green: '#19ab80',
+  green: '#2db92d',
   blue: '#49B5E4',
   brown: '#846044',
   cream: '#F7EFE0',
@@ -16,4 +16,9 @@ export const fonts = {
 
 export const breakpoints = {
   mobile: 790
+}
+
+export const fontsizes = {
+  
+
 }
