@@ -27,6 +27,8 @@ class TripViewer extends React.Component {
     steps: PropTypes.arrayOf(PropTypes.shape(TripStepType))
   }
 
+  static defaultProps = {}
+
   goBack() {
     this.setState({
       step: this.state.step - 1

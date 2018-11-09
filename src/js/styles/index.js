@@ -6,12 +6,16 @@ export const colors = {
   white: '#f0f4f7',
   black: '#000000',
   grey: '#d4dad1',
-  darkgrey: '#404040'
+  darkgrey: '#404040',
+  red: '#db1a00'
 }
 
 export const fonts = {
   serif: 'Lora',
-  'sans-serif': 'Open Sans'
+  'sans-serif': 'Open Sans',
+  small: '1em',
+  medium: '1.2em',
+  large: '1.4em'
 }
 
 export const breakpoints = {
