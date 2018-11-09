@@ -4,7 +4,7 @@ import * as React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import styled, { injectGlobal } from 'styled-components'
 
-import HomePage from './components/HomePage'
+import LandingPage from './components/LandingPage'
 import CreateTripPage from './components/CreateTripPage'
 import TripPage from './components/TripPage'
 import TripViewer from './components/TripViewer'
@@ -41,7 +41,7 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" component={HomePage} />
+          <Route exact path="/" component={LandingPage} />
           <Route exact path="/trip/new" component={CreateTripPage} />
           <Route path="/trip/:tripId/edit" component={TripPage} />
           <Route path="/trip/:tripId/view" component={TripViewer} />
