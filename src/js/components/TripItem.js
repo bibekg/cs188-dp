@@ -13,10 +13,10 @@ import { colors } from '../styles/index'
 
 const TripItemContainer = styled.div`
   display: flex;
-  padding: 20px 0 20px 0;
+  padding: 20px;
   border-bottom: 1px solid black;
 
-  > * {
+  > *:not(:first-child) {
     margin-left: 20px;
   }
 `
@@ -44,14 +44,12 @@ const TripDate = styled.div`
 const TripActionsContainer = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  flex-grow: 3;
-  justify-content: center;
-  align-items: center;
   max-width: 100px;
+  align-items: center;
 
-  * {
-    margin: 5px 5px 5px 5px;
+  > * {
+    margin: 5px;
+    max-width: 25px;
     text-align: center;
   }
 `
@@ -68,10 +66,10 @@ const TripItem = props => (
       </TripDate>
     </TripDescriptionContainer>
     <TripActionsContainer>
-      <FontAwesomeIcon icon={faFileAudio} size="2x" />
+      <FontAwesomeIcon icon={faFileAudio} size="1x" />
       <FontAwesomeIcon icon={faImage} size="2x" />
       <FontAwesomeIcon icon={faScroll} size="2x" />
-      <FontAwesomeIcon icon={faMapPin} size="2x" />
+      <FontAwesomeIcon icon={faMapPin} size="1x" />
     </TripActionsContainer>
   </TripItemContainer>
 )

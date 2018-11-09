@@ -43,7 +43,7 @@ class App extends React.Component {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={LandingPage} />
-          <Route exact path="/trip/" component={TripFeed} />
+          <Route exact path="/trip" component={TripFeed} />
           <Route exact path="/trip/new" component={CreateTripPage} />
           <Route path="/trip/:tripId/edit" component={TripPage} />
           <Route path="/trip/:tripId/view" component={TripViewer} />

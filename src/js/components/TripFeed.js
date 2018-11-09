@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import TripItem from './TripItem'
-import Button from './Button'
+import RectangularButton from './RectangularButton'
 
 import { MAPBOX_TOKEN, MAPBOX_STYLE } from '../constants'
 import { colors } from '../styles/index'
@@ -10,9 +10,10 @@ import mock from '../mocks/mock'
 import copy from '../copy'
 
 const TripFeedContainer = styled.div`
-  display: relative;
   width: 100vw;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 `
 
 const TripFeedMapWrapper = styled.div`
@@ -34,6 +35,7 @@ const ButtonBase = styled.div`
 `
 
 const TripFeedContent = styled.div`
+  flex-grow: 1;
   overflow: auto;
 `
 
@@ -79,9 +81,7 @@ class TripFeed extends React.Component {
             />
           ))}
         </TripFeedContent>
-        <Button pinned primary>
-          {submitButtonText}
-        </Button>
+        <RectangularButton primary>{submitButtonText}</RectangularButton>
       </TripFeedContainer>
     )
   }
