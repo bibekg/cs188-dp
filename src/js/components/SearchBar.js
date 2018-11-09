@@ -16,8 +16,8 @@ const SearchBarInput = styled.input`
   width: 80%;
   box-sizing: border-box;
   border: none;
-  border-bottom: 1px solid #768692;
-  color: #475058;
+  border-bottom: 1px solid black;
+  color: black;
   background-color: inherit;
   background-position: 10px 10px;
   background-repeat: no-repeat;
@@ -42,10 +42,10 @@ const SearchBarLabel = styled.label`
   font-size: 22px;
   position: absolute;
   top: 25px;
-  right: 8px;
+  right: 12px;
   width: 88%;
   overflow: hidden;
-  color: #768692;
+  color: black;
   text-align: left;
   white-space: nowrap;
   pointer-events: none;
