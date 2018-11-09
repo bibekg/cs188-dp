@@ -10,7 +10,7 @@ export default styled.input`
   padding: 10px 5px;
   box-sizing: border-box;
   border: none;
-  background-color: ${colors.white};
+  background-color: ${colors.offWhite};
   border: 2px solid ${rgba(colors.green, 0.1)};
   outline: none;
   font-size: 16px;
@@ -19,12 +19,12 @@ export default styled.input`
   border-radius: 4px;
 
   &::placeholder {
-    color: ${colors.grey};
+    color: ${colors.mostlyBlack};
   }
 
   &:invalid {
     border-bottom-color: ${colors.red};
   }
 
-  ${placeholderMixin};
+  ${placeholderMixin(colors.darkGrey)};
 `

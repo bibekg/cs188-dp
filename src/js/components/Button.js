@@ -54,7 +54,17 @@ const Button = styled.button`
   color: ${props => getTextColor(props)};
   cursor: ${props => (props.disabled ? 'default' : 'pointer')};
 
-  &:hover {
+  ${props =>
+    props.pinned &&
+    `
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-radius: 0;
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  `} &:hover {
     ${props => getHoverEffects(props)};
   }
 

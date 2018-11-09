@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { colors } from '../styles/index'
+import copy from '../copy'
 import Text from './Text'
 import TextInput from './TextInput'
 import Button from './Button'
@@ -9,6 +10,11 @@ const Wrapper = styled.div`
   text-align: center;
   padding: 10px;
 `
+
+const Title = styled(Text)`
+  margin: 20px 0;
+`
+
 const TripNameInput = styled.form`
   text-align: left;
   display: flex;
@@ -16,39 +22,39 @@ const TripNameInput = styled.form`
   > *:not(:last-child) {
     margin-bottom: 20px;
   }
-`
-const SubmitButton = styled.input`
-  color: ${colors.black};
-  background-color: ${colors.green};
+
+  ${TextInput} {
+    margin-top: 5px;
+  }
 `
 
-const PageTitle = styled.div``
 const CreateTripPage = () => {
+  const { title, fields, submitButtonText } = copy.createTrip
   return (
     <Wrapper>
-      <Text>Create Trip</Text>
+      <Title medium bold>
+        {title.toUpperCase()}
+      </Title>
       <TripNameInput>
         <div>
-          <Text>Title</Text>
-          <TextInput type="text" name="title" />
+          <Text>{fields.title.name}</Text>
+          <TextInput
+            type="text"
+            name="title"
+            placeholder={fields.title.placeholder}
+          />
         </div>
         <div>
-          <Text>Place</Text>
-          <TextInput type="text" name="place" />
-        </div>
-        <div>
-          <Text>Start Date</Text>
+          <Text>{fields.startDate.name}</Text>
           <TextInput type="date" name="startDate" />
         </div>
         <div>
-          <Text>End Date</Text>
+          <Text>{fields.endDate.name}</Text>
           <TextInput type="date" name="endDate" />
         </div>
-        <div>
-          <Text>Upload Media</Text>
-          <TextInput type="file" name="media" />
-        </div>
-        <Button primary>Submit</Button>
+        <Button pinned primary>
+          {submitButtonText}
+        </Button>
       </TripNameInput>
     </Wrapper>
   )

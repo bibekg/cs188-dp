@@ -1,7 +1,9 @@
-export const placeholderMixin = `
-  font-family: 'Montserrat', sans-serif;
+import { fonts } from '../styles'
+
+export const placeholderMixin = color => `
+  font-family: '${fonts['sans-serif']}', sans-serif;
   ::-webkit-input-placeholder {
-    color: ##AAAAAA;
+    color: ${color};
     opacity: 0.5;
     -webkit-transition: opacity 0.35s ease-in-out;
     transition: opacity 0.35s ease-in-out;
