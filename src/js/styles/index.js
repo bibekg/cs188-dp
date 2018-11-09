@@ -1,12 +1,13 @@
 export const colors = {
-  green: '#2db92d',
+  green: '#2DA867',
   blue: '#49B5E4',
   brown: '#846044',
   cream: '#F7EFE0',
   white: '#f0f4f7',
   black: '#717076',
   grey: '#d4dad1',
-  darkgrey: '#404040',
+  darkGrey: '#404040',
+  lightGrey: 'rgba(230, 230, 230, 1)'
   red: '#db1a00'
 }
 

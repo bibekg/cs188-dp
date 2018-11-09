@@ -60,11 +60,11 @@ const LoginButton = ButtonBase.extend`
 `
 const SignUpButton = ButtonBase.extend`
   color: ${colors.white};
-  background-color: ${colors.darkgrey};
+  background-color: ${colors.darkGrey};
   border: none;
 
   &:hover {
-    color: ${colors.darkgrey};
+    color: ${colors.darkGrey};
     background-color: ${colors.white};
   }
 `
