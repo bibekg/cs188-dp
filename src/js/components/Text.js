@@ -3,7 +3,7 @@
 import styled from 'styled-components'
 import { colors, fonts } from '../styles'
 
-const DEFAULT_COLOR = colors.black
+const DEFAULT_COLOR = colors.darkGrey
 const DEFAULT_SIZE = 18
 const MEDIUM_SIZE = 24
 const LARGE_SIZE = 36

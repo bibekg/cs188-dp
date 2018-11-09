@@ -15,6 +15,10 @@ const Title = styled(Text)`
   margin: 20px 0;
 `
 
+const Subtitle = styled(Text)`
+  margin: 20px 0;
+`
+
 const TripNameInput = styled.form`
   text-align: left;
   display: flex;
@@ -29,12 +33,13 @@ const TripNameInput = styled.form`
 `
 
 const CreateTripPage = () => {
-  const { title, fields, submitButtonText } = copy.createTrip
+  const { title, subtitle, fields, submitButtonText } = copy.createTrip
   return (
     <Wrapper>
       <Title medium bold>
-        {title.toUpperCase()}
+        {title}
       </Title>
+      <Title>{subtitle}</Title>
       <TripNameInput>
         <div>
           <Text>{fields.title.name}</Text>

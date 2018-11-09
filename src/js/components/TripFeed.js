@@ -67,7 +67,7 @@ class TripFeed extends React.Component {
 
   render() {
     const { tripId } = this.props.match.params
-    const { submitButtonText } = copy.tripFeed
+    const { createTripButtonText } = copy.tripFeed
     return (
       <TripFeedContainer>
         <TripFeedMapWrapper>Map Goes here!</TripFeedMapWrapper>
@@ -81,7 +81,7 @@ class TripFeed extends React.Component {
             />
           ))}
         </TripFeedContent>
-        <RectangularButton primary>{submitButtonText}</RectangularButton>
+        <RectangularButton primary>{createTripButtonText}</RectangularButton>
       </TripFeedContainer>
     )
   }

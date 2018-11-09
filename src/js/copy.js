@@ -1,6 +1,8 @@
 export default {
   createTrip: {
-    title: 'Create a new trip',
+    title: 'Start New Trip',
+    subtitle:
+      'Off on a new adventure? Give the trip a title, start date, and end date to get started.',
     fields: {
       title: {
         name: 'Title',
@@ -16,6 +18,6 @@ export default {
     submitButtonText: 'Create Trip'
   },
   tripFeed: {
-    submitButtonText: 'Create New Trip'
+    createTripButtonText: 'Start New Trip'
   }
 }
