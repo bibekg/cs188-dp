@@ -4,7 +4,7 @@ import { GOOGLE_API_KEY } from '../constants'
 
 const style = {
   width: '100%',
-  height: '43%'
+  height: '100%'
 }
 
 class MapOverview extends React.Component {

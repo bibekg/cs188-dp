@@ -16,6 +16,7 @@ const TripFeedContainer = styled.div`
 `
 
 const TripFeedMapWrapper = styled.div`
+  position: relative;
   width: 100%;
   height: 40%;
 `
