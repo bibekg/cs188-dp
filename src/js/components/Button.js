@@ -1,7 +1,7 @@
 // @flow
 
 import styled from 'styled-components'
-import { colors, fonts } from 'styles'
+import { colors, fonts } from '../styles'
 
 const getBackgroundColor = props => {
   if (props.disabled) {

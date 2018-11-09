@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { colors } from '../styles/index'
 import Text from './Text'
 import TextInput from './TextInput'
+import Button from './Button'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -47,7 +48,7 @@ const CreateTripPage = () => {
           <Text>Upload Media</Text>
           <TextInput type="file" name="media" />
         </div>
-        <SubmitButton type="submit" value="Submit" multiple />
+        <Button primary>Submit</Button>
       </TripNameInput>
     </Wrapper>
   )
