@@ -4,6 +4,7 @@ const mock = {
     startDate: '12/1/2018',
     endDate: '12/5/2018'
     // add other trip data here for the mock
+    // must add options for what types of documenation each trip has
   },
   '2': {
     name: 'My Second Trip',
