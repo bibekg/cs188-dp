@@ -36,6 +36,7 @@ const CreateNewTripButton = ButtonBase.extend`
   color: ${colors.white};
   background-color: ${colors.blue};
   border: none;
+  margin-top: 25px;
 
   &:hover {
     color: ${colors.blue};

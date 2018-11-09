@@ -15,11 +15,16 @@ const TripItemContainer = styled.div`
   display: flex;
   padding: 20px 0 20px 0;
   border-bottom: 1px solid black;
+
+  > * {
+    margin-left: 20px;
+  }
 `
 
 const TripIconWrapper = styled.div`
-  padding: 5px;
-  margin: 0 5px 0 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `
 
 const TripDescriptionContainer = styled.div`
@@ -44,7 +49,6 @@ const TripActionsContainer = styled.div`
   justify-content: center;
   align-items: center;
   max-width: 100px;
-  margin-left: 20px;
 
   * {
     margin: 5px 5px 5px 5px;
