@@ -4,7 +4,11 @@ import * as React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import styled, { injectGlobal } from 'styled-components'
 
-import HelloWorld from './components/HelloWorld'
+import HomePage from './components/HomePage'
+import CreateTripPage from './components/CreateTripPage'
+import TripPage from './components/TripPage'
+import TripViewer from './components/TripViewer'
+
 import { fonts } from './styles'
 
 injectGlobal([
@@ -34,7 +38,16 @@ class App extends React.Component {
   }
 
   render() {
-    return <HelloWorld />
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/trip/new" component={CreateTripPage} />
+          <Route path="/trip/:tripId/edit" component={TripPage} />
+          <Route path="/trip/:tripId/view" component={TripViewer} />
+        </Switch>
+      </BrowserRouter>
+    )
   }
 }
 
