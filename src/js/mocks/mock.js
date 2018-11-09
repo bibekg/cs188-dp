@@ -34,6 +34,7 @@ const mock = {
       }
     ]
     // add other trip data here for the mock
+    // must add options for what types of documenation each trip has
   },
   '2': {
     name: 'My Second Trip',
