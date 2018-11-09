@@ -40,6 +40,16 @@ const TripActionsContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  flex-grow: 3;
+  justify-content: center;
+  align-items: center;
+  max-width: 100px;
+  margin-left: 20px;
+
+  * {
+    margin: 5px 5px 5px 5px;
+    text-align: center;
+  }
 `
 
 const TripItem = props => (
