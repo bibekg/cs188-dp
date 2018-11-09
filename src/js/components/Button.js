@@ -35,7 +35,6 @@ const getHoverEffects = props => {
 
   return `
     transform: scale(1.05);
-    transition: 0.3s ease transform;
   `
 }
 
@@ -53,6 +52,7 @@ const Button = styled.button`
   border: solid 2px ${props => getBorderColor(props)};
   color: ${props => getTextColor(props)};
   cursor: ${props => (props.disabled ? 'default' : 'pointer')};
+  transition: 0.3s ease transform;
 
   ${props =>
     props.pinned &&
