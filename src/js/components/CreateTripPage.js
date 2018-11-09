@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { colors } from '../styles/index'
+import Text from './Text'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -9,7 +10,6 @@ const TripNameInput = styled.form`
   text-align: left;
   display: flex;
   flex-direction: column;
-  text-align: center;
 `
 const SubmitButton = styled.input`
   color: ${colors.black};
@@ -23,7 +23,7 @@ const PageTitle = styled.div``
 const CreateTripPage = () => {
   return (
     <Wrapper>
-      Create Trip
+      <Text>Create Trip</Text>
       <TripNameInput>
         Title: <FormInput type="text" name="title" />
         Place: <FormInput type="text" name="place" />

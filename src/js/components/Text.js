@@ -3,7 +3,7 @@
 import styled from 'styled-components'
 import { colors, fonts } from '../styles'
 
-const DEFAULT_COLOR = colors.grey
+const DEFAULT_COLOR = colors.black
 
 const getSize = props => (props.size ? props.size : 18)
 const getColor = props =>
