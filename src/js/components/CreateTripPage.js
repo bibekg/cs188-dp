@@ -19,7 +19,6 @@ const FormInput = styled.input`
   border-style: solid;
   margin-bottom: 75px;
 `
-
 const PageTitle = styled.div``
 const CreateTripPage = () => {
   return (
@@ -36,4 +35,5 @@ const CreateTripPage = () => {
     </Wrapper>
   )
 }
+
 export default CreateTripPage
