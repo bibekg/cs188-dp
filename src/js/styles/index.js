@@ -17,8 +17,3 @@ export const fonts = {
 export const breakpoints = {
   mobile: 790
 }
-
-export const fontsizes = {
-  
-
-}
