@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -58,12 +59,14 @@ const TripActionsContainer = styled.div`
 const TripItem = props => (
   <TripItemContainer>
     <TripIconWrapper>
-      <FontAwesomeIcon icon={faPlayCircle} size="3x" color={colors.blue} />
+      <Link to={`/trip/${props.id}/view`}>
+        <FontAwesomeIcon icon={faPlayCircle} size="3x" color={colors.brown} />
+      </Link>
     </TripIconWrapper>
     <TripDescriptionContainer>
       <TripName>{props.name}</TripName>
       <TripDate>
-        {props.startDate}-{props.endDate}
+        {props.startDate} - {props.endDate}
       </TripDate>
       <TripActionsContainer>
         <FontAwesomeIcon icon={faFileAudio} size="1x" />
