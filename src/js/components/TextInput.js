@@ -1,8 +1,8 @@
 // @flow
 
 import styled from 'styled-components'
-import { colors, fonts } from 'styles'
-import { placeholderMixin } from 'styles/mixins'
+import { colors, fonts } from '../styles'
+import { placeholderMixin } from '../styles/mixins'
 
 export default styled.input`
   width: 100%;
