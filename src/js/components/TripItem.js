@@ -45,11 +45,12 @@ const TripActionsContainer = styled.div`
   display: flex;
   flex-direction: row;
   max-width: 100px;
+  flex-wrap: wrap;
   align-items: center;
 
   > * {
-    margin: 5px;
-    max-width: 25px;
+    margin: 0 5px;
+    max-width: 15px;
     text-align: center;
   }
 `
@@ -64,13 +65,13 @@ const TripItem = props => (
       <TripDate>
         {props.startDate}-{props.endDate}
       </TripDate>
+      <TripActionsContainer>
+        <FontAwesomeIcon icon={faFileAudio} size="1x" />
+        <FontAwesomeIcon icon={faImage} size="2x" />
+        <FontAwesomeIcon icon={faScroll} size="2x" />
+        <FontAwesomeIcon icon={faMapPin} size="1x" />
+      </TripActionsContainer>
     </TripDescriptionContainer>
-    <TripActionsContainer>
-      <FontAwesomeIcon icon={faFileAudio} size="1x" />
-      <FontAwesomeIcon icon={faImage} size="2x" />
-      <FontAwesomeIcon icon={faScroll} size="2x" />
-      <FontAwesomeIcon icon={faMapPin} size="1x" />
-    </TripActionsContainer>
   </TripItemContainer>
 )
 
