@@ -5,10 +5,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "parcel ./src/index.html",
-    "build": "parcel build src/index.html -d build/ --public-url ./",
+    "dev": "parcel ./src/200.html",
+    "build": "parcel build src/200.html -d build/ --public-url /",
     "deploy": "yarn build && yarn deploy-surge",
-    "deploy-surge": "surge --project build --domain https://memoricle.surge.sh",
+    "deploy-surge": "surge --project build --domain memoricle.surge.sh",
     "clean": "rimraf dist && rimraf build",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "prepush": "yarn format"
