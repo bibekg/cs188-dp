@@ -10,8 +10,7 @@
     "deploy": "yarn build && yarn deploy-surge",
     "deploy-surge": "surge --project build --domain memoricle.surge.sh",
     "clean": "rimraf dist && rimraf build",
-    "format": "prettier --write \"src/**/*.{js,jsx}\"",
-    "prepush": "yarn format"
+    "format": "prettier --write \"src/**/*.{js,jsx}\""
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.8",
