@@ -57,7 +57,7 @@ const Button = styled.button`
   ${props =>
     props.pinned &&
     `
-    position: absolute;
+    position: fixed;
     left: 0;
     bottom: 0;
     border-radius: 0;

@@ -2,11 +2,12 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import TripItem from './TripItem'
-import MapGL from 'react-map-gl'
-import mock from '../mocks/mock'
+import Button from './Button'
 
 import { MAPBOX_TOKEN, MAPBOX_STYLE } from '../constants'
 import { colors } from '../styles/index'
+import mock from '../mocks/mock'
+import copy from '../copy'
 
 const TripFeedContainer = styled.div`
   display: relative;
@@ -30,6 +31,10 @@ const ButtonBase = styled.div`
   letter-spacing: 1px;
   cursor: pointer;
   text-align: center;
+`
+
+const TripFeedContent = styled.div`
+  overflow: auto;
 `
 
 const CreateNewTripButton = ButtonBase.extend`
@@ -60,22 +65,25 @@ class TripFeed extends React.Component {
 
   render() {
     const { tripId } = this.props.match.params
+    const { submitButtonText } = copy.tripFeed
     return (
       <TripFeedContainer>
         <TripFeedMapWrapper>Map Goes here!</TripFeedMapWrapper>
-        {/* will have to map all parts of mock for TripItem */}
-        {Object.keys(mock).map(id => (
-          <TripItem
-            key={id}
-            name={mock[id].name}
-            startDate={mock[id].startDate}
-            endDate={mock[id].endDate}
-          />
-        ))}
-        <CreateNewTripButton>Create New Trip</CreateNewTripButton>
+        <TripFeedContent>
+          {Object.keys(mock).map(id => (
+            <TripItem
+              key={id}
+              name={mock[id].name}
+              startDate={mock[id].startDate}
+              endDate={mock[id].endDate}
+            />
+          ))}
+        </TripFeedContent>
+        <Button pinned primary>
+          {submitButtonText}
+        </Button>
       </TripFeedContainer>
     )
-    // <MapGL mapStyle={MAPBOX_STYLE} mapboxApiAccessToken={MAPBOX_TOKEN} />
   }
 }
 

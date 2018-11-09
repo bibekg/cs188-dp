@@ -14,5 +14,8 @@ export default {
       }
     },
     submitButtonText: 'Create Trip'
+  },
+  tripFeed: {
+    submitButtonText: 'Create New Trip'
   }
 }
