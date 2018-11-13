@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Sun from './Sun'
 
 import { colors } from '../styles/index'
+import name from '../../assets/landing-name.png'
 
 const LandingPageContainer = styled.div`
   position: relative;
@@ -43,9 +44,9 @@ const ButtonBase = styled.div`
   cursor: pointer;
 `
 
-const LandingText = styled.span`
-  margin-top: 10px;
-  font-size: 60px;
+const LandingText = styled.div`
+  position: relative;
+  margin-top: 20px;
 `
 
 const LoginButton = ButtonBase.extend`
@@ -73,7 +74,9 @@ const LandingPage = props => (
   <LandingPageContainer>
     <LandingCenter>
       <Sun />
-      <LandingText>Memoricle</LandingText>
+      <LandingText>
+        <img src={name} alt="logo-name" />
+      </LandingText>
       <LandingCenterButtons>
         <LoginButton>Log in</LoginButton>
         <SignUpButton>Sign up</SignUpButton>
