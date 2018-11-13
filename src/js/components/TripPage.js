@@ -4,6 +4,7 @@ import SearchBar from './SearchBar'
 import MapOverview from './MapOverview'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import Text from './Text'
 
 import mock from '../mocks/mock'
 import { colors } from '../styles'
@@ -13,10 +14,6 @@ const TripPageContainer = styled.div`
   flex-direction: column;
   width: 100wh;
   height: 100vh;
-
-  > * {
-    margin-bottom: 20px;
-  }
 `
 
 const TripPageMapWrapper = styled.div`
@@ -32,13 +29,28 @@ const TripPageAddMemory = styled.div`
   transform: translateX(-50%);
 `
 
+const TitleBar = styled.div`
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+  background-color: ${colors.brown};
+`
+
 const TripPage = props => {
   const { tripId } = props.match.params
   const trip = mock[tripId]
 
+  const { title, startDate, endDate } = JSON.parse(
+    window.localStorage.mockTrips
+  )[0]
+
   return (
     <TripPageContainer>
-      <SearchBar placeholder={'A Splendid Summer on Saturn'} />
+      <TitleBar>
+        <Text medium bold color={colors.white}>
+          {title}
+        </Text>
+      </TitleBar>
       <TripPageMapWrapper>
         <MapOverview />
       </TripPageMapWrapper>
