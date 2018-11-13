@@ -14,16 +14,6 @@ const TripPageContainer = styled.div`
   width: 100wh;
   height: 100vh;
   text-align: center;
-
-  > * {
-    margin-bottom: 20px;
-  }
-`
-
-const TripPageTitle = styled.span`
-  font-size: 1.8em;
-  font-weight: bold;
-  margin-top: 20px;
 `
 
 const TripPageMapWrapper = styled.div`
@@ -56,15 +46,11 @@ const TripPage = props => {
 
   return (
     <TripPageContainer>
-<<<<<<< HEAD
       <TitleBar>
         <Text medium bold color={colors.white}>
           {title}
         </Text>
       </TitleBar>
-=======
-      <TripPageTitle>{trip.name}</TripPageTitle>
->>>>>>> Removed search bar functionality from CreateTrip
       <TripPageMapWrapper>
         <MapOverview />
       </TripPageMapWrapper>
