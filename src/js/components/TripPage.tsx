@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import styled from 'styled-components'
 import MapOverview from './MapOverview'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
