@@ -1,6 +1,7 @@
-import MEDIA_TYPE from '../constants.js'
+import { Trip } from '../type-defs/Trip'
+import { MEDIA_TYPE } from '../constants'
 
-const mock = {
+const mock: { [id: string]: Trip } = {
   '1': {
     id: '1',
     name: '2018 Summer End in Utah',
