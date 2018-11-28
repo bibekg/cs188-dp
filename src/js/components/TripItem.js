@@ -66,7 +66,9 @@ const TripItem = props => (
     <TripDescriptionContainer>
       <TripName>{props.name}</TripName>
       <TripDate>
-        {props.startDate} - {props.endDate}
+        {props.startDate.getMonth() + 1}/{props.startDate.getDate()}/
+        {props.startDate.getFullYear()} - {props.endDate.getMonth() + 1}/
+        {props.endDate.getDate()}/{props.endDate.getFullYear()}
       </TripDate>
       <TripActionsContainer>
         <FontAwesomeIcon icon={faFileAudio} size="1x" />

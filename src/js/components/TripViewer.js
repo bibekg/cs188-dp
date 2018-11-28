@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
+import { MediaItemType, MediaItem } from '../type-defs/MediaItem'
 
 import Text from './Text'
 import Button from './Button'
@@ -73,7 +74,7 @@ class TripViewer extends React.Component {
 
     let nextStepIndex = this.state.step + 1
     while (
-      this.props.trip.media[nextStepIndex].type !== 'image' &&
+      this.props.trip.media[nextStepIndex].type !== MediaItemType.Image &&
       this.props.trip.media[nextStepIndex].type != null
     ) {
       nextStepIndex += 1
@@ -97,14 +98,14 @@ class TripViewer extends React.Component {
 
     const lastPicture = this.isOnLastStep()
     const showBackButton = true
-    if (type === 'image') {
+    if (type === MediaItemType.Image) {
       return (
         <ViewerWrapper image={step.src}>
           <Overlay>
             <Text>{step.description}</Text>
             <Text>
               <FontAwesomeIcon icon={faMapMarkerAlt} size="1x" />{' '}
-              {step.location}
+              {step.location.name}
             </Text>
           </Overlay>
           <div>
