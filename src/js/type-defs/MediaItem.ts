@@ -10,7 +10,7 @@ export class LocationDetails {
 }
 
 export class MediaItemLink {
-  type: string
+  type: MediaItemType
   id: string
 }
 
@@ -18,17 +18,19 @@ export class MediaItem {
   id: string
   dateTime: Date
   type: MediaItemType
-  location: LocationDetails
-  links: MediaItemLink[]
+  location?: LocationDetails
+  links?: MediaItemLink[]
+  description?: string
 }
 
 export class NoteMediaItem extends MediaItem {
+  type: MediaItemType.Note
   content: string
 }
 
 export class ImageMediaItem extends MediaItem {
+  type: MediaItemType.Image
   src: string
-  description: string
 }
 
 export type MediaType = NoteMediaItem | ImageMediaItem

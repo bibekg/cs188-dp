@@ -1,9 +1,9 @@
-import { MediaItem } from './MediaItem'
+import { MediaType } from './MediaItem'
 
-class Trip {
-  id: number
+export class Trip {
+  id: string
   name: string
   startDate: Date
   endDate: Date
-  media: MediaItem[]
+  media?: MediaType[] = []
 }
