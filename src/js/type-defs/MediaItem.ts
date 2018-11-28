@@ -1,7 +1,5 @@
 export enum MediaItemType {
   Image,
-  Video,
-  Audio,
   Note
 }
 
@@ -28,9 +26,9 @@ export class NoteMediaItem extends MediaItem {
   content: string
 }
 
-export class PhotoMediaItem extends MediaItem {
+export class ImageMediaItem extends MediaItem {
   src: string
   description: string
 }
 
-export type MediaType = NoteMediaItem | PhotoMediaItem
+export type MediaType = NoteMediaItem | ImageMediaItem
