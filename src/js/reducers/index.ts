@@ -1,8 +1,8 @@
 // @flow
 
 import { combineReducers } from 'redux'
-import userReducer from './user'
+import tripReducer from './trip'
 
 export default combineReducers({
-  user: userReducer
+  trip: tripReducer
 })
