@@ -40,15 +40,11 @@ const TripPage = props => {
   const { tripId } = props.match.params
   const trip = mock[tripId]
 
-  const { title, startDate, endDate } = JSON.parse(
-    window.localStorage.mockTrips
-  )[0]
-
   return (
     <TripPageContainer>
       <TitleBar>
         <Text medium bold color={colors.white}>
-          {title}
+          {trip.name}
         </Text>
       </TitleBar>
       <TripPageMapWrapper>

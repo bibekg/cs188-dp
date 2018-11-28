@@ -12,4 +12,8 @@ if (window.__REDUX_DEVTOOLS_EXTENSION__) {
 }
 /* eslint-enable */
 
-export default createStore(reducers, undefined, compose(...enhancers))
+const initialState = {
+  /* Initial state goes here */
+}
+
+export default createStore(reducers, initialState, compose(...enhancers))
