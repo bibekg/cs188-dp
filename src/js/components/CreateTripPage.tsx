@@ -1,11 +1,15 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
-import { colors } from '../styles/index'
+
+import { Trip } from '../type-defs/Trip'
 import copy from '../copy'
 import Text from './Text'
 import TextInput from './TextInput'
 import Button from './Button'
+import * as actions from '../actions'
+import { createTrip } from '../actions'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -33,8 +37,20 @@ const TripNameForm = styled.form`
   }
 `
 
+interface PropsType {
+  createTrip: (trip: Trip) => any
+}
+
+interface StateType {
+  titleValue: string
+  startDateValue: string
+  endDateValue: string
+  submitted: boolean
+}
+
 class CreateTripPage extends React.Component {
-  constructor(props) {
+  state: StateType
+  constructor(props: PropsType) {
     super(props)
     this.state = {
       titleValue: '',
@@ -47,7 +63,7 @@ class CreateTripPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleChange(event: SyntheticInputEvent<*>) {
+  handleChange(event: React.SyntheticEvent<any>) {
     const { name, value } = event.target
     this.setState({
       [`${name}Value`]: value
@@ -55,17 +71,22 @@ class CreateTripPage extends React.Component {
   }
 
   handleSubmit() {
+    this.submitToFirebase()
+    return false
+  }
+
+  async submitToFirebase() {
     const { titleValue, startDateValue, endDateValue } = this.state
-    window.localStorage.mockTrips = JSON.stringify([
-      {
-        title: titleValue,
-        startDate: startDateValue,
-        endDate: endDateValue
-      }
-    ])
-    this.setState({
-      submitted: true
-    })
+    const newTrip: Trip = {
+      id: '9',
+      name: titleValue,
+      startDate: new Date(startDateValue),
+      endDate: new Date(endDateValue)
+    }
+    await createTrip(newTrip)
+    // this.setState({
+    //   submitted: true
+    // })
   }
 
   render() {
@@ -118,4 +139,9 @@ class CreateTripPage extends React.Component {
   }
 }
 
-export default CreateTripPage
+export default connect(
+  null,
+  {
+    createTrip: actions.createTrip
+  }
+)(CreateTripPage)
