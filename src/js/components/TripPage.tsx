@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import MapOverview from './MapOverview'
+import Memory from './Memory'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import Text from './Text'
@@ -20,6 +21,11 @@ const TripPageMapWrapper = styled.div`
   position: relative;
   height: 40%;
   width: 100%;
+`
+
+const TripPageContent = styled.div`
+  flex-grow: 1;
+  overflow: auto;
 `
 
 const TripPageAddMemory = styled.div`
@@ -62,6 +68,9 @@ const TripPage = props => {
       <TripPageMapWrapper>
         <MapOverview />
       </TripPageMapWrapper>
+      <TripPageContent>
+        <Memory />
+      </TripPageContent>
       <TripPageAddMemory>
         <TripPageAddButton
           onClick={() => console.log('Add photo')}
@@ -72,7 +81,6 @@ const TripPage = props => {
         <TripPageAddButton onClick={() => console.log('Add note')} color="blue">
           Add Note
         </TripPageAddButton>
-        {/* <FontAwesomeIcon icon={faPlusCircle} size="5x" color={colors.green} /> */}
       </TripPageAddMemory>
     </TripPageContainer>
   )
