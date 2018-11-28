@@ -10,9 +10,7 @@ const config = {
 firebase.initializeApp(config)
 
 // Initialize Cloud Firestore through Firebase
-const fireDb = firebase.firestore()
+export const fireDb = firebase.firestore()
 
 // Disable deprecated features
 fireDb.settings({ timestampsInSnapshots: true })
-
-export const fireDb
