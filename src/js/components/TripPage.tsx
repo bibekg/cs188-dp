@@ -23,10 +23,22 @@ const TripPageMapWrapper = styled.div`
 `
 
 const TripPageAddMemory = styled.div`
+  display: flex;
+  flex-direction: row;
   position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 0;
+  width: 100%;
+`
+
+const TripPageAddButton = styled.div`
+  padding: 15px 15px;
+  font-family: 'sans-serif';
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  color: ${colors.white};
+  background-color: ${colors.green};
+  flex-grow: 1;
 `
 
 const TitleBar = styled.div`
@@ -51,7 +63,16 @@ const TripPage = props => {
         <MapOverview />
       </TripPageMapWrapper>
       <TripPageAddMemory>
-        <FontAwesomeIcon icon={faPlusCircle} size="5x" color={colors.green} />
+        <TripPageAddButton
+          onClick={() => console.log('Add photo')}
+          color="green"
+        >
+          Add Photo
+        </TripPageAddButton>
+        <TripPageAddButton onClick={() => console.log('Add note')} color="blue">
+          Add Note
+        </TripPageAddButton>
+        {/* <FontAwesomeIcon icon={faPlusCircle} size="5x" color={colors.green} /> */}
       </TripPageAddMemory>
     </TripPageContainer>
   )
