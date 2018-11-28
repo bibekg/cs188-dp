@@ -1,6 +1,7 @@
 // @flow
 
 import * as React from 'react'
+import { Provider } from 'react-redux'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import styled, { injectGlobal } from 'styled-components'
 
@@ -10,6 +11,7 @@ import TripPage from './components/TripPage'
 import TripFeed from './components/TripFeed'
 import TripViewer from './components/TripViewer'
 
+import store from './store'
 import { fonts } from './styles'
 
 injectGlobal([
@@ -40,15 +42,17 @@ class App extends React.Component {
 
   render() {
     return (
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={LandingPage} />
-          <Route exact path="/trip" component={TripFeed} />
-          <Route exact path="/trip/new" component={CreateTripPage} />
-          <Route path="/trip/:tripId/edit" component={TripPage} />
-          <Route path="/trip/:tripId/view" component={TripViewer} />
-        </Switch>
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={LandingPage} />
+            <Route exact path="/trip" component={TripFeed} />
+            <Route exact path="/trip/new" component={CreateTripPage} />
+            <Route path="/trip/:tripId/edit" component={TripPage} />
+            <Route path="/trip/:tripId/view" component={TripViewer} />
+          </Switch>
+        </BrowserRouter>
+      </Provider>
     )
   }
 }

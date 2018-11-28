@@ -8,4 +8,11 @@ const config = {
   messagingSenderId: '123773528711'
 }
 firebase.initializeApp(config)
-export default firebase
+
+// Initialize Cloud Firestore through Firebase
+const fireDb = firebase.firestore()
+
+// Disable deprecated features
+fireDb.settings({ timestampsInSnapshots: true })
+
+export const fireDb
