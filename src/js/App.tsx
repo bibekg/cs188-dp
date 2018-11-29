@@ -1,9 +1,9 @@
 // @flow
 
 import * as React from 'react'
-import { Provider } from 'react-redux'
+import { connect } from 'react-redux'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import styled, { injectGlobal } from 'styled-components'
+import { injectGlobal } from 'styled-components'
 
 import LandingPage from './components/LandingPage'
 import CreateTripPage from './components/CreateTripPage'
@@ -11,9 +11,10 @@ import TripPage from './components/TripPage'
 import TripFeed from './components/TripFeed'
 import TripViewer from './components/TripViewer'
 
-import store from './store'
 import { fonts } from './styles'
+import * as actions from './actions'
 
+// @ts-ignore
 injectGlobal([
   `
     @import url('https://fonts.googleapis.com/css?family=Lora:400,700|Open+Sans:400,700');
@@ -35,26 +36,32 @@ injectGlobal([
 `
 ])
 
-class App extends React.Component {
-  constructor(props) {
+interface PropsType {
+  getTrips: () => void
+}
+
+class App extends React.Component<PropsType> {
+  constructor(props: PropsType) {
     super(props)
+    this.props.getTrips()
   }
 
   render() {
     return (
-      <Provider store={store}>
-        <BrowserRouter>
-          <Switch>
-            <Route exact path="/" component={LandingPage} />
-            <Route exact path="/trip" component={TripFeed} />
-            <Route exact path="/trip/new" component={CreateTripPage} />
-            <Route path="/trip/:tripId/edit" component={TripPage} />
-            <Route path="/trip/:tripId/view" component={TripViewer} />
-          </Switch>
-        </BrowserRouter>
-      </Provider>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/trip" component={TripFeed} />
+          <Route exact path="/trip/new" component={CreateTripPage} />
+          <Route path="/trip/:tripId/edit" component={TripPage} />
+          <Route path="/trip/:tripId/view" component={TripViewer} />
+        </Switch>
+      </BrowserRouter>
     )
   }
 }
 
-export default App
+export default connect(
+  null,
+  { getTrips: actions.getTrips }
+)(App)

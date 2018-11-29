@@ -9,7 +9,6 @@ import Text from './Text'
 import TextInput from './TextInput'
 import Button from './Button'
 import * as actions from '../actions'
-import { createTrip } from '../actions'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -48,8 +47,7 @@ interface StateType {
   submitted: boolean
 }
 
-class CreateTripPage extends React.Component {
-  state: StateType
+class CreateTripPage extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props)
     this.state = {
@@ -70,7 +68,8 @@ class CreateTripPage extends React.Component {
     })
   }
 
-  handleSubmit() {
+  handleSubmit(event: React.SyntheticEvent) {
+    event.preventDefault()
     this.submitToFirebase()
     return false
   }
@@ -83,10 +82,10 @@ class CreateTripPage extends React.Component {
       startDate: new Date(startDateValue),
       endDate: new Date(endDateValue)
     }
-    await createTrip(newTrip)
-    // this.setState({
-    //   submitted: true
-    // })
+    await this.props.createTrip(newTrip)
+    this.setState({
+      submitted: true
+    })
   }
 
   render() {
