@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -10,6 +11,8 @@ import Text from './Text'
 import mock from '../mocks/mock'
 import copy from '../copy'
 import { colors } from '../styles'
+import { Trip } from '../type-defs/Trip'
+import { createTripSuccess } from '../actions'
 
 const TitleBar = styled.div`
   background-color: ${colors.brown};
@@ -38,8 +41,12 @@ const TripFeedContent = styled.div`
   overflow: auto;
 `
 
-class TripFeed extends React.Component {
-  constructor(props) {
+interface PropsType {
+  trips: Trip[]
+}
+
+class TripFeed extends React.Component<PropsType> {
+  constructor(props: PropsType) {
     super(props)
     this.state = {
       viewport: {
@@ -66,8 +73,8 @@ class TripFeed extends React.Component {
           <MapOverview />
         </TripFeedMapWrapper>
         <TripFeedContent>
-          {Object.keys(mock).map(id => (
-            <TripItem key={id} {...mock[id]} />
+          {this.props.trips.map(trip => (
+            <TripItem key={trip.id} trip={trip} />
           ))}
         </TripFeedContent>
         <Link to="/trip/new">
@@ -78,4 +85,9 @@ class TripFeed extends React.Component {
   }
 }
 
-export default TripFeed
+export default connect(
+  (state: any) => ({
+    trips: state.trip
+  }),
+  null
+)(TripFeed)

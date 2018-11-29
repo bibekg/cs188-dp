@@ -27,6 +27,14 @@ export const createTrip = (trip: Trip) => async (dispatch: any) => {
 
 export const getTrips = () => async (dispatch: any, getState: any) => {
   const querySnapshot = await fireDb.collection('trips').get()
-  const trips: Trip[] = querySnapshot.docs.map(doc => doc.data() as Trip)
+  const trips: Trip[] = querySnapshot.docs.map(doc => doc.data()).map(
+    tripObject =>
+      ({
+        ...tripObject,
+        startDate: new Date(tripObject.startDate.seconds * 1000),
+        endDate: new Date(tripObject.endDate.seconds * 1000)
+      } as Trip)
+  )
+
   dispatch(getTripsSuccess(trips))
 }

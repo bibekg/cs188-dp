@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import { colors } from '../styles/index'
+import { Trip } from '../type-defs/Trip'
 
 const TripItemContainer = styled.div`
   display: flex;
@@ -56,28 +57,35 @@ const TripActionsContainer = styled.div`
   }
 `
 
-const TripItem = props => (
-  <TripItemContainer>
-    <TripIconWrapper>
-      <Link to={`/trip/${props.id}/view`}>
-        <FontAwesomeIcon icon={faPlayCircle} size="3x" color={colors.brown} />
-      </Link>
-    </TripIconWrapper>
-    <TripDescriptionContainer>
-      <TripName>{props.name}</TripName>
-      <TripDate>
-        {props.startDate.getMonth() + 1}/{props.startDate.getDate()}/
-        {props.startDate.getFullYear()} - {props.endDate.getMonth() + 1}/
-        {props.endDate.getDate()}/{props.endDate.getFullYear()}
-      </TripDate>
-      <TripActionsContainer>
-        <FontAwesomeIcon icon={faFileAudio} size="1x" />
-        <FontAwesomeIcon icon={faImage} size="2x" />
-        <FontAwesomeIcon icon={faScroll} size="2x" />
-        <FontAwesomeIcon icon={faMapPin} size="1x" />
-      </TripActionsContainer>
-    </TripDescriptionContainer>
-  </TripItemContainer>
-)
+interface PropsType {
+  trip: Trip
+}
+
+const TripItem = (props: PropsType) => {
+  const { id, name, startDate, endDate } = props.trip
+  return (
+    <TripItemContainer>
+      <TripIconWrapper>
+        <Link to={`/trip/${id}/view`}>
+          <FontAwesomeIcon icon={faPlayCircle} size="3x" color={colors.brown} />
+        </Link>
+      </TripIconWrapper>
+      <TripDescriptionContainer>
+        <TripName>{name}</TripName>
+        <TripDate>
+          {startDate.getMonth() + 1}/{startDate.getDate()}/
+          {startDate.getFullYear()} - {endDate.getMonth() + 1}/
+          {endDate.getDate()}/{endDate.getFullYear()}
+        </TripDate>
+        <TripActionsContainer>
+          <FontAwesomeIcon icon={faFileAudio} size="1x" />
+          <FontAwesomeIcon icon={faImage} size="2x" />
+          <FontAwesomeIcon icon={faScroll} size="2x" />
+          <FontAwesomeIcon icon={faMapPin} size="1x" />
+        </TripActionsContainer>
+      </TripDescriptionContainer>
+    </TripItemContainer>
+  )
+}
 
 export default TripItem
