@@ -1,5 +1,5 @@
 import * as React from 'react'
-import styled from 'styled-components'
+import styled, { consolidateStreamedStyles } from 'styled-components'
 import { Link } from 'react-router-dom'
 import MapOverview from './MapOverview'
 import Memory from './Memory'
@@ -74,7 +74,7 @@ const TripPage = props => {
           trip.media.map(memory => <Memory key={memory.id} memory={memory} />)}
       </TripPageContent>
       <TripPageAddMemory>
-        <Link to="/trip/1/edit/photo">
+        <Link to={`/trip/${tripId}/add-photo`}>
           <TripPageAddButton color="green">{addPhoto}</TripPageAddButton>
         </Link>
         <TripPageAddButton onClick={() => console.log('Add note')} color="blue">
