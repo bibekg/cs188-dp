@@ -6,7 +6,7 @@ import * as TYPES from './types'
 import { consolidateStreamedStyles } from 'styled-components'
 
 export const createTripSuccess = (trip: Trip) => ({
-  type: TYPES.CREATE_TRIP,
+  type: TYPES.CREATE_TRIP_SUCCESS,
   payload: trip
 })
 

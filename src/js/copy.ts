@@ -19,5 +19,30 @@ export default {
   },
   tripFeed: {
     createTripButtonText: 'Start New Trip'
+  },
+  tripPage: {
+    addPhoto: 'Add Photo',
+    addNote: 'Add Note'
+  },
+  addMedia: {
+    photo: {
+      title: 'Add a Photo',
+      subtitle:
+        'Please specify the photo you would like to add and provide a description.',
+      fields: {
+        title: {
+          name: 'Title',
+          placeholder: 'Lower Antelope Canyon'
+        },
+        caption: {
+          name: 'Caption',
+          placeholder: "Let's get this bread"
+        },
+        upload: {
+          name: 'Upload'
+        }
+      },
+      photoButtonText: 'Add Photo'
+    }
   }
 }

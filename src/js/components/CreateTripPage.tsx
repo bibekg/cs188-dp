@@ -39,6 +39,7 @@ interface PropsType {
 }
 
 interface StateType {
+  uuid: string
   titleValue: string
   startDateValue: string
   endDateValue: string
@@ -49,6 +50,7 @@ class CreateTripPage extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props)
     this.state = {
+      uuid: '',
       titleValue: '',
       startDateValue: '',
       endDateValue: '',
@@ -74,21 +76,23 @@ class CreateTripPage extends React.Component<PropsType, StateType> {
 
   async submitToFirebase() {
     const { titleValue, startDateValue, endDateValue } = this.state
+    const uuid = uuidv1()
     const newTrip: Trip = {
-      id: uuidv1(),
+      id: uuid,
       name: titleValue,
       startDate: new Date(startDateValue),
       endDate: new Date(endDateValue)
     }
     await this.props.createTrip(newTrip)
     this.setState({
-      submitted: true
+      submitted: true,
+      uuid: uuid
     })
   }
 
   render() {
     if (this.state.submitted) {
-      return <Redirect to="/trip/1/edit" />
+      return <Redirect to={`/trip/${this.state.uuid}/edit`} />
     }
 
     const { title, subtitle, fields, submitButtonText } = copy.createTrip

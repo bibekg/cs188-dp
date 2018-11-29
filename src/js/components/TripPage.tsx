@@ -1,11 +1,15 @@
 import * as React from 'react'
-import styled from 'styled-components'
+import styled, { consolidateStreamedStyles } from 'styled-components'
+import { Link } from 'react-router-dom'
 import MapOverview from './MapOverview'
 import Memory from './Memory'
 import Text from './Text'
+import BackArrow from './BackArrow'
 
 import mock from '../mocks/mock'
+import copy from '../copy'
 import { colors } from '../styles'
+import { connect } from 'react-redux'
 
 const TripPageContainer = styled.div`
   display: flex;
@@ -32,6 +36,7 @@ const TripPageAddMemory = styled.div`
   position: fixed;
   bottom: 0;
   width: 100%;
+  text-decoration: none;
 `
 
 const TripPageAddButton = styled.div`
@@ -54,10 +59,14 @@ const TitleBar = styled.div`
 
 const TripPage = props => {
   const { tripId } = props.match.params
-  const trip = mock[tripId]
+  const trip = props.trips.find(trip => trip.id === tripId)
+  const { addPhoto, addNote } = copy.tripPage
 
   return (
     <TripPageContainer>
+      <Link to="/trip">
+        <BackArrow color={colors.white} />
+      </Link>
       <TitleBar>
         <Text medium bold color={colors.white}>
           {trip.name}
@@ -67,22 +76,36 @@ const TripPage = props => {
         <MapOverview />
       </TripPageMapWrapper>
       <TripPageContent>
-        {trip &&
+        {trip.media &&
           trip.media.map(memory => <Memory key={memory.id} memory={memory} />)}
       </TripPageContent>
       <TripPageAddMemory>
-        <TripPageAddButton
-          onClick={() => console.log('Add photo')}
-          color="green"
+        <Link
+          style={{ textDecoration: 'none', flexGrow: 1 }}
+          to={`/trip/${tripId}/add-photo`}
         >
-          Add Photo
-        </TripPageAddButton>
-        <TripPageAddButton onClick={() => console.log('Add note')} color="blue">
-          Add Note
-        </TripPageAddButton>
+          <TripPageAddButton color="green">{addPhoto}</TripPageAddButton>
+        </Link>
+
+        <Link
+          style={{ textDecoration: 'none', flexGrow: 1 }}
+          to={`/trip/${tripId}/add-note`}
+        >
+          <TripPageAddButton
+            onClick={() => console.log('Add note')}
+            color="blue"
+          >
+            {addNote}
+          </TripPageAddButton>
+        </Link>
       </TripPageAddMemory>
     </TripPageContainer>
   )
 }
 
-export default TripPage
+export default connect(
+  (state: any) => ({
+    trips: state.trip
+  }),
+  null
+)(TripPage)
