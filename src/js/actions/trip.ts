@@ -20,7 +20,7 @@ export const getTripsSuccess = (trips: Trip[]) => ({
 export const createTrip = (trip: Trip) => async (dispatch: any) => {
   await fireDb
     .collection('trips')
-    .doc(trip.id)
+    .doc()
     .set(trip)
   dispatch(createTripSuccess(trip))
 }
