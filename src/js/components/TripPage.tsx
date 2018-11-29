@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import MapOverview from './MapOverview'
+import Memory from './Memory'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import Text from './Text'
@@ -22,11 +23,28 @@ const TripPageMapWrapper = styled.div`
   width: 100%;
 `
 
+const TripPageContent = styled.div`
+  flex-grow: 1;
+  overflow: auto;
+`
+
 const TripPageAddMemory = styled.div`
+  display: flex;
+  flex-direction: row;
   position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 0;
+  width: 100%;
+`
+
+const TripPageAddButton = styled.div`
+  padding: 15px 15px;
+  font-family: 'sans-serif';
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  color: ${colors.white};
+  background-color: ${colors.green};
+  flex-grow: 1;
 `
 
 const TitleBar = styled.div`
@@ -50,8 +68,20 @@ const TripPage = props => {
       <TripPageMapWrapper>
         <MapOverview />
       </TripPageMapWrapper>
+      <TripPageContent>
+        {trip &&
+          trip.media.map(memory => <Memory key={memory.id} memory={memory} />)}
+      </TripPageContent>
       <TripPageAddMemory>
-        <FontAwesomeIcon icon={faPlusCircle} size="5x" color={colors.green} />
+        <TripPageAddButton
+          onClick={() => console.log('Add photo')}
+          color="green"
+        >
+          Add Photo
+        </TripPageAddButton>
+        <TripPageAddButton onClick={() => console.log('Add note')} color="blue">
+          Add Note
+        </TripPageAddButton>
       </TripPageAddMemory>
     </TripPageContainer>
   )
