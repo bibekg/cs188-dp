@@ -1,10 +1,12 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import MapOverview from './MapOverview'
 import Memory from './Memory'
 import Text from './Text'
 
 import mock from '../mocks/mock'
+import copy from '../copy'
 import { colors } from '../styles'
 
 const TripPageContainer = styled.div`
@@ -55,6 +57,7 @@ const TitleBar = styled.div`
 const TripPage = props => {
   const { tripId } = props.match.params
   const trip = mock[tripId]
+  const { addPhoto, addNote } = copy.tripPage
 
   return (
     <TripPageContainer>
@@ -71,14 +74,11 @@ const TripPage = props => {
           trip.media.map(memory => <Memory key={memory.id} memory={memory} />)}
       </TripPageContent>
       <TripPageAddMemory>
-        <TripPageAddButton
-          onClick={() => console.log('Add photo')}
-          color="green"
-        >
-          Add Photo
-        </TripPageAddButton>
+        <Link to="/trip/1/edit/photo">
+          <TripPageAddButton color="green">{addPhoto}</TripPageAddButton>
+        </Link>
         <TripPageAddButton onClick={() => console.log('Add note')} color="blue">
-          Add Note
+          {addNote}
         </TripPageAddButton>
       </TripPageAddMemory>
     </TripPageContainer>
