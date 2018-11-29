@@ -62,7 +62,7 @@ const TripPage = props => {
   const trip = props.trips.find(trip => trip.id === tripId)
   const { addPhoto, addNote } = copy.tripPage
 
-  return (
+  return trip ? (
     <TripPageContainer>
       <Link to="/trip">
         <BackArrow color={colors.white} />
@@ -100,6 +100,8 @@ const TripPage = props => {
         </Link>
       </TripPageAddMemory>
     </TripPageContainer>
+  ) : (
+    <div>Trip is undefined</div>
   )
 }
 

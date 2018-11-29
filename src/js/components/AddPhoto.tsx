@@ -36,21 +36,50 @@ const AddPhotoForm = styled.form`
   }
 `
 
-class AddPhoto extends React.Component {
-  constructor(props) {
+interface PropsType {}
+
+interface StateType {
+  titleValue: string
+  captionValue: string
+  encodedImage: string | null
+  submitted: boolean
+}
+
+class AddPhoto extends React.Component<PropsType, StateType> {
+  constructor(props: PropsType) {
     super(props)
     this.state = {
       titleValue: '',
       captionValue: '',
+      encodedImage: null,
       submitted: false
     }
   }
 
   handleChange(event: React.SyntheticEvent<any>) {
     const { name, value } = event.target
-    this.setState({
-      [`${name}Value`]: value
-    })
+    if (name === 'title' || name === 'caption') {
+      // @ts-ignore
+      this.setState({
+        [`${name}Value`]: value
+      })
+    }
+  }
+
+  // When a user selects a photo, update our state with the base64 representation of it
+  // to later submit to the Firebase DB
+  handlePhotoChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
+    const { target } = event
+    if (target.files && target.files[0]) {
+      const reader = new FileReader()
+      reader.onload = (event: ProgressEvent) => {
+        if (event != null) {
+          const base64String = event.target.result
+          this.setState({ encodedImage: base64String })
+        }
+      }
+      reader.readAsDataURL(target.files[0])
+    }
   }
 
   handleSubmit(event: React.SyntheticEvent) {
@@ -102,7 +131,16 @@ class AddPhoto extends React.Component {
           </div>
           <div>
             <Text>{fields.upload.name}</Text>
-            <input type="file" id="single" />
+            <input type="file" id="single" onChange={this.handlePhotoChange} />
+            <br />
+            {this.state.encodedImage && (
+              <img
+                src={this.state.encodedImage}
+                alt={this.state.titleValue}
+                width="50"
+                height="50"
+              />
+            )}
           </div>
           <Button pinned primary>
             {photoButtonText}
