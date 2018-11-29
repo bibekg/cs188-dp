@@ -43,6 +43,21 @@ export default {
         }
       },
       photoButtonText: 'Add Photo'
+    },
+    note: {
+      title: 'Add a Note',
+      subtitle: 'Please write your note below.',
+      fields: {
+        title: {
+          name: 'Title',
+          placeholder: 'Journal Entry 1'
+        },
+        note: {
+          name: 'Note',
+          placeholder: 'Four scores and seven years ago...'
+        }
+      },
+      noteButtonText: 'Add Note'
     }
   }
 }

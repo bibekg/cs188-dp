@@ -91,12 +91,7 @@ const TripPage = props => {
           style={{ textDecoration: 'none', flexGrow: 1 }}
           to={`/trip/${tripId}/add-note`}
         >
-          <TripPageAddButton
-            onClick={() => console.log('Add note')}
-            color="blue"
-          >
-            {addNote}
-          </TripPageAddButton>
+          <TripPageAddButton color="blue">{addNote}</TripPageAddButton>
         </Link>
       </TripPageAddMemory>
     </TripPageContainer>

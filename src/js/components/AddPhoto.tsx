@@ -54,6 +54,9 @@ class AddPhoto extends React.Component<PropsType, StateType> {
       encodedImage: null,
       submitted: false
     }
+
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(event: React.SyntheticEvent<any>) {
