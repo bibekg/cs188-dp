@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 
 import TextInput from './TextInput'
 import Text from './Text'
@@ -8,6 +8,7 @@ import Button from './Button'
 import ExitButton from './ExitButton'
 
 import copy from '../copy'
+import { connect } from 'react-redux'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -36,8 +37,8 @@ const AddPhotoForm = styled.form`
 `
 
 class AddPhoto extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       titleValue: '',
       captionValue: '',
@@ -61,14 +62,17 @@ class AddPhoto extends React.Component {
   }
 
   render() {
+    const { tripId } = this.props.match.params
     if (this.state.submitted) {
-      return <Redirect to="/trip/1/edit" />
+      return <Redirect to={`/trip/${tripId}/edit`} />
     }
 
     const { title, subtitle, fields, photoButtonText } = copy.addMedia.photo
     return (
       <Wrapper>
-        <ExitButton />
+        <Link to={`/trip/${tripId}/edit`}>
+          <ExitButton />
+        </Link>
         <Title medium bold>
           {title}
         </Title>

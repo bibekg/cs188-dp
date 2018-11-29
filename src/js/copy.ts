@@ -36,7 +36,7 @@ export default {
         },
         caption: {
           name: 'Caption',
-          placeholder: 'One of many funny photos'
+          placeholder: "Let's get this bread"
         },
         upload: {
           name: 'Upload'
