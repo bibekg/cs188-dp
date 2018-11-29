@@ -15,3 +15,8 @@ export const averageTripLocation = (trip: Trip) =>
         lng: averageCoord(trip.media, 'lng')
       }
     : null
+
+// Converts a degrees-minutes-seconds representation to decimal
+// e.g. [38, 5, 42.86] => 38.095284
+export const dmsToDecimal = (dms: number[]) =>
+  dms.reduce((acc, val, i) => acc + val / Math.pow(60, i), 0)

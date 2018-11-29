@@ -38,6 +38,10 @@ export default {
           name: 'Caption',
           placeholder: "Let's get this bread"
         },
+        photoLocationName: {
+          name: 'Photo Location Name',
+          placeholder: 'Grand Canyon'
+        },
         upload: {
           name: 'Upload'
         }
