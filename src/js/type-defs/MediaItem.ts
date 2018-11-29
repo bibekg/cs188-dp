@@ -4,9 +4,9 @@ export enum MediaItemType {
 }
 
 export class LocationDetails {
-  lat: number
-  lng: number
-  name: string
+  lat: number = 0
+  lng: number = 0
+  name?: string
 }
 
 export class MediaItemLink {

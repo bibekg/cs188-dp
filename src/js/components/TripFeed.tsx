@@ -8,11 +8,11 @@ import RectangularButton from './RectangularButton'
 import MapOverview from './MapOverview'
 import Text from './Text'
 
-import mock from '../mocks/mock'
 import copy from '../copy'
 import { colors } from '../styles'
 import { Trip } from '../type-defs/Trip'
-import { createTripSuccess } from '../actions'
+import { averageTripLocation } from '../util/geo'
+import { LocationDetails } from '../type-defs/MediaItem'
 
 const TitleBar = styled.div`
   background-color: ${colors.brown};
@@ -43,25 +43,23 @@ const TripFeedContent = styled.div`
 
 interface PropsType {
   trips: Trip[]
+  match: any
 }
 
 class TripFeed extends React.Component<PropsType> {
-  constructor(props: PropsType) {
-    super(props)
-    this.state = {
-      viewport: {
-        width: 400,
-        height: 400,
-        latitude: 37.7577,
-        longitude: -122.4376,
-        zoom: 8
-      }
-    }
-  }
-
   render() {
-    const { tripId } = this.props.match.params
     const { createTripButtonText } = copy.tripFeed
+
+    const tripsToLocations = this.props.trips.reduce<
+      Map<Trip, LocationDetails>
+    >((acc, trip) => {
+      const avgLoc = averageTripLocation(trip) as LocationDetails
+      if (avgLoc && avgLoc.lat && avgLoc.lng) {
+        acc.set(trip, avgLoc)
+      }
+      return acc
+    }, new Map())
+
     return (
       <TripFeedContainer>
         <TitleBar>
@@ -70,7 +68,15 @@ class TripFeed extends React.Component<PropsType> {
           </Text>
         </TitleBar>
         <TripFeedMapWrapper>
-          <MapOverview />
+          <MapOverview
+            markers={Array.from(tripsToLocations).map(
+              ([innerTrip, averageLocation]) => ({
+                key: innerTrip.id,
+                title: innerTrip.name,
+                position: averageLocation
+              })
+            )}
+          />
         </TripFeedMapWrapper>
         <TripFeedContent>
           {this.props.trips.map(trip => (
