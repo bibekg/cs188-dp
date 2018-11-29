@@ -4,4 +4,3 @@ node_modules
 .cache
 yarn-error.log
 .DS_Store
-src/js/constants.ts

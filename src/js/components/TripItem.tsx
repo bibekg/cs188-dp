@@ -15,7 +15,7 @@ import { colors } from '../styles/index'
 const TripItemContainer = styled.div`
   display: flex;
   padding: 20px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid ${colors.black};
 
   > *:not(:first-child) {
     margin-left: 20px;

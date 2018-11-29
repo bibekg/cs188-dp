@@ -69,7 +69,8 @@ const TripPage = props => {
         <MapOverview />
       </TripPageMapWrapper>
       <TripPageContent>
-        <Memory />
+        {trip &&
+          trip.media.map(memory => <Memory key={memory.id} memory={memory} />)}
       </TripPageContent>
       <TripPageAddMemory>
         <TripPageAddButton
