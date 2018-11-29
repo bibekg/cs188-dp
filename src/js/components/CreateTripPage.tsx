@@ -2,6 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
+import uuidv1 from 'uuid/v1'
 
 import { Trip } from '../type-defs/Trip'
 import copy from '../copy'
@@ -16,10 +17,6 @@ const Wrapper = styled.div`
 `
 
 const Title = styled(Text)`
-  margin: 20px 0;
-`
-
-const Subtitle = styled(Text)`
   margin: 20px 0;
 `
 
@@ -77,7 +74,7 @@ class CreateTripPage extends React.Component<PropsType, StateType> {
   async submitToFirebase() {
     const { titleValue, startDateValue, endDateValue } = this.state
     const newTrip: Trip = {
-      id: '9',
+      id: uuidv1(),
       name: titleValue,
       startDate: new Date(startDateValue),
       endDate: new Date(endDateValue)

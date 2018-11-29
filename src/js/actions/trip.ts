@@ -1,3 +1,5 @@
+import uuidv1 from 'uuid/v1'
+
 import { fireDb } from '../firebase'
 import { Trip } from '../type-defs/Trip'
 import * as TYPES from './types'
@@ -18,10 +20,11 @@ export const getTripsSuccess = (trips: Trip[]) => ({
  * @param {object} trip should contain at least an id property
  */
 export const createTrip = (trip: Trip) => async (dispatch: any) => {
-  await fireDb
+  const response = await fireDb
     .collection('trips')
-    .doc()
+    .doc(trip.id)
     .set(trip)
+
   dispatch(createTripSuccess(trip))
 }
 
