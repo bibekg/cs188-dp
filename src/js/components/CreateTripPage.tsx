@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Trip } from '../type-defs/Trip'
@@ -9,6 +9,7 @@ import Text from './Text'
 import TextInput from './TextInput'
 import Button from './Button'
 import * as actions from '../actions'
+import ExitButton from './ExitButton'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -96,6 +97,9 @@ class CreateTripPage extends React.Component<PropsType, StateType> {
     const { title, subtitle, fields, submitButtonText } = copy.createTrip
     return (
       <Wrapper>
+        <Link to="/trip">
+          <ExitButton />
+        </Link>
         <Title medium bold>
           {title}
         </Title>
@@ -104,6 +108,7 @@ class CreateTripPage extends React.Component<PropsType, StateType> {
           <div>
             <Text>{fields.title.name}</Text>
             <TextInput
+              required
               type="text"
               name="title"
               value={this.state.titleValue}
@@ -114,6 +119,7 @@ class CreateTripPage extends React.Component<PropsType, StateType> {
           <div>
             <Text>{fields.startDate.name}</Text>
             <TextInput
+              required
               type="date"
               name="startDate"
               value={this.state.startDateValue}
@@ -123,6 +129,7 @@ class CreateTripPage extends React.Component<PropsType, StateType> {
           <div>
             <Text>{fields.endDate.name}</Text>
             <TextInput
+              required
               type="date"
               name="endDate"
               value={this.state.endDateValue}

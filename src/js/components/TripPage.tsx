@@ -2,8 +2,6 @@ import * as React from 'react'
 import styled from 'styled-components'
 import MapOverview from './MapOverview'
 import Memory from './Memory'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import Text from './Text'
 
 import mock from '../mocks/mock'
