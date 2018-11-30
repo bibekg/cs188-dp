@@ -153,6 +153,7 @@ class AddPhoto extends React.Component<PropsType, StateType> {
           <div>
             <Text bold>{fields.caption.name}</Text>
             <TextInput
+              required
               type="text"
               name="caption"
               value={this.state.captionValue}

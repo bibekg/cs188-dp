@@ -1,5 +1,5 @@
 import * as React from 'react'
-import styled, { consolidateStreamedStyles } from 'styled-components'
+import styled, { consolidateStreamedStyles, keyframes } from 'styled-components'
 import { Link } from 'react-router-dom'
 import MapOverview from './MapOverview'
 import Memory from './Memory'
@@ -62,6 +62,8 @@ const TripPage = props => {
   const trip = props.trips.find(trip => trip.id === tripId)
   const { addPhoto, addNote } = copy.tripPage
 
+  const tripsWithLocations = trip.media.filter(media => media.location)
+
   return trip ? (
     <TripPageContainer>
       <Link to="/trip">
@@ -73,7 +75,13 @@ const TripPage = props => {
         </Text>
       </TitleBar>
       <TripPageMapWrapper>
-        <MapOverview />
+        <MapOverview
+          markers={tripsWithLocations.map(loc => ({
+            key: loc.id,
+            title: loc.description,
+            position: loc.location
+          }))}
+        />
       </TripPageMapWrapper>
       <TripPageContent>
         {trip.media &&

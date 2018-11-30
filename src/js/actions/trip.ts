@@ -48,7 +48,7 @@ export const getTrips = () => async (dispatch: any, getState: any) => {
   dispatch(getTripsSuccess(trips))
 }
 
-export const addMedia = (medium: MediaItem, trip: Trip) => async (
+export const addMedium = (medium: MediaItem, trip: Trip) => async (
   dispatch: any
 ) => {
   const response = await fireDb
