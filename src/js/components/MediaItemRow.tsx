@@ -74,9 +74,7 @@ const Memory = (props: PropsType) => {
         </ImageWrapper>
         <Label>
           <Text bold>{imageMedium.description}</Text>
-        </Label>
-        <Label>
-          <Text>{dateFormat(imageMedium.dateTime, 'd/m/yy h:MM tt')}</Text>
+          <Text>{dateFormat(imageMedium.dateTime, 'm/d/yy h:MM tt')}</Text>
         </Label>
       </Container>
     ),
@@ -87,9 +85,7 @@ const Memory = (props: PropsType) => {
         </ImageWrapper>
         <Label>
           <Text bold>{noteMedium.description}</Text>
-        </Label>
-        <Label>
-          <Text>{dateFormat(noteMedium.dateTime, 'd/m/yy h:MM tt')}</Text>
+          <Text>{dateFormat(noteMedium.dateTime, 'm/d/yy h:MM tt')}</Text>
         </Label>
       </Container>
     )
