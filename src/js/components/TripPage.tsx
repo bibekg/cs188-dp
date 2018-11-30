@@ -10,12 +10,8 @@ import BackArrow from './BackArrow'
 import copy from '../copy'
 import { colors } from '../styles'
 import { Trip } from '../type-defs/Trip'
-<<<<<<< HEAD
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
-=======
-import { BaseMediaItem } from '../type-defs/MediaItem'
->>>>>>> bcd8c3d3721f5a3ee4d2fdf3d3a7fff07cfe4468
 
 const TripPageContainer = styled.div`
   display: flex;
@@ -34,6 +30,7 @@ const TripPageMapWrapper = styled.div`
 const TripPageContent = styled.div`
   flex-grow: 1;
   overflow: auto;
+  padding-bottom: 60px;
 `
 
 const TripPageAddMemory = styled.div`
@@ -122,20 +119,19 @@ class TripPage extends React.Component<PropsType, StateType> {
         </TripPageMapWrapper>
         <TripPageContent>
           {trip.media &&
-            [...trip.media].sort((a, b) => {
-              const timeDiff = a.dateTime.valueOf() - b.dateTime.valueOf()
-              if (timeDiff > 0) {
-                return -1
-              } else if (timeDiff < 0) {
-                return 1
-              }
-              return 0
-            }).map(medium => (
-              <MediaItemRow
-                key={medium.id}
-                mediaItem={medium}
-              />
-            ))}
+            [...trip.media]
+              .sort((a, b) => {
+                const timeDiff = a.dateTime.valueOf() - b.dateTime.valueOf()
+                if (timeDiff > 0) {
+                  return -1
+                } else if (timeDiff < 0) {
+                  return 1
+                }
+                return 0
+              })
+              .map(medium => (
+                <MediaItemRow key={medium.id} mediaItem={medium} />
+              ))}
         </TripPageContent>
         <TripPageAddMemory>
           <Link
