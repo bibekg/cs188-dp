@@ -110,18 +110,17 @@ class TripViewer extends React.Component<PropsType, StateType> {
   }
 
   render() {
-    if (this.state.step === -1) {
-      return <Redirect to="/trip" />
-    }
-
     if (this.currentTrip() == null) return null
+    if (this.state.step === -1) {
+      return <Redirect to={`/trip/${this.currentTrip().id}/edit`} />
+    }
 
     const step = this.currentTrip().media.sort((a, b) => {
       const timeDiff = a.dateTime.valueOf() - b.dateTime.valueOf()
       if (timeDiff > 0) {
-        return -1
-      } else if (timeDiff < 0) {
         return 1
+      } else if (timeDiff < 0) {
+        return -1
       }
       return 0
     })[this.state.step]
