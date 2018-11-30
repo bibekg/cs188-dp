@@ -84,7 +84,7 @@ const Memory = (props: PropsType) => {
           <FontAwesomeIcon icon={faScroll} size="2x" />
         </ImageWrapper>
         <Label>
-          <Text bold>{noteMedium.description}</Text>
+          <Text bold>{noteMedium.title}</Text>
           <Text>{dateFormat(noteMedium.dateTime, 'm/d/yy h:MM tt')}</Text>
         </Label>
       </Container>

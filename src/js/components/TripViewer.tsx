@@ -21,11 +21,21 @@ const TotalWrapper = styled.div`
   background-color: black;
 `
 
+const NoteWrapper = styled.div`
+  height: 100vh;
+  width: 100vw;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+`
 const NavigationContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 30px;
+  width: 100%;
 `
 
 const ViewerWrapper = styled.div`
@@ -86,17 +96,10 @@ class TripViewer extends React.Component<PropsType, StateType> {
       this.setState({ step: -1 })
       return
     }
-
     let nextStepIndex = this.state.step + 1
 
     const currentMedia = this.currentTrip().media
 
-    while (
-      currentMedia[nextStepIndex].type !== MediaItemType.Image &&
-      currentMedia[nextStepIndex].type != null
-    ) {
-      nextStepIndex += 1
-    }
     this.setState({
       step: nextStepIndex
     })
@@ -113,9 +116,16 @@ class TripViewer extends React.Component<PropsType, StateType> {
 
     if (this.currentTrip() == null) return null
 
-    const step = this.currentTrip().media[this.state.step]
+    const step = this.currentTrip().media.sort((a, b) => {
+      const timeDiff = a.dateTime.valueOf() - b.dateTime.valueOf()
+      if (timeDiff > 0) {
+        return -1
+      } else if (timeDiff < 0) {
+        return 1
+      }
+      return 0
+    })[this.state.step]
     const { id, dateTime, type } = step
-
     const lastPicture = this.isOnLastStep()
     const showBackButton = true
     if (type === MediaItemType.Image) {
@@ -130,14 +140,6 @@ class TripViewer extends React.Component<PropsType, StateType> {
               </Text>
             </Overlay>
             <div>
-              {step.link &&
-                step.link.type === 'note' && (
-                  <Overlay>
-                    <Text>
-                      You wrote a note about it <a>here</a>
-                    </Text>
-                  </Overlay>
-                )}
               <NavigationContainer>
                 {showBackButton && <Button onClick={this.goBack}>Back</Button>}
 
@@ -148,6 +150,23 @@ class TripViewer extends React.Component<PropsType, StateType> {
             </div>
           </ViewerWrapper>
         </TotalWrapper>
+      )
+    } else if (type === MediaItemType.Note) {
+      return (
+        <NoteWrapper>
+          <div>
+            <Text large bold>
+              {step.title}
+            </Text>
+            <Text>{step.description}</Text>
+          </div>
+          <NavigationContainer>
+            {showBackButton && <Button onClick={this.goBack}>Back</Button>}
+            <Button primary onClick={this.goNext}>
+              {lastPicture ? 'Finish' : 'Next'}
+            </Button>
+          </NavigationContainer>
+        </NoteWrapper>
       )
     }
   }
