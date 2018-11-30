@@ -1,12 +1,6 @@
 import * as React from 'react'
 import { Map, Marker, GoogleApiWrapper, MapProps } from 'google-maps-react'
 import { GOOGLE_API_KEY } from '../constants'
-import { backgrounds } from 'polished'
-
-const style = {
-  width: '100%',
-  height: '100%'
-}
 
 interface PropsType {
   markers: any[]
@@ -35,10 +29,10 @@ class MapOverview extends React.Component<PropsType, StateType> {
       this.mapReference = map
     }
 
-    this.updateMap()
+    this.boundToMarkers()
   }
 
-  updateMap() {
+  boundToMarkers() {
     if (this.mapReference) {
       // Bound the map around the trip pins that we will render
       const bounds = new this.props.google.maps.LatLngBounds()
@@ -46,22 +40,31 @@ class MapOverview extends React.Component<PropsType, StateType> {
         bounds.extend(markerProps.position)
       })
 
+      // Don't zoom in too far on only one marker
+      if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
+        const extendPoint1 = new google.maps.LatLng(
+          bounds.getNorthEast().lat() + 0.01,
+          bounds.getNorthEast().lng() + 0.01
+        )
+        const extendPoint2 = new google.maps.LatLng(
+          bounds.getNorthEast().lat() - 0.01,
+          bounds.getNorthEast().lng() - 0.01
+        )
+        bounds.extend(extendPoint1)
+        bounds.extend(extendPoint2)
+      }
+
       this.mapReference.fitBounds(bounds)
     }
   }
 
   componentDidUpdate() {
-    this.updateMap()
+    this.boundToMarkers()
   }
 
   render() {
     return (
-      <Map
-        google={this.props.google}
-        zoom={10}
-        style={style}
-        onReady={this.handleMapReady}
-      >
+      <Map google={this.props.google} onReady={this.handleMapReady}>
         {this.props.markers.map(markerProps => (
           <Marker {...markerProps} />
         ))}
