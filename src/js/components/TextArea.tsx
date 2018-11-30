@@ -7,7 +7,7 @@ import { placeholderMixin } from '../styles/mixins'
 
 export default styled.textarea`
   width: 100%;
-  height: 300px;
+  height: 200px;
   padding: 10px 5px;
   box-sizing: border-box;
   border: none;

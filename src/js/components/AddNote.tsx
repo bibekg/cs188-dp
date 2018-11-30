@@ -50,6 +50,7 @@ interface PropsType {
 interface StateType {
   titleValue: string
   noteValue: string
+  dateValue: string
   submitted: boolean
 }
 
@@ -59,6 +60,7 @@ class AddNote extends React.Component<PropsType, StateType> {
     this.state = {
       titleValue: '',
       noteValue: '',
+      dateValue: '',
       submitted: false
     }
 
@@ -86,12 +88,13 @@ class AddNote extends React.Component<PropsType, StateType> {
     const { tripId } = this.props.match.params
     const trip: Trip = this.props.trips.find(trip => trip.id === tripId)
     const uuid = uuidv1()
-    const { titleValue, noteValue } = this.state
-    const media = {
+    const { titleValue, noteValue, dateValue } = this.state
+    const media: NoteMediaItem = {
       id: uuid,
       title: titleValue,
       description: noteValue,
-      type: MediaItemType.Note
+      type: MediaItemType.Note,
+      dateTime: new Date(dateValue)
     }
 
     await this.props.addMedium(media, trip)
@@ -137,6 +140,16 @@ class AddNote extends React.Component<PropsType, StateType> {
               value={this.state.noteValue}
               onChange={this.handleChange}
               placeholder={fields.note.placeholder}
+            />
+          </div>
+          <div>
+            <Text>{fields.date.name}</Text>
+            <TextInput
+              required
+              type="date"
+              name="date"
+              value={this.state.dateValue}
+              onChange={this.handleChange}
             />
           </div>
           <Button pinned primary>

@@ -10,6 +10,8 @@ import BackArrow from './BackArrow'
 import copy from '../copy'
 import { colors } from '../styles'
 import { Trip } from '../type-defs/Trip'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlay } from '@fortawesome/free-solid-svg-icons'
 
 const TripPageContainer = styled.div`
   display: flex;
@@ -55,74 +57,103 @@ const TitleBar = styled.div`
   width: 100%;
   text-align: center;
   background-color: ${colors.brown};
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `
 
 interface PropsType {
   trips: Trip[]
 }
 
-const TripPage = (props: PropsType) => {
-  const { tripId } = props.match.params
-  const trip = props.trips.find(trip => trip.id === tripId)
+interface StateType {
+  activeMarkerId: string | null
+}
 
-  const tripsWithLocations = trip
-    ? trip.media.filter(
-        medium => medium.location && medium.location.lat && medium.location.lng
-      )
-    : []
+class TripPage extends React.Component<PropsType, StateType> {
+  state = {
+    activeMarkerId: null
+  }
 
-  return trip ? (
-    <TripPageContainer>
-      <Link to="/trip">
-        <BackArrow color={colors.white} />
-      </Link>
-      <TitleBar>
-        <Text medium bold color={colors.white}>
-          {trip.name}
-        </Text>
-      </TitleBar>
-      <TripPageMapWrapper>
-        <MapOverview
-          markers={tripsWithLocations.map(loc => ({
-            key: loc.id,
-            title: loc.description,
-            position: loc.location
-          }))}
-        />
-      </TripPageMapWrapper>
-      <TripPageContent>
-        {trip.media &&
-          trip.media.map(medium => (
-            <MediaItemRow key={medium.id} mediaItem={medium} />
-          ))}
-      </TripPageContent>
-      <TripPageAddMemory>
-        <Link
-          style={{ textDecoration: 'none', flexGrow: 1 }}
-          to={`/trip/${tripId}/add-photo`}
-        >
-          <TripPageAddButton color="green">
-            <Text bold color={colors.white} medium>
-              {copy.tripPage.addPhoto}
-            </Text>
-          </TripPageAddButton>
-        </Link>
+  handleTripMediumClick = (id: string) => {
+    this.setState({ activeMarkerId: id })
+  }
 
-        <Link
-          style={{ textDecoration: 'none', flexGrow: 1 }}
-          to={`/trip/${tripId}/add-note`}
-        >
-          <TripPageAddButton color="blue">
-            <Text bold color={colors.white} medium>
-              {copy.tripPage.addNote}
-            </Text>
-          </TripPageAddButton>
-        </Link>
-      </TripPageAddMemory>
-    </TripPageContainer>
-  ) : (
-    <div>Trip is undefined</div>
-  )
+  render() {
+    const { tripId } = this.props.match.params
+    const trip = this.props.trips.find(trip => trip.id === tripId)
+
+    const tripsWithLocations = trip
+      ? trip.media.filter(
+          medium =>
+            medium.location && medium.location.lat && medium.location.lng
+        )
+      : []
+
+    return trip ? (
+      <TripPageContainer>
+        <TitleBar>
+          <Link to="/trip">
+            <BackArrow color={colors.white} />
+          </Link>
+          <Text medium bold color={colors.white}>
+            {trip.name}
+          </Text>
+          <Link to={`/trip/${tripId}/view`}>
+            <FontAwesomeIcon icon={faPlay} size="2x" color="white" />
+          </Link>
+        </TitleBar>
+
+        <TripPageMapWrapper>
+          <MapOverview
+            markers={tripsWithLocations.map(loc => ({
+              key: loc.id,
+              title: loc.description,
+              position: loc.location
+            }))}
+            activeMarkerId={this.state.activeMarkerId}
+          />
+        </TripPageMapWrapper>
+        <TripPageContent>
+          {trip.media &&
+            trip.media.map(medium => (
+              <MediaItemRow
+                key={medium.id}
+                onClick={this.handleTripMediumClick}
+                mediaItem={medium}
+              />
+            ))}
+        </TripPageContent>
+        <TripPageAddMemory>
+          <Link
+            style={{ textDecoration: 'none', flexGrow: 1 }}
+            to={`/trip/${tripId}/add-photo`}
+          >
+            <TripPageAddButton color="green">
+              <Text bold color={colors.white} medium>
+                {copy.tripPage.addPhoto}
+              </Text>
+            </TripPageAddButton>
+          </Link>
+
+          <Link
+            style={{ textDecoration: 'none', flexGrow: 1 }}
+            to={`/trip/${tripId}/add-note`}
+          >
+            <TripPageAddButton color="blue">
+              <Text bold color={colors.white} medium>
+                {copy.tripPage.addNote}
+              </Text>
+            </TripPageAddButton>
+          </Link>
+        </TripPageAddMemory>
+      </TripPageContainer>
+    ) : (
+      <div>Trip is undefined</div>
+    )
+  }
 }
 
 export default connect(

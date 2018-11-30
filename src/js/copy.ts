@@ -59,6 +59,9 @@ export default {
         note: {
           name: 'Note',
           placeholder: 'Four scores and seven years ago...'
+        },
+        date: {
+          name: 'Date'
         }
       },
       noteButtonText: 'Add Note'

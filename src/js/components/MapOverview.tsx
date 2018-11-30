@@ -1,10 +1,17 @@
 import * as React from 'react'
-import { Map, Marker, GoogleApiWrapper, MapProps } from 'google-maps-react'
+import {
+  Map,
+  Marker,
+  GoogleApiWrapper,
+  MapProps,
+  InfoWindow
+} from 'google-maps-react'
 import { GOOGLE_API_KEY } from '../constants'
 
 interface PropsType {
   markers: any[]
   google: any
+  activeMarkerId: string | null
 }
 
 interface StateType {}
@@ -63,11 +70,24 @@ class MapOverview extends React.Component<PropsType, StateType> {
   }
 
   render() {
+    const markerToShowInfoFor =
+      this.props.markers.find(m => m.key === this.props.activeMarkerId) || {}
+
+    const markerObject = new google.maps.Marker(markerToShowInfoFor)
+
     return (
       <Map google={this.props.google} onReady={this.handleMapReady}>
         {this.props.markers.map(markerProps => (
           <Marker {...markerProps} />
         ))}
+        <InfoWindow
+          marker={markerObject}
+          visible={this.props.activeMarkerId != null}
+        >
+          <div>
+            <h1>Test</h1>
+          </div>
+        </InfoWindow>
       </Map>
     )
   }

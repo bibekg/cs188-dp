@@ -59,16 +59,17 @@ const Label = styled(Media)`
 
 interface PropsType {
   mediaItem: MediaItem
+  onClick: (id: string) => void
 }
 
 const Memory = (props: PropsType) => {
-  const { mediaItem } = props
+  const { onClick, mediaItem } = props
 
   const renderers: {
     [mit: number]: (mi: any) => React.ReactElement<typeof Container>
   } = {
     [MediaItemType.Image]: (imageMedium: ImageMediaItem) => (
-      <Container>
+      <Container onClick={() => onClick(imageMedium.id)}>
         <ImageWrapper>
           <Image src={imageMedium.src} alt={imageMedium.description} />
         </ImageWrapper>
@@ -79,7 +80,7 @@ const Memory = (props: PropsType) => {
       </Container>
     ),
     [MediaItemType.Note]: (noteMedium: NoteMediaItem) => (
-      <Container>
+      <Container onClick={() => onClick(imageMedium.id)}>
         <ImageWrapper>
           <FontAwesomeIcon icon={faScroll} size="2x" />
         </ImageWrapper>
