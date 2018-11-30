@@ -80,9 +80,19 @@ class TripFeed extends React.Component<PropsType> {
           />
         </TripFeedMapWrapper>
         <TripFeedContent>
-          {this.props.trips.map(trip => (
-            <TripItem key={trip.id} trip={trip} />
-          ))}
+          {[...this.props.trips]
+            .sort((a, b) => {
+              const timeDiff = a.startDate.valueOf() - b.startDate.valueOf()
+              if (timeDiff > 0) {
+                return -1
+              } else if (timeDiff < 0) {
+                return 1
+              }
+              return 0
+            })
+            .map(trip => (
+              <TripItem key={trip.id} trip={trip} />
+            ))}
         </TripFeedContent>
         <Link to="/trip/new">
           <RectangularButton primary>{createTripButtonText}</RectangularButton>
