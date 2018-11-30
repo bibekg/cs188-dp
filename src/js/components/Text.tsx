@@ -4,9 +4,9 @@ import styled from 'styled-components'
 import { colors, fonts } from '../styles'
 
 const DEFAULT_COLOR = colors.darkGrey
-const DEFAULT_SIZE = 18
-const MEDIUM_SIZE = 24
-const LARGE_SIZE = 36
+const DEFAULT_SIZE = 14
+const MEDIUM_SIZE = 20
+const LARGE_SIZE = 28
 
 const getSize = props => {
   if (props.size) {

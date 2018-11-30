@@ -1,15 +1,15 @@
 import * as React from 'react'
-import styled, { consolidateStreamedStyles, keyframes } from 'styled-components'
+import { connect } from 'react-redux'
+import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import MapOverview from './MapOverview'
-import Memory from './Memory'
+import MediaItemRow from './MediaItemRow'
 import Text from './Text'
 import BackArrow from './BackArrow'
 
-import mock from '../mocks/mock'
 import copy from '../copy'
 import { colors } from '../styles'
-import { connect } from 'react-redux'
+import { Trip } from '../type-defs/Trip'
 
 const TripPageContainer = styled.div`
   display: flex;
@@ -57,12 +57,19 @@ const TitleBar = styled.div`
   background-color: ${colors.brown};
 `
 
-const TripPage = props => {
+interface PropsType {
+  trips: Trip[]
+}
+
+const TripPage = (props: PropsType) => {
   const { tripId } = props.match.params
   const trip = props.trips.find(trip => trip.id === tripId)
-  const { addPhoto, addNote } = copy.tripPage
 
-  const tripsWithLocations = trip.media.filter(media => media.location)
+  const tripsWithLocations = trip
+    ? trip.media.filter(
+        medium => medium.location && medium.location.lat && medium.location.lng
+      )
+    : []
 
   return trip ? (
     <TripPageContainer>
@@ -85,21 +92,31 @@ const TripPage = props => {
       </TripPageMapWrapper>
       <TripPageContent>
         {trip.media &&
-          trip.media.map(memory => <Memory key={memory.id} memory={memory} />)}
+          trip.media.map(medium => (
+            <MediaItemRow key={medium.id} mediaItem={medium} />
+          ))}
       </TripPageContent>
       <TripPageAddMemory>
         <Link
           style={{ textDecoration: 'none', flexGrow: 1 }}
           to={`/trip/${tripId}/add-photo`}
         >
-          <TripPageAddButton color="green">{addPhoto}</TripPageAddButton>
+          <TripPageAddButton color="green">
+            <Text bold color={colors.white} medium>
+              {copy.tripPage.addPhoto}
+            </Text>
+          </TripPageAddButton>
         </Link>
 
         <Link
           style={{ textDecoration: 'none', flexGrow: 1 }}
           to={`/trip/${tripId}/add-note`}
         >
-          <TripPageAddButton color="blue">{addNote}</TripPageAddButton>
+          <TripPageAddButton color="blue">
+            <Text bold color={colors.white} medium>
+              {copy.tripPage.addNote}
+            </Text>
+          </TripPageAddButton>
         </Link>
       </TripPageAddMemory>
     </TripPageContainer>

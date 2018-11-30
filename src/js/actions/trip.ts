@@ -41,7 +41,14 @@ export const getTrips = () => async (dispatch: any, getState: any) => {
       ({
         ...tripObject,
         startDate: new Date(tripObject.startDate.seconds * 1000),
-        endDate: new Date(tripObject.endDate.seconds * 1000)
+        endDate: new Date(tripObject.endDate.seconds * 1000),
+        media: tripObject.media.map((medium: any) => {
+          const newMedium = { ...medium }
+          if (newMedium.dateTime) {
+            newMedium.dateTime = new Date(newMedium.dateTime.seconds * 1000)
+          }
+          return newMedium
+        })
       } as Trip)
   )
 

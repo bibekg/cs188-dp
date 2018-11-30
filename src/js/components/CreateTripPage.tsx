@@ -11,7 +11,6 @@ import TextInput from './TextInput'
 import Button from './Button'
 import * as actions from '../actions'
 import ExitButton from './ExitButton'
-import { uploadToCloudinary } from '../util/image'
 
 const Wrapper = styled.div`
   text-align: center;

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { Redirect, Link } from 'react-router-dom'
 import uuidv1 from 'uuid/v1'
+import { rgba } from 'polished'
 
 import TextInput from './TextInput'
 import Text from './Text'
@@ -14,6 +15,7 @@ import { getPhotoDetails, uploadToCloudinary } from '../util/image'
 import { ImageMediaItem, MediaItemType } from '../type-defs/MediaItem'
 import * as actions from '../actions'
 import { Trip } from '../type-defs/Trip'
+import { colors } from '../styles'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -41,10 +43,32 @@ const AddPhotoForm = styled.form`
   }
 `
 
+const ReselectLink = styled.div`
+  text-decoration: underline;
+  cursor: pointer;
+`
+
+const ImagePreviewWrapper = styled.div`
+  display: flex;
+  padding: 8px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px 2px ${rgba(colors.darkGrey, 0.2)};
+  margin-bottom: 20px;
+`
+
+const Column = styled.div`
+  width: ${props => props.width}%;
+  padding: 8px;
+
+  & > * {
+    width: 100%;
+  }
+`
+
 interface PropsType {
   trips: Trip[]
   match: any
-  addMedia: (medium: ImageMediaItem, trip: Trip) => void
+  addMedium: (medium: ImageMediaItem, trip: Trip) => void
 }
 
 interface StateType {
@@ -56,6 +80,8 @@ interface StateType {
 }
 
 class AddPhoto extends React.Component<PropsType, StateType> {
+  uploadInput: HTMLInputElement | null
+
   constructor(props: PropsType) {
     super(props)
     this.state = {
@@ -65,6 +91,8 @@ class AddPhoto extends React.Component<PropsType, StateType> {
       photo: null,
       submitted: false
     }
+
+    this.uploadInput = null
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -82,6 +110,12 @@ class AddPhoto extends React.Component<PropsType, StateType> {
       this.setState({
         [`${name}Value`]: value
       })
+    }
+  }
+
+  handleChoosePhotoClick = () => {
+    if (this.uploadInput) {
+      this.uploadInput.click()
     }
   }
 
@@ -124,7 +158,7 @@ class AddPhoto extends React.Component<PropsType, StateType> {
     const tripId = this.props.match.params.tripId
     const trip = this.props.trips.find(t => t.id === tripId)
 
-    this.props.addMedia(imageMedia, trip!)
+    this.props.addMedium(imageMedia, trip!)
 
     this.setState({
       submitted: true
@@ -149,53 +183,61 @@ class AddPhoto extends React.Component<PropsType, StateType> {
         </Title>
         <Title>{subtitle}</Title>
         {/* Exit button back to current trip catalog */}
-        <AddPhotoForm onSubmit={this.handleSubmit}>
-          <div>
-            <Text bold>{fields.caption.name}</Text>
-            <TextInput
-              required
-              type="text"
-              name="caption"
-              value={this.state.captionValue}
-              onChange={this.handleChange}
-              placeholder={fields.caption.placeholder}
-            />
-          </div>
-          <div>
-            <Text bold>{fields.upload.name}</Text>
-            <input type="file" id="single" onChange={this.handleNewFileInput} />
-            <br />
+        
+          {/* Hidden input that we'll click when user hits the real button */}
+          <input
+            ref={el => {
+              this.uploadInput = el
+            }}
+            hidden
+            type="file"
+            id="single"
+            onChange={this.handleNewFileInput}
+          />
 
+          {this.state.photo == null && (
+            <Button primary onClick={this.handleChoosePhotoClick}>
+              Choose Photo
+            </Button>
+          )}
+
+          <AddPhotoForm onSubmit={this.handleSubmit}>
+          <div>
             {// Show the selected photo information if there is one
             this.state.photo && (
               <div>
-                <img
-                  src={this.state.photo.dataURL}
-                  alt={this.state.titleValue}
-                  width="50"
-                  height="50"
-                />
-                <br />
-                {this.state.photo.coordinates && (
-                  <Text>Latitude: {this.state.photo.coordinates.lat}</Text>
-                )}
-                {this.state.photo.coordinates && (
-                  <Text>Longitude: {this.state.photo.coordinates.lng}</Text>
-                )}
+                <ImagePreviewWrapper>
+                  <Column width={40}>
+                    <img src={this.state.photo.dataURL} />
+                    <ReselectLink onClick={this.handleChoosePhotoClick}>
+                      <Text color={colors.blue} underline>
+                        Choose a different picture
+                      </Text>
+                    </ReselectLink>
+                  </Column>
+                  <Column width={60}>
+                    {this.state.photo.coordinates && (
+                      <Text>Latitude: {this.state.photo.coordinates.lat}</Text>
+                    )}
+                    {this.state.photo.coordinates && (
+                      <Text>Longitude: {this.state.photo.coordinates.lng}</Text>
+                    )}
+                  </Column>
+                </ImagePreviewWrapper>
                 <div>
-                  <Text bold>{fields.photoLocationName.name}</Text>
+                  <Text bold>{fields.caption.name}</Text>
                   <TextInput
                     type="text"
-                    name="photoLocationName"
-                    value={this.state.photoLocationNameValue}
+                    name="caption"
+                    value={this.state.captionValue}
                     onChange={this.handleChange}
-                    placeholder={fields.photoLocationName.placeholder}
+                    placeholder={fields.caption.placeholder}
                   />
                 </div>
               </div>
             )}
           </div>
-          <Button pinned primary>
+          <Button disabled={this.state.photo == null} pinned primary>
             {photoButtonText}
           </Button>
         </AddPhotoForm>
@@ -208,5 +250,5 @@ export default connect(
   (state: any) => ({
     trips: state.trip
   }),
-  { addMedia: actions.addMedia }
+  { addMedium: actions.addMedium }
 )(AddPhoto)

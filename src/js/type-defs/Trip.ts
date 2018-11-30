@@ -1,11 +1,11 @@
-import { MediaType } from './MediaItem'
+import { MediaItem } from './MediaItem'
 
 export class Trip {
   id: string
   name?: string
   startDate?: Date
   endDate?: Date
-  media: MediaType[] = []
+  media: MediaItem[] = []
 
   static default = () => ({
     media: []

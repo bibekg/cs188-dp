@@ -42,7 +42,7 @@ const TripActionsContainer = styled.div`
   max-width: 100px;
   flex-wrap: wrap;
   align-items: center;
-
+  color: ${colors.darkGrey};
   > * {
     margin: 0 5px;
     max-width: 15px;
@@ -58,7 +58,7 @@ const shouldShowPin = (trip: Trip) =>
   trip.media && trip.media.find(medium => medium.location != null)
 
 const shouldShowPhotoIcon = (trip: Trip) =>
-  trip.media && trip.media.find(medium => medium.type === MediaItemType.Note)
+  trip.media && trip.media.find(medium => medium.type === MediaItemType.Image)
 
 const shouldShowScroll = (trip: Trip) =>
   trip.media && trip.media.find(medium => medium.type === MediaItemType.Note)

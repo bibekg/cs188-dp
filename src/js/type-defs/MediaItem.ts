@@ -14,7 +14,7 @@ export class MediaItemLink {
   id: string
 }
 
-export class MediaItem {
+export interface BaseMediaItem {
   id: string
   dateTime: Date
   type: MediaItemType
@@ -23,15 +23,15 @@ export class MediaItem {
   description?: string
 }
 
-export class NoteMediaItem extends MediaItem {
+export interface NoteMediaItem extends BaseMediaItem {
   title: string
   type: MediaItemType.Note
   content: string
 }
 
-export class ImageMediaItem extends MediaItem {
+export interface ImageMediaItem extends BaseMediaItem {
   type: MediaItemType.Image
   src: string
 }
 
-export type MediaType = NoteMediaItem | ImageMediaItem
+export type MediaItem = NoteMediaItem | ImageMediaItem

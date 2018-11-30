@@ -3,8 +3,8 @@ import { LocationDetails, MediaItem } from '../type-defs/MediaItem'
 
 const averageCoord = (media: MediaItem[], type: 'lat' | 'lng') => {
   if (!media) return null
-  const mediaWithLocation = media.filter(medium =>
-    medium.hasOwnProperty('location')
+  const mediaWithLocation = media.filter(
+    medium => medium.location && medium.location.lat && medium.location.lng
   )
   return (
     mediaWithLocation
