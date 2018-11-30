@@ -22,6 +22,22 @@ const TripItemContainer = styled.div`
   }
 `
 
+const TripPreviewContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 50px;
+  height: 100%;
+  & > * {
+    width: 50%;
+    height: 50%;
+    padding: 1px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+`
+
 const TripDescriptionContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -66,9 +82,26 @@ const shouldShowScroll = (trip: Trip) =>
 const TripItem = (props: PropsType) => {
   const { trip } = props
   const { id, name, startDate, endDate } = trip
+
+  const tripImages = trip.media.reduce<string[]>((acc, medium) => {
+    if (medium.type === MediaItemType.Image && medium.src) {
+      acc.push(medium.src)
+    }
+    return acc
+  }, [])
+
   return (
     <Link to={`/trip/${trip.id}/edit`} style={{ textDecoration: 'none' }}>
       <TripItemContainer>
+        {tripImages.length > 0 && (
+          <TripPreviewContainer>
+            {tripImages.slice(0, 4).map(image => (
+              <div key={image}>
+                <img src={image} />
+              </div>
+            ))}
+          </TripPreviewContainer>
+        )}
         <TripDescriptionContainer>
           <TripName>
             <Text bold>{name}</Text>
