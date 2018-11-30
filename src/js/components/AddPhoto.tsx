@@ -76,6 +76,7 @@ interface StateType {
   captionValue: string
   photo: any
   photoLocationNameValue: string
+  submitting: boolean
   submitted: boolean
 }
 
@@ -89,6 +90,7 @@ class AddPhoto extends React.Component<PropsType, StateType> {
       captionValue: '',
       photoLocationNameValue: '',
       photo: null,
+      submitting: false,
       submitted: false
     }
 
@@ -130,6 +132,8 @@ class AddPhoto extends React.Component<PropsType, StateType> {
   handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault()
 
+    this.setState({ submitting: true })
+
     // @ts-ignore
     const imageMedia: ImageMediaItem = {}
     imageMedia.type = MediaItemType.Image
@@ -161,6 +165,7 @@ class AddPhoto extends React.Component<PropsType, StateType> {
     this.props.addMedium(imageMedia, trip!)
 
     this.setState({
+      submitting: false,
       submitted: true
     })
     return false
@@ -183,25 +188,25 @@ class AddPhoto extends React.Component<PropsType, StateType> {
         </Title>
         <Title>{subtitle}</Title>
         {/* Exit button back to current trip catalog */}
-        
-          {/* Hidden input that we'll click when user hits the real button */}
-          <input
-            ref={el => {
-              this.uploadInput = el
-            }}
-            hidden
-            type="file"
-            id="single"
-            onChange={this.handleNewFileInput}
-          />
 
-          {this.state.photo == null && (
-            <Button primary onClick={this.handleChoosePhotoClick}>
-              Choose Photo
-            </Button>
-          )}
+        {/* Hidden input that we'll click when user hits the real button */}
+        <input
+          ref={el => {
+            this.uploadInput = el
+          }}
+          hidden
+          type="file"
+          id="single"
+          onChange={this.handleNewFileInput}
+        />
 
-          <AddPhotoForm onSubmit={this.handleSubmit}>
+        {this.state.photo == null && (
+          <Button primary onClick={this.handleChoosePhotoClick}>
+            Choose Photo
+          </Button>
+        )}
+
+        <AddPhotoForm onSubmit={this.handleSubmit}>
           <div>
             {// Show the selected photo information if there is one
             this.state.photo && (
@@ -237,8 +242,12 @@ class AddPhoto extends React.Component<PropsType, StateType> {
               </div>
             )}
           </div>
-          <Button disabled={this.state.photo == null} pinned primary>
-            {photoButtonText}
+          <Button
+            disabled={this.state.photo == null || this.state.submitting}
+            pinned
+            primary
+          >
+            {this.state.submitting ? 'Uploading...' : photoButtonText}
           </Button>
         </AddPhotoForm>
       </Wrapper>

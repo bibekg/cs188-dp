@@ -122,7 +122,7 @@ class TripPage extends React.Component<PropsType, StateType> {
         </TripPageMapWrapper>
         <TripPageContent>
           {trip.media &&
-            trip.media.sort((a, b) => {
+            [...trip.media].sort((a, b) => {
               const timeDiff = a.dateTime.valueOf() - b.dateTime.valueOf()
               if (timeDiff > 0) {
                 return -1
