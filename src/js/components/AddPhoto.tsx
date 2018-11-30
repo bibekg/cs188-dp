@@ -1,8 +1,8 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { Redirect, Link } from 'react-router-dom'
 import uuidv1 from 'uuid/v1'
-import EXIF from 'exif-js'
 
 import TextInput from './TextInput'
 import Text from './Text'
@@ -10,9 +10,10 @@ import Button from './Button'
 import ExitButton from './ExitButton'
 
 import copy from '../copy'
-import { orientationKeyToCSSTransform, getPhotoDetails } from '../util/image'
-import { dmsToDecimal } from '../util/geo'
-import { ImageMediaItem } from '../type-defs/MediaItem'
+import { getPhotoDetails, uploadToCloudinary } from '../util/image'
+import { ImageMediaItem, MediaItemType } from '../type-defs/MediaItem'
+import * as actions from '../actions'
+import { Trip } from '../type-defs/Trip'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -40,7 +41,11 @@ const AddPhotoForm = styled.form`
   }
 `
 
-interface PropsType {}
+interface PropsType {
+  trips: Trip[]
+  match: any
+  addMedia: (medium: ImageMediaItem, trip: Trip) => void
+}
 
 interface StateType {
   titleValue: string
@@ -56,6 +61,7 @@ class AddPhoto extends React.Component<PropsType, StateType> {
     this.state = {
       titleValue: '',
       captionValue: '',
+      photoLocationNameValue: '',
       photo: null,
       submitted: false
     }
@@ -87,13 +93,20 @@ class AddPhoto extends React.Component<PropsType, StateType> {
     this.setState({ photo })
   }
 
-  handleSubmit(event: React.SyntheticEvent) {
+  handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault()
 
-    const imageMedia: ImageMediaItem = new ImageMediaItem()
+    // @ts-ignore
+    const imageMedia: ImageMediaItem = {}
+    imageMedia.type = MediaItemType.Image
     imageMedia.id = uuidv1()
     imageMedia.dateTime = new Date()
-    imageMedia.src = this.state.photo.dataURL!
+
+    // Upload the picture to Cloudinary and wait for the URL to be sent back
+    const cloudinaryResult = (await uploadToCloudinary(
+      this.state.photo.file
+    )) as any
+    imageMedia.src = cloudinaryResult.secure_url
 
     // Conditionally build location object based on whether it was provided or not
     const locationObj: any = {}
@@ -104,13 +117,14 @@ class AddPhoto extends React.Component<PropsType, StateType> {
     if (this.state.photoLocationNameValue.trim() !== '') {
       locationObj.name = this.state.photoLocationNameValue.trim()
     }
-    if ('lat' in locationObj && 'lng' in locationObj) {
-      imageMedia.location = locationObj
-    }
 
+    imageMedia.location = locationObj
     imageMedia.description = this.state.captionValue
 
-    console.log('Gonna add media: ', { imageMedia })
+    const tripId = this.props.match.params.tripId
+    const trip = this.props.trips.find(t => t.id === tripId)
+
+    this.props.addMedia(imageMedia, trip!)
 
     this.setState({
       submitted: true
@@ -189,4 +203,9 @@ class AddPhoto extends React.Component<PropsType, StateType> {
   }
 }
 
-export default AddPhoto
+export default connect(
+  (state: any) => ({
+    trips: state.trip
+  }),
+  { addMedia: actions.addMedia }
+)(AddPhoto)

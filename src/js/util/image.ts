@@ -62,6 +62,7 @@ interface PhotoDetails {
 
 export const getPhotoDetails = (file: File): Promise<PhotoDetails> => {
   const photo: any = {
+    file,
     dataURL: null,
     orientation: null,
     coordinates: null
@@ -75,8 +76,8 @@ export const getPhotoDetails = (file: File): Promise<PhotoDetails> => {
       // exif-js library to parse it for metadata
       const img = document.createElement('img')
       img.hidden = true
-      photo.dataURL = event.target.result as string
-      img.src = photo.dataURL
+      img.src = event.target.result as string
+      photo.dataURL = img.src
 
       // Set a callback for when the image finishes loading on the page
       // Callback will try to extract coordinates from image metadata
@@ -96,4 +97,22 @@ export const getPhotoDetails = (file: File): Promise<PhotoDetails> => {
 
     reader.readAsDataURL(file)
   })
+}
+
+const CLOUD_NAME = 'nomad-app'
+const UPLOAD_PRESET_NAME = 'i2ovd7ks'
+
+export const uploadToCloudinary = async (file: File) => {
+  const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`
+  const fd = new FormData()
+  fd.append('file', file)
+  fd.append('upload_preset', UPLOAD_PRESET_NAME)
+  const response = await fetch(url, {
+    method: 'POST',
+    body: fd,
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+  return await response.json()
 }

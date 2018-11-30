@@ -11,6 +11,7 @@ import TextInput from './TextInput'
 import Button from './Button'
 import * as actions from '../actions'
 import ExitButton from './ExitButton'
+import { uploadToCloudinary } from '../util/image'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -77,7 +78,9 @@ class CreateTripPage extends React.Component<PropsType, StateType> {
   async submitToFirebase() {
     const { titleValue, startDateValue, endDateValue } = this.state
     const uuid = uuidv1()
-    const newTrip: Trip = new Trip()
+
+    // @ts-ignore
+    const newTrip: Trip = Trip.default()
     newTrip.id = uuid
     newTrip.name = titleValue
     newTrip.startDate = new Date(startDateValue)

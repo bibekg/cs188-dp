@@ -1,12 +1,18 @@
 import { Trip } from '../type-defs/Trip'
 import { LocationDetails, MediaItem } from '../type-defs/MediaItem'
 
-const averageCoord = (media: MediaItem[], type: 'lat' | 'lng') =>
-  media
-    ? media
-        .map(medium => medium.location && medium.location[type])
-        .reduce<number>((acc, val) => (val ? acc + val : acc), 0) / media.length
-    : null
+const averageCoord = (media: MediaItem[], type: 'lat' | 'lng') => {
+  if (!media) return null
+  const mediaWithLocation = media.filter(medium =>
+    medium.hasOwnProperty('location')
+  )
+  return (
+    mediaWithLocation
+      .map(medium => medium.location && medium.location[type])
+      .reduce<number>((acc, val) => (val ? acc + val : acc), 0) /
+    mediaWithLocation.length
+  )
+}
 
 export const averageTripLocation = (trip: Trip) =>
   trip.media

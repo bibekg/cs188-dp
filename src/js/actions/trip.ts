@@ -1,10 +1,7 @@
-import uuidv1 from 'uuid/v1'
-
 import { fireDb } from '../firebase'
 import { Trip } from '../type-defs/Trip'
 import { MediaItem } from '../type-defs/MediaItem'
 import * as TYPES from './types'
-import { consolidateStreamedStyles } from 'styled-components'
 
 export const createTripSuccess = (trip: Trip) => ({
   type: TYPES.CREATE_TRIP_SUCCESS,
@@ -32,7 +29,7 @@ export const createTrip = (trip: Trip) => async (dispatch: any) => {
   const response = await fireDb
     .collection('trips')
     .doc(trip.id)
-    .set(trip.toObject())
+    .set(trip)
 
   dispatch(createTripSuccess(trip))
 }
