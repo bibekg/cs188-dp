@@ -6,14 +6,4 @@ export class Trip {
   startDate?: Date
   endDate?: Date
   media: MediaType[] = []
-
-  toObject() {
-    return {
-      id: this.id,
-      name: this.name,
-      startDate: this.startDate,
-      endDate: this.endDate,
-      media: this.media
-    }
-  }
 }

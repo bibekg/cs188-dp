@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { Redirect, Link } from 'react-router-dom'
+import uuidv1 from 'uuid/v1'
 
 import TextInput from './TextInput'
 import TextArea from './TextArea'
@@ -12,7 +13,8 @@ import copy from '../copy'
 import { connect } from 'react-redux'
 import { addMedia } from '../actions'
 import * as actions from '../actions'
-import { NoteMediaItem } from '../type-defs/MediaItem'
+import { NoteMediaItem, MediaItem, MediaItemType } from '../type-defs/MediaItem'
+import { Trip } from '../type-defs/Trip'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -40,7 +42,18 @@ const AddNoteForm = styled.form`
   }
 `
 
-class AddNote extends React.Component {
+interface PropsType {
+  trips: (trips: Trip) => any
+  addMedium: (medium: MediaItem, trip: Trip) => any
+}
+
+interface StateType {
+  titleValue: string
+  noteValue: string
+  submitted: boolean
+}
+
+class AddNote extends React.Component<PropsType, StateType> {
   constructor(props) {
     super(props)
     this.state = {
@@ -62,6 +75,7 @@ class AddNote extends React.Component {
 
   handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
+    this.updateFirebase()
     this.setState({
       submitted: true
     })
@@ -69,12 +83,22 @@ class AddNote extends React.Component {
   }
 
   async updateFirebase() {
+    const { tripId } = this.props.match.params
+    const trip: Trip = this.props.trips.find(trip => trip.id === tripId)
+    const uuid = uuidv1()
     const { titleValue, noteValue } = this.state
-    const media = new NoteMediaItem()
-    media.title = titleValue
-    media.description = noteValue
+    const media = {
+      id: uuid,
+      title: titleValue,
+      description: noteValue,
+      type: MediaItemType.Note
+    }
 
-    await this.props.addMedia
+    await this.props.addMedium(media, trip)
+
+    this.setState({
+      submitted: true
+    })
   }
 
   render() {
@@ -108,7 +132,7 @@ class AddNote extends React.Component {
           <div>
             <Text>{fields.note.name}</Text>
             <TextArea
-              type="text"
+              required
               name="note"
               value={this.state.noteValue}
               onChange={this.handleChange}
@@ -125,8 +149,10 @@ class AddNote extends React.Component {
 }
 
 export default connect(
-  null,
+  (state: any) => ({
+    trips: state.trip
+  }),
   {
-    addMedia: actions.addMedia
+    addMedium: actions.addMedium
   }
 )(AddNote)

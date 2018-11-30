@@ -8,7 +8,8 @@ const tripReducer = (state = DEFAULT_TRIP_STATE, action: any) => {
   return produce(state, draft => {
     switch (action.type) {
       case TYPES.GET_TRIPS_SUCCESS:
-        draft = action.payload
+        draft.splice(0, draft.length)
+        draft.push(...action.payload)
         break
       case TYPES.CREATE_TRIP_SUCCESS:
         draft.push(action.payload)
