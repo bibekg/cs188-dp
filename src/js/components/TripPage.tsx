@@ -10,6 +10,7 @@ import BackArrow from './BackArrow'
 import copy from '../copy'
 import { colors } from '../styles'
 import { Trip } from '../type-defs/Trip'
+import { BaseMediaItem } from '../type-defs/MediaItem'
 
 const TripPageContainer = styled.div`
   display: flex;
@@ -92,9 +93,17 @@ const TripPage = (props: PropsType) => {
       </TripPageMapWrapper>
       <TripPageContent>
         {trip.media &&
-          trip.media.map(medium => (
-            <MediaItemRow key={medium.id} mediaItem={medium} />
-          ))}
+          trip.media
+            .sort((a, b) => {
+              const timeDiff = a.dateTime.valueOf() - b.dateTime.valueOf()
+              if (timeDiff > 0) {
+                return -1
+              } else if (timeDiff < 0) {
+                return 1
+              }
+              return 0
+            })
+            .map(medium => <MediaItemRow key={medium.id} mediaItem={medium} />)}
       </TripPageContent>
       <TripPageAddMemory>
         <Link
