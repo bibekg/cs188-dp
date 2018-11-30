@@ -2,6 +2,7 @@ import uuidv1 from 'uuid/v1'
 
 import { fireDb } from '../firebase'
 import { Trip } from '../type-defs/Trip'
+import { MediaItem } from '../type-defs/MediaItem'
 import * as TYPES from './types'
 import { consolidateStreamedStyles } from 'styled-components'
 
@@ -15,6 +16,14 @@ export const getTripsSuccess = (trips: Trip[]) => ({
   payload: trips
 })
 
+export const addMediumSuccess = (medium: MediaItem, trip: Trip) => ({
+  type: TYPES.CREATE_MEDIUM_SUCCESS,
+  payload: {
+    medium,
+    trip
+  }
+})
+
 /**
  * @name createTrip
  * @param {object} trip should contain at least an id property
@@ -23,7 +32,7 @@ export const createTrip = (trip: Trip) => async (dispatch: any) => {
   const response = await fireDb
     .collection('trips')
     .doc(trip.id)
-    .set(trip)
+    .set(trip.toObject())
 
   dispatch(createTripSuccess(trip))
 }
@@ -40,4 +49,17 @@ export const getTrips = () => async (dispatch: any, getState: any) => {
   )
 
   dispatch(getTripsSuccess(trips))
+}
+
+export const addMedia = (medium: MediaItem, trip: Trip) => async (
+  dispatch: any
+) => {
+  const response = await fireDb
+    .collection('trips')
+    .doc(trip.id)
+    .update({
+      media: [...trip.media, medium]
+    })
+
+  dispatch(addMediumSuccess(medium, trip))
 }

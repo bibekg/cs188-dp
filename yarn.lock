@@ -150,7 +150,6 @@
 "@types/google-maps-react@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/google-maps-react/-/google-maps-react-2.0.0.tgz#9b55ec84a6bc303ff6ed393499bf896f9d381a6b"
-  integrity sha512-jMek/Wvx/+20YAxpcPp+afP51qdRFsAQatX8E7mzYoHwGpc6pkhD0ViPc6Z36++ObjG6pAAisFuI4ggp/xTpyQ==
   dependencies:
     "@types/googlemaps" "*"
     "@types/react" "*"
@@ -158,7 +157,6 @@
 "@types/googlemaps@*":
   version "3.30.16"
   resolved "https://registry.yarnpkg.com/@types/googlemaps/-/googlemaps-3.30.16.tgz#3264d5ef7c3a92fab2a9f00e09e3247866ff3532"
-  integrity sha512-6OZ64ahLzYfzuSr71y4jAHZXiwxjvvEM2bfF2tzjIc9KUZVbO30SkYa8WewTsR8aM5BFz/uBiNlZ14eRLXYS0g==
 
 "@types/history@*":
   version "4.7.2"
@@ -2837,6 +2835,10 @@ ignore-walk@^3.0.1:
   resolved "https://registry.yarnpkg.com/ignore-walk/-/ignore-walk-3.0.1.tgz#a83e62e7d272ac0e3b551aaa82831a19b69f82f8"
   dependencies:
     minimatch "^3.0.4"
+
+immer@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-1.8.0.tgz#afa8393996a1f3f5255019e7d10c29d42dd95225"
 
 in-publish@^2.0.0:
   version "2.0.0"
@@ -6105,7 +6107,6 @@ uuid@^3.0.0, uuid@^3.1.0:
 uuid@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
-  integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
 
 v8-compile-cache@^1.1.0:
   version "1.1.2"

@@ -10,6 +10,9 @@ import ExitButton from './ExitButton'
 
 import copy from '../copy'
 import { connect } from 'react-redux'
+import { addMedia } from '../actions'
+import * as actions from '../actions'
+import { NoteMediaItem } from '../type-defs/MediaItem'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -65,6 +68,15 @@ class AddNote extends React.Component {
     return false
   }
 
+  async updateFirebase() {
+    const { titleValue, noteValue } = this.state
+    const media = new NoteMediaItem()
+    media.title = titleValue
+    media.description = noteValue
+
+    await this.props.addMedia
+  }
+
   render() {
     const { tripId } = this.props.match.params
     if (this.state.submitted) {
@@ -112,4 +124,9 @@ class AddNote extends React.Component {
   }
 }
 
-export default AddNote
+export default connect(
+  null,
+  {
+    addMedia: actions.addMedia
+  }
+)(AddNote)

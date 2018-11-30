@@ -39,6 +39,7 @@ const TripFeedMapWrapper = styled.div`
 const TripFeedContent = styled.div`
   flex-grow: 1;
   overflow: auto;
+  padding-bottom: 85px;
 `
 
 interface PropsType {

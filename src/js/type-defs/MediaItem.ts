@@ -24,6 +24,7 @@ export class MediaItem {
 }
 
 export class NoteMediaItem extends MediaItem {
+  title: string
   type: MediaItemType.Note
   content: string
 }

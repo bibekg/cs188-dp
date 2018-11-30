@@ -24,6 +24,7 @@
     "axios": "^0.18.0",
     "firebase": "^5.5.9",
     "google-maps-react": "^2.0.2",
+    "immer": "^1.8.0",
     "moment": "^2.21.0",
     "polished": "^2.3.0",
     "react": "16.5.2",

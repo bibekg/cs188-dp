@@ -77,13 +77,14 @@ class CreateTripPage extends React.Component<PropsType, StateType> {
   async submitToFirebase() {
     const { titleValue, startDateValue, endDateValue } = this.state
     const uuid = uuidv1()
-    const newTrip: Trip = {
-      id: uuid,
-      name: titleValue,
-      startDate: new Date(startDateValue),
-      endDate: new Date(endDateValue)
-    }
+    const newTrip: Trip = new Trip()
+    newTrip.id = uuid
+    newTrip.name = titleValue
+    newTrip.startDate = new Date(startDateValue)
+    newTrip.endDate = new Date(endDateValue)
+
     await this.props.createTrip(newTrip)
+
     this.setState({
       submitted: true,
       uuid: uuid
