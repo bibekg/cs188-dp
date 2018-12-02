@@ -21,7 +21,6 @@ const TripItemContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  border-bottom: 1px solid ${colors.black};
 
   > *:not(:first-child) {
     margin-left: 20px;

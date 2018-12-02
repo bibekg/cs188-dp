@@ -8,7 +8,7 @@ import { Trip } from '../type-defs/Trip'
 import copy from '../copy'
 import Text from './Text'
 import TextInput from './TextInput'
-import Button from './Button'
+import RectangularButton from './RectangularButton'
 import * as actions from '../actions'
 import ExitButton from './ExitButton'
 
@@ -140,9 +140,9 @@ class CreateTripPage extends React.Component<PropsType, StateType> {
               onChange={this.handleChange}
             />
           </div>
-          <Button pinned primary>
+          <RectangularButton pinned primary>
             {submitButtonText}
-          </Button>
+          </RectangularButton>
         </TripNameForm>
       </Wrapper>
     )

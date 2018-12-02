@@ -21,7 +21,6 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  border-bottom: 1px solid ${colors.black};
   height: 70px;
 
   & > *:first-child {
@@ -46,6 +45,8 @@ const ImageWrapper = styled.div`
 
 const Image = styled.img`
   height: 100%;
+  width: 100%;
+  object-fit: cover;
 `
 
 const Label = styled(Media)`

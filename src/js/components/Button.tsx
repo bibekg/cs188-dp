@@ -30,18 +30,10 @@ const getTextColor = props => {
   } else return props.primary ? colors.white : colors.green
 }
 
-const getHoverEffects = props => {
-  if (props.disabled) return ''
-
-  return `
-    transform: scale(1.05);
-  `
-}
-
 const Button = styled.button`
   border-radius: 50px;
   display: inline-block;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.8px;
   padding: 7px 20px;
@@ -64,11 +56,7 @@ const Button = styled.button`
     width: 100%;
     padding-top: 15px;
     padding-bottom: 15px;
-  `} &:hover {
-    ${props => getHoverEffects(props)};
-  }
-
-  &:focus {
+  `} &:focus {
     outline: none;
   }
 `

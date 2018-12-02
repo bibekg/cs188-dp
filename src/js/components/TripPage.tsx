@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom'
 import MapOverview from './MapOverview'
 import MediaItemRow from './MediaItemRow'
 import Text from './Text'
-import BackArrow from './BackArrow'
+import RectangularButton from './RectangularButton'
 
 import copy from '../copy'
 import { colors } from '../styles'
 import { Trip } from '../type-defs/Trip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faPlay, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
 const TripPageContainer = styled.div`
   display: flex;
@@ -31,6 +31,12 @@ const TripPageContent = styled.div`
   flex-grow: 1;
   overflow: auto;
   padding-bottom: 60px;
+  & > * {
+    display: block;
+    &:not(:last-child) {
+      border-bottom: 1px solid ${colors.lightGrey};
+    }
+  }
 `
 
 const TripPageAddMemory = styled.div`
@@ -42,15 +48,15 @@ const TripPageAddMemory = styled.div`
   text-decoration: none;
 `
 
-const TripPageAddButton = styled.div`
-  padding: 15px 15px;
-  font-family: 'sans-serif';
-  font-size: 24px;
-  font-weight: bold;
-  letter-spacing: 0.8px;
-  color: ${colors.white};
-  background-color: ${colors.green};
-  flex-grow: 1;
+const TripPageAddButton = styled(RectangularButton)`
+  // padding: 15px 15px;
+  // font-family: 'sans-serif';
+  // font-size: 24px;
+  // font-weight: bold;
+  // letter-spacing: 0.8px;
+  // color: ${colors.white};
+  // background-color: ${colors.green};
+  // flex-grow: 1;
 `
 
 const TitleBar = styled.div`
@@ -97,13 +103,13 @@ class TripPage extends React.Component<PropsType, StateType> {
       <TripPageContainer>
         <TitleBar>
           <Link to="/trip">
-            <BackArrow color={colors.white} />
+            <FontAwesomeIcon color={colors.white} icon={faArrowLeft} />
           </Link>
           <Text medium bold color={colors.white}>
             {trip.name}
           </Text>
           <Link to={`/trip/${tripId}/view`}>
-            <FontAwesomeIcon icon={faPlay} size="2x" color="white" />
+            <FontAwesomeIcon icon={faPlay} color={colors.white} />
           </Link>
         </TitleBar>
 
@@ -138,7 +144,7 @@ class TripPage extends React.Component<PropsType, StateType> {
             style={{ textDecoration: 'none', flexGrow: 1 }}
             to={`/trip/${tripId}/add-photo`}
           >
-            <TripPageAddButton color="green">
+            <TripPageAddButton primary>
               <Text bold color={colors.white} medium>
                 {copy.tripPage.addPhoto}
               </Text>
@@ -149,7 +155,7 @@ class TripPage extends React.Component<PropsType, StateType> {
             style={{ textDecoration: 'none', flexGrow: 1 }}
             to={`/trip/${tripId}/add-note`}
           >
-            <TripPageAddButton color="blue">
+            <TripPageAddButton primary>
               <Text bold color={colors.white} medium>
                 {copy.tripPage.addNote}
               </Text>
