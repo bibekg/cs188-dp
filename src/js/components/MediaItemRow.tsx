@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faScroll } from '@fortawesome/free-solid-svg-icons'
+import { faStickyNote } from '@fortawesome/free-solid-svg-icons'
 import dateFormat from 'dateformat'
 
 import Text from '../components/Text'
@@ -81,7 +81,7 @@ const Memory = (props: PropsType) => {
     [MediaItemType.Note]: (noteMedium: NoteMediaItem) => (
       <Container>
         <ImageWrapper>
-          <FontAwesomeIcon icon={faScroll} size="2x" />
+          <FontAwesomeIcon icon={faStickyNote} size="2x" />
         </ImageWrapper>
         <Label>
           <Text bold>{noteMedium.title}</Text>

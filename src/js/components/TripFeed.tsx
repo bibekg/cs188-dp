@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import TripItem from './TripItem'
@@ -13,6 +13,7 @@ import { colors } from '../styles'
 import { Trip } from '../type-defs/Trip'
 import { averageTripLocation } from '../util/geo'
 import { LocationDetails } from '../type-defs/MediaItem'
+import TextInput from './TextInput'
 
 const TitleBar = styled.div`
   background-color: ${colors.brown};
@@ -30,10 +31,15 @@ const TripFeedContainer = styled.div`
   flex-direction: column;
 `
 
+const SearchBarWrapper = styled.div`
+  padding: 5px;
+  background-color: ${colors.lightGrey};
+`
+
 const TripFeedMapWrapper = styled.div`
   position: relative;
   width: 100%;
-  min-height: 40%;
+  min-height: 30%;
 `
 
 const TripFeedContent = styled.div`
@@ -47,19 +53,60 @@ interface PropsType {
   match: any
 }
 
-class TripFeed extends React.Component<PropsType> {
-  render() {
-    const { createTripButtonText } = copy.tripFeed
+interface StateType {
+  clickedMarker: Trip | null
+  tripSearchValue: string
+}
 
-    const tripsToLocations = this.props.trips.reduce<
-      Map<Trip, LocationDetails>
-    >((acc, trip) => {
-      const avgLoc = averageTripLocation(trip) as LocationDetails
-      if (avgLoc && avgLoc.lat && avgLoc.lng) {
-        acc.set(trip, avgLoc)
-      }
-      return acc
-    }, new Map())
+class TripFeed extends React.Component<PropsType, StateType> {
+  state = {
+    clickedMarker: null,
+    tripSearchValue: ''
+  }
+
+  static sortTrips = (a: Trip, b: Trip) => {
+    const timeDiff =
+      (a.startDate ? a.startDate.valueOf() : 0) -
+      (b.startDate ? b.startDate.valueOf() : 0)
+    if (timeDiff > 0) {
+      return -1
+    } else if (timeDiff < 0) {
+      return 1
+    }
+    return 0
+  }
+
+  handleChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
+    const { name, value } = event.target
+
+    const proposedKey = `${name}Value`
+    if (this.state.hasOwnProperty(proposedKey)) {
+      // @ts-ignore
+      this.setState({ [proposedKey]: value })
+    }
+  }
+
+  render() {
+    if (this.state.clickedMarker != null) {
+      return <Redirect to={`/trip/${this.state.clickedMarker.id}/edit`} />
+    }
+
+    const { createTripButtonText } = copy.tripFeed
+    const { trips } = this.props
+    const { tripSearchValue } = this.state
+
+    const filteredTrips = trips.filter(t => t.name!.includes(tripSearchValue))
+
+    const tripsToLocations = filteredTrips.reduce<Map<Trip, LocationDetails>>(
+      (acc, trip) => {
+        const avgLoc = averageTripLocation(trip) as LocationDetails
+        if (avgLoc && avgLoc.lat && avgLoc.lng) {
+          acc.set(trip, avgLoc)
+        }
+        return acc
+      },
+      new Map()
+    )
 
     return (
       <TripFeedContainer>
@@ -74,25 +121,24 @@ class TripFeed extends React.Component<PropsType> {
               ([innerTrip, averageLocation]) => ({
                 key: innerTrip.id,
                 title: innerTrip.name,
-                position: averageLocation
+                position: averageLocation,
+                onClick: () => this.setState({ clickedMarker: innerTrip })
               })
             )}
           />
         </TripFeedMapWrapper>
+        <SearchBarWrapper>
+          <TextInput
+            name="tripSearch"
+            value={this.state.tripSearchValue}
+            onChange={this.handleChange}
+            placeholder={copy.tripFeed.searchBox.placeholder}
+          />
+        </SearchBarWrapper>
         <TripFeedContent>
-          {[...this.props.trips]
-            .sort((a, b) => {
-              const timeDiff = a.startDate.valueOf() - b.startDate.valueOf()
-              if (timeDiff > 0) {
-                return -1
-              } else if (timeDiff < 0) {
-                return 1
-              }
-              return 0
-            })
-            .map(trip => (
-              <TripItem key={trip.id} trip={trip} />
-            ))}
+          {filteredTrips.sort(TripFeed.sortTrips).map(trip => (
+            <TripItem key={trip.id} trip={trip} />
+          ))}
         </TripFeedContent>
         <Link to="/trip/new">
           <RectangularButton primary>{createTripButtonText}</RectangularButton>

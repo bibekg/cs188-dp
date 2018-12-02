@@ -18,7 +18,10 @@ export default {
     submitButtonText: 'Create Trip'
   },
   tripFeed: {
-    createTripButtonText: 'Start New Trip'
+    createTripButtonText: 'Start New Trip',
+    searchBox: {
+      placeholder: '🔍 Type to search your trips'
+    }
   },
   tripPage: {
     addPhoto: 'Add Photo',

@@ -2,7 +2,11 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faImage, faScroll, faMapPin } from '@fortawesome/free-solid-svg-icons'
+import {
+  faCamera,
+  faStickyNote,
+  faMapPin
+} from '@fortawesome/free-solid-svg-icons'
 
 import Text from './Text'
 import { colors } from '../styles/index'
@@ -14,6 +18,8 @@ const TripItemContainer = styled.div`
     text-decoration: none;
   }
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 20px;
   border-bottom: 1px solid ${colors.black};
 
@@ -25,13 +31,15 @@ const TripItemContainer = styled.div`
 const TripPreviewContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 50px;
-  height: 100%;
+  width: 60px;
+  height: 60px;
   & > * {
     width: 50%;
     height: 50%;
     padding: 1px;
+    border: 1px solid ${colors.lightGrey};
     img {
+      object-fit: cover;
       width: 100%;
       height: 100%;
     }
@@ -93,15 +101,6 @@ const TripItem = (props: PropsType) => {
   return (
     <Link to={`/trip/${trip.id}/edit`} style={{ textDecoration: 'none' }}>
       <TripItemContainer>
-        {tripImages.length > 0 && (
-          <TripPreviewContainer>
-            {tripImages.slice(0, 4).map(image => (
-              <div key={image}>
-                <img src={image} />
-              </div>
-            ))}
-          </TripPreviewContainer>
-        )}
         <TripDescriptionContainer>
           <TripName>
             <Text bold>{name}</Text>
@@ -115,16 +114,25 @@ const TripItem = (props: PropsType) => {
           </TripDate>
           <TripActionsContainer>
             {shouldShowPhotoIcon(props.trip) && (
-              <FontAwesomeIcon icon={faImage} size="2x" />
+              <FontAwesomeIcon icon={faCamera} size="2x" />
             )}
             {shouldShowScroll(props.trip) && (
-              <FontAwesomeIcon icon={faScroll} size="2x" />
+              <FontAwesomeIcon icon={faStickyNote} size="2x" />
             )}
             {shouldShowPin(props.trip) && (
               <FontAwesomeIcon icon={faMapPin} size="1x" />
             )}
           </TripActionsContainer>
         </TripDescriptionContainer>
+        {tripImages.length > 0 && (
+          <TripPreviewContainer>
+            {tripImages.slice(0, 4).map(image => (
+              <div key={image}>
+                <img src={image} />
+              </div>
+            ))}
+          </TripPreviewContainer>
+        )}
       </TripItemContainer>
     </Link>
   )
