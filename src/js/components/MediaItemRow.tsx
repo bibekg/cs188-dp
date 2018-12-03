@@ -53,9 +53,16 @@ const Label = styled(Media)`
   margin-left: 10px;
   text-align: left;
   width: 100%;
+  height: 100%;
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 `
 
 interface PropsType {
@@ -74,7 +81,7 @@ const Memory = (props: PropsType) => {
           <Image src={imageMedium.src} alt={imageMedium.description} />
         </ImageWrapper>
         <Label>
-          <Text bold>{imageMedium.description}</Text>
+          <Text bold>{imageMedium.description || 'Uncaptioned photo'}</Text>
           <Text>{dateFormat(imageMedium.dateTime, 'm/d/yy h:MM tt')}</Text>
         </Label>
       </Container>
