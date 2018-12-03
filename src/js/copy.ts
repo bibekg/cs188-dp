@@ -4,8 +4,8 @@ export default {
     subtitle:
       'Off on a new adventure? Give the trip a title, start date, and end date to get started.',
     fields: {
-      title: {
-        name: 'Title',
+      name: {
+        name: 'Trip Name',
         placeholder: 'A Splendid Summer on Saturn'
       },
       startDate: {

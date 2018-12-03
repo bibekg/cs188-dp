@@ -31,7 +31,7 @@ const getTextColor = props => {
 }
 
 const Button = styled.button`
-  border-radius: 50px;
+  border-radius: ${props => (props.noRound ? 0 : 50)}px;
   display: inline-block;
   font-size: 20px;
   font-weight: bold;
