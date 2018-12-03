@@ -85,9 +85,22 @@ class TripViewer extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props)
     this.goNext = this.goNext.bind(this)
+    this.goBack = this.goBack.bind(this)
   }
 
-  goBack() {}
+  goBack() {
+    if (this.isOnFirstStep()) {
+      this.setState({ step: -1 })
+      return
+    }
+    let prevStepIndex = this.state.step - 1
+
+    const currentMedia = this.currentTrip().media
+
+    this.setState({
+      step: prevStepIndex
+    })
+  }
 
   currentTrip() {
     const { tripId } = this.props.match.params
@@ -111,6 +124,10 @@ class TripViewer extends React.Component<PropsType, StateType> {
 
   isOnLastStep() {
     return this.state.step === this.currentTrip().media.length - 1
+  }
+
+  isOnFirstStep() {
+    return this.state.step === 0
   }
 
   render() {
