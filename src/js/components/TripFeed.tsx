@@ -105,7 +105,9 @@ class TripFeed extends React.Component<PropsType, StateType> {
     const { trips } = this.props
     const { tripSearchValue } = this.state
 
-    const filteredTrips = trips.filter(t => t.name!.includes(tripSearchValue))
+    const filteredTrips = trips.filter(t =>
+      t.name!.toLowerCase().includes(tripSearchValue.toLowerCase())
+    )
 
     const tripsToLocations = filteredTrips.reduce<Map<Trip, LocationDetails>>(
       (acc, trip) => {
