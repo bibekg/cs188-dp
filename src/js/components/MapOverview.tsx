@@ -4,14 +4,18 @@ import {
   Marker,
   GoogleApiWrapper,
   MapProps,
-  InfoWindow
+  InfoWindow,
+  Polyline
 } from 'google-maps-react'
 import { GOOGLE_API_KEY } from '../constants'
+import { Trip } from '../type-defs/Trip'
+import { colors } from '../styles'
 
 interface PropsType {
   markers: any[]
   google: any
   activeMarkerId: string | null
+  showRoute: true | undefined
 }
 
 interface StateType {}
@@ -80,14 +84,14 @@ class MapOverview extends React.Component<PropsType, StateType> {
         {this.props.markers.map(markerProps => (
           <Marker {...markerProps} />
         ))}
-        <InfoWindow
-          marker={markerObject}
-          visible={this.props.activeMarkerId != null}
-        >
-          <div>
-            <h1>Test</h1>
-          </div>
-        </InfoWindow>
+        {this.props.showRoute && (
+          <Polyline
+            path={this.props.markers.map(m => m.position)}
+            strokeColor={colors.red}
+            strokeOpacity={0.7}
+            strokeWeight={2}
+          />
+        )}
       </Map>
     )
   }

@@ -11,11 +11,9 @@ import Text from './Text'
 import Button from './Button'
 import { Trip } from '../type-defs/Trip'
 
-const TripStepType = {
-  backgroundImage: PropTypes.string,
-  topText: PropTypes.string,
-  bottomInfoComponent: PropTypes.instanceOf(React.Component)
-}
+const Title = styled(Text)`
+  margin-bottom: 30px;
+`
 
 const TotalWrapper = styled.div`
   background-color: black;
@@ -49,6 +47,12 @@ const ViewerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`
+
+const DescriptionSection = styled.div`
+  & > * {
+    margin-bottom: 20px;
+  }
 `
 
 const Overlay = styled.div`
@@ -115,7 +119,7 @@ class TripViewer extends React.Component<PropsType, StateType> {
       return <Redirect to={`/trip/${this.currentTrip().id}/edit`} />
     }
 
-    const step = this.currentTrip().media.sort((a, b) => {
+    const step = [...this.currentTrip().media].sort((a, b) => {
       const timeDiff = a.dateTime.valueOf() - b.dateTime.valueOf()
       if (timeDiff > 0) {
         return 1
@@ -154,10 +158,15 @@ class TripViewer extends React.Component<PropsType, StateType> {
       return (
         <NoteWrapper>
           <div>
-            <Text large bold>
+            <Title large bold>
               {step.title}
-            </Text>
-            <Text>{step.description}</Text>
+            </Title>
+            <DescriptionSection>
+              {step.description &&
+                step.description
+                  .split('\n')
+                  .map(paragraph => <Text>{paragraph}</Text>)}
+            </DescriptionSection>
           </div>
           <NavigationContainer>
             {showBackButton && <Button onClick={this.goBack}>Back</Button>}
