@@ -21,6 +21,10 @@ const TitleBar = styled.div`
     color: white;
   }
   padding: 10px 0;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 `
 

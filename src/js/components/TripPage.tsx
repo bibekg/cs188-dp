@@ -49,23 +49,12 @@ const TripPageAddMemory = styled.div`
   text-decoration: none;
 `
 
-const TripPageAddButton = styled(RectangularButton)`
-  // padding: 15px 15px;
-  // font-family: 'sans-serif';
-  // font-size: 24px;
-  // font-weight: bold;
-  // letter-spacing: 0.8px;
-  // color: ${colors.white};
-  // background-color: ${colors.green};
-  // flex-grow: 1;
-`
-
 const TitleBar = styled.div`
   padding: 10px;
   width: 100%;
   text-align: center;
   background-color: ${colors.brown};
-
+  height: 50px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -151,22 +140,22 @@ class TripPage extends React.Component<PropsType, StateType> {
             style={{ textDecoration: 'none', flexGrow: 1 }}
             to={`/trip/${tripId}/add-photo`}
           >
-            <TripPageAddButton primary>
+            <RectangularButton primary>
               <Text bold color={colors.white} medium>
                 {copy.tripPage.addPhoto}
               </Text>
-            </TripPageAddButton>
+            </RectangularButton>
           </Link>
 
           <Link
             style={{ textDecoration: 'none', flexGrow: 1 }}
             to={`/trip/${tripId}/add-note`}
           >
-            <TripPageAddButton primary>
+            <RectangularButton primary>
               <Text bold color={colors.white} medium>
                 {copy.tripPage.addNote}
               </Text>
-            </TripPageAddButton>
+            </RectangularButton>
           </Link>
         </TripPageAddMemory>
       </TripPageContainer>
