@@ -5,18 +5,14 @@ import styled from 'styled-components'
 import { Formik, Field, ErrorMessage } from 'formik'
 import uuidv1 from 'uuid/v1'
 
+import { FormikTextInput } from './formik'
 import { Trip } from '../type-defs/Trip'
 import copy from '../copy'
 import { colors } from '../styles'
 import Text from './Text'
-import TextInput from './TextInput'
 import Button from './Button'
 import * as actions from '../actions'
 import ExitButton from './ExitButton'
-
-const CustomTextInput = ({ field, form, ...props }: any) => (
-  <TextInput {...field} {...props} />
-)
 
 const Wrapper = styled.div`
   text-align: center;
@@ -139,7 +135,7 @@ class CreateTripPage extends React.Component<PropsType, StateType> {
                 <Field
                   type="text"
                   name="name"
-                  component={CustomTextInput}
+                  component={FormikTextInput}
                   placeholder={ctCopy.fields.name.placeholder}
                 />
                 <ErrorMessage name="name" component={ErrorMessageDiv} />
@@ -150,14 +146,14 @@ class CreateTripPage extends React.Component<PropsType, StateType> {
                 <Field
                   type="date"
                   name="startDate"
-                  component={CustomTextInput}
+                  component={FormikTextInput}
                 />
                 <ErrorMessage name="startDate" component={ErrorMessageDiv} />
               </div>
 
               <div>
                 <Text bold>{ctCopy.fields.endDate.name}</Text>
-                <Field type="date" name="endDate" component={CustomTextInput} />
+                <Field type="date" name="endDate" component={FormikTextInput} />
                 <ErrorMessage name="endDate" component={ErrorMessageDiv} />
               </div>
 

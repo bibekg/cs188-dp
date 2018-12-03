@@ -1,5 +1,6 @@
 import EXIF from 'exif-js'
 import { dmsToDecimal } from './geo'
+import { parseExifDateTime } from './datetime'
 
 // Maps an EXIF 'Orientation' tag to the appropriate CSS transform key
 // required to display the image correctly
@@ -14,6 +15,19 @@ export const orientationKeyToCSSTransform: { [num: number]: string } = {
   8: 'rotate(270deg)' // Rotate 270º clockwise
 }
 
+export interface PhotoDetails {
+  file: File
+  dataURL: string
+  dateTime: Date
+  make: string
+  model: string
+  coordinates: {
+    lat: number
+    lng: number
+  }
+  orientation: string
+}
+
 export const getPhotoGeoData = (img: HTMLImageElement): Promise<any> => {
   return new Promise((resolve, reject) => {
     const photo: any = {}
@@ -21,18 +35,26 @@ export const getPhotoGeoData = (img: HTMLImageElement): Promise<any> => {
     // @ts-ignore
     EXIF.getData(img, function() {
       // @ts-ignore
-      const exifData = this as any
+      const allData = EXIF.getAllTags(this)
+
+      const edt = parseExifDateTime(allData.DateTime)
+      if (edt) {
+        photo.dateTime = edt
+      }
+      photo.make = allData.Make
+      photo.model = allData.Model
+      console.log({ allData, photo })
+
       const latExif = {
-        value: EXIF.getTag(exifData, 'GPSLatitude') as number[],
-        dir: EXIF.getTag(exifData, 'GPSLatitudeRef') as string
+        value: allData.GPSLatitude as number[],
+        dir: allData.GPSLatitudeRef as string
       }
       const lngExif = {
-        value: EXIF.getTag(exifData, 'GPSLongitude') as number[],
-        dir: EXIF.getTag(exifData, 'GPSLongitudeRef') as string
+        value: allData.GPSLongitude as number[],
+        dir: allData.GPSLongitudeRef as string
       }
 
-      const orientationExif = EXIF.getTag(exifData, 'Orientation')
-      photo.orientation = orientationKeyToCSSTransform[orientationExif]
+      photo.orientation = orientationKeyToCSSTransform[allData.Orientation]
 
       // If coordinates exist, update photo object
       if (latExif.value && latExif.dir && lngExif.value && lngExif.dir) {
@@ -51,22 +73,7 @@ export const getPhotoGeoData = (img: HTMLImageElement): Promise<any> => {
   })
 }
 
-interface PhotoDetails {
-  dataURL: string
-  orientation: string
-  coordinates: {
-    lat: number
-    lng: number
-  }
-}
-
 export const getPhotoDetails = (file: File): Promise<PhotoDetails> => {
-  const photo: any = {
-    file,
-    dataURL: null,
-    orientation: null,
-    coordinates: null
-  }
   const reader = new FileReader()
 
   return new Promise((resolve, reject) => {
@@ -77,17 +84,19 @@ export const getPhotoDetails = (file: File): Promise<PhotoDetails> => {
       const img = document.createElement('img')
       img.hidden = true
       img.src = event.target.result as string
-      photo.dataURL = img.src
 
       // Set a callback for when the image finishes loading on the page
       // Callback will try to extract coordinates from image metadata
       img.onload = () => {
-        console.log('it loaded')
-        getPhotoGeoData(img).then(({ coordinates, orientation }) => {
-          photo.coordinates = coordinates
-          photo.orientation = orientation
+        getPhotoGeoData(img).then(photo => {
+          // photo.coordinates = coordinates
+          // photo.orientation = orientation
           document.body.removeChild(img)
-          resolve(photo)
+          resolve({
+            ...photo,
+            file,
+            dataURL: img.src
+          })
         })
       }
 

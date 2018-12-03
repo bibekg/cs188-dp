@@ -47,6 +47,18 @@ export default {
         },
         upload: {
           name: 'Upload'
+        },
+        date: {
+          name: 'Date'
+        },
+        time: {
+          name: 'Time'
+        },
+        latitude: {
+          name: 'Latitude'
+        },
+        longitude: {
+          name: 'Longitude'
         }
       },
       photoButtonText: 'Add Photo'
