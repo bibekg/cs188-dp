@@ -50,6 +50,7 @@ const TripFeedMapWrapper = styled.div`
 const TripFeedContent = styled.div`
   flex-grow: 1;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 
   & > * {
     display: block;

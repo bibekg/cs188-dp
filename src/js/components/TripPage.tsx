@@ -32,6 +32,7 @@ const TripPageMapWrapper = styled.div`
 const TripPageContent = styled.div`
   flex-grow: 1;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   padding-bottom: 60px;
   & > * {
     display: block;
