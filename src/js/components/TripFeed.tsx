@@ -21,7 +21,7 @@ const TitleBar = styled.div`
     color: white;
   }
   padding: 10px 0;
-  height: 50px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,7 +43,8 @@ const SearchBarWrapper = styled.div`
 const TripFeedMapWrapper = styled.div`
   position: relative;
   width: 100%;
-  min-height: 30%;
+  height: 40%;
+  flex-shrink: 0;
 `
 
 const TripFeedContent = styled.div`

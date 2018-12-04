@@ -55,7 +55,7 @@ const TitleBar = styled.div`
   width: 100%;
   text-align: center;
   background-color: ${colors.brown};
-  height: 50px;
+  height: 70px;
   display: flex;
   flex-direction: row;
   align-items: center;
