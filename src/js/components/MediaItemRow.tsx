@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStickyNote } from '@fortawesome/free-solid-svg-icons'
+import { faStickyNote, faMapPin } from '@fortawesome/free-solid-svg-icons'
 import dateFormat from 'dateformat'
 
 import Text from '../components/Text'
@@ -14,19 +14,37 @@ import {
 } from '../type-defs/MediaItem'
 
 import { fonts } from '../styles/index'
+import { rgba } from 'polished'
+
+const ThumbnailWrapper = styled.div`
+  font-size: 12px;
+  color: ${props => props.color || colors.mostlyBlack};
+`
 
 const Container = styled.div`
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
-  height: 70px;
+`
 
-  & > *:first-child {
-    width: 70px;
-    flex-shrink: 0;
-  }
+const ImageContainer = styled(Container)`
+  background-image: url(${props => props.image});
+  background-position: center;
+  background-size: cover;
+  height: 100px;
+`
+
+const NoteContainer = styled(Container)`
+  padding: 10px;
+`
+
+const ImageOverlay = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  background-color: ${rgba(colors.black, 0.6)};
 `
 
 const Media = styled.div`
@@ -34,23 +52,7 @@ const Media = styled.div`
   font-weight: bold;
 `
 
-const ImageWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const Image = styled.img`
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-`
-
 const Label = styled(Media)`
-  margin-left: 10px;
   text-align: left;
   width: 100%;
   height: 100%;
@@ -76,26 +78,36 @@ const Memory = (props: PropsType) => {
     [mit: number]: (mi: any) => React.ReactElement<typeof Container>
   } = {
     [MediaItemType.Image]: (imageMedium: ImageMediaItem) => (
-      <Container>
-        <ImageWrapper>
-          <Image src={imageMedium.src} alt={imageMedium.description} />
-        </ImageWrapper>
-        <Label>
-          <Text bold>{imageMedium.description || 'Uncaptioned photo'}</Text>
-          <Text>{dateFormat(imageMedium.dateTime, 'm/d/yy h:MM tt')}</Text>
-        </Label>
-      </Container>
+      <ImageContainer image={imageMedium.src}>
+        <ImageOverlay>
+          <Label>
+            <Text bold color={colors.white}>
+              {imageMedium.description || 'Uncaptioned photo'}
+            </Text>
+            <Text color={colors.white}>
+              {dateFormat(imageMedium.dateTime, 'm/d/yy h:MM tt')}
+            </Text>
+            {imageMedium.location && (
+              <ThumbnailWrapper color={colors.white}>
+                <FontAwesomeIcon icon={faMapPin} />
+              </ThumbnailWrapper>
+            )}
+          </Label>
+        </ImageOverlay>
+      </ImageContainer>
     ),
     [MediaItemType.Note]: (noteMedium: NoteMediaItem) => (
-      <Container>
-        <ImageWrapper>
-          <FontAwesomeIcon icon={faStickyNote} size="2x" />
-        </ImageWrapper>
+      <NoteContainer>
         <Label>
-          <Text bold>{noteMedium.title}</Text>
+          <Text bold>Note: {noteMedium.title}</Text>
           <Text>{dateFormat(noteMedium.dateTime, 'm/d/yy h:MM tt')}</Text>
+
+          <ThumbnailWrapper color={colors.mostlyBlack}>
+            <FontAwesomeIcon icon={faStickyNote} />
+            {noteMedium.location && <FontAwesomeIcon icon={faMapPin} />}
+          </ThumbnailWrapper>
         </Label>
-      </Container>
+      </NoteContainer>
     )
   }
 

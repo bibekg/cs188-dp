@@ -25,6 +25,7 @@ const TripPageContainer = styled.div`
 const TripPageMapWrapper = styled.div`
   position: relative;
   height: 40%;
+  flex-shrink: 0;
   width: 100%;
 `
 
