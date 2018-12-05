@@ -61,6 +61,7 @@ const TripDate = styled.div`
 
 const TripActionsContainer = styled.div`
   display: flex;
+  font-size: 14px;
   flex-direction: row;
   max-width: 100px;
   flex-wrap: wrap;

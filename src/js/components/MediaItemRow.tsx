@@ -17,7 +17,7 @@ import { fonts } from '../styles/index'
 import { rgba } from 'polished'
 
 const ThumbnailWrapper = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   color: ${props => props.color || colors.mostlyBlack};
 `
 
