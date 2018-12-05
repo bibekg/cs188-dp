@@ -176,7 +176,7 @@ class TripViewer extends React.Component<PropsType, StateType> {
           <BlurBackground image={step.src} />
           <ViewerWrapper image={step.src}>
             <Overlay>
-              <Text>{step.description}</Text>
+              <Text>{step.caption}</Text>
               <Text>
                 <FontAwesomeIcon icon={faMapMarkerAlt} size="1x" />{' '}
                 {step.location.name}
@@ -202,8 +202,8 @@ class TripViewer extends React.Component<PropsType, StateType> {
               {step.title}
             </Title>
             <DescriptionSection>
-              {step.description &&
-                step.description
+              {step.content &&
+                step.content
                   .split('\n')
                   .map(paragraph => <Text key={paragraph}>{paragraph}</Text>)}
             </DescriptionSection>

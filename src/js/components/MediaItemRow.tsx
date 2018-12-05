@@ -82,7 +82,7 @@ const MediaItemRow = (props: PropsType) => {
         <ImageOverlay>
           <Label>
             <Text bold color={colors.white}>
-              {imageMedium.description || 'Uncaptioned photo'}
+              {imageMedium.caption || 'Uncaptioned photo'}
             </Text>
             <Text color={colors.white}>
               {dateFormat(imageMedium.dateTime, 'm/d/yy h:MM tt')}

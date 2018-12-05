@@ -20,7 +20,6 @@ export interface BaseMediaItem {
   type: MediaItemType
   location?: LocationDetails
   links?: MediaItemLink[]
-  description?: string
 }
 
 export interface NoteMediaItem extends BaseMediaItem {
@@ -32,6 +31,8 @@ export interface NoteMediaItem extends BaseMediaItem {
 export interface ImageMediaItem extends BaseMediaItem {
   type: MediaItemType.Image
   src: string
+  caption?: string
+  description?: string
 }
 
 export type MediaItem = NoteMediaItem | ImageMediaItem

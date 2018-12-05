@@ -13,6 +13,7 @@ import { Trip } from '../type-defs/Trip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { MediaItem } from '../type-defs/MediaItem'
+import { rgba } from 'polished'
 
 const TripPageContainer = styled.div`
   display: flex;
@@ -49,6 +50,10 @@ const TripPageAddMemory = styled.div`
   bottom: 0;
   width: 100%;
   text-decoration: none;
+
+  & > :first-child {
+    border-right: 3px solid ${colors.offWhite};
+  }
 `
 
 const TitleBar = styled.div`
@@ -125,7 +130,7 @@ class TripPage extends React.Component<PropsType, StateType> {
               .filter(TripPage.hasLocationFilter)
               .map(loc => ({
                 key: loc.id,
-                title: loc.description,
+                title: loc.caption,
                 position: loc.location
               }))}
             activeMarkerId={this.state.activeMarkerId}
