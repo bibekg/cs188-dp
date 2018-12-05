@@ -39,7 +39,12 @@ export default {
         },
         caption: {
           name: 'Caption',
-          placeholder: "Let's get this bread"
+          placeholder: 'The calm before the storm'
+        },
+        description: {
+          name: 'Description',
+          placeholder:
+            "A brief 5 minutes after this shot was taken, it started raining like I've never seen..."
         },
         photoLocationName: {
           name: 'Photo Location Name',

@@ -19,6 +19,11 @@ import { rgba } from 'polished'
 const ThumbnailWrapper = styled.div`
   font-size: 14px;
   color: ${props => props.color || colors.mostlyBlack};
+  > * {
+    margin: 0 5px;
+    max-width: 15px;
+    text-align: center;
+  }
 `
 
 const Container = styled.div`
@@ -87,11 +92,12 @@ const MediaItemRow = (props: PropsType) => {
             <Text color={colors.white}>
               {dateFormat(imageMedium.dateTime, 'm/d/yy h:MM tt')}
             </Text>
-            {imageMedium.location && (
-              <ThumbnailWrapper color={colors.white}>
-                <FontAwesomeIcon icon={faMapPin} />
-              </ThumbnailWrapper>
-            )}
+            <ThumbnailWrapper color={colors.white}>
+              {imageMedium.location && <FontAwesomeIcon icon={faMapPin} />}
+              {imageMedium.description != null && (
+                <FontAwesomeIcon icon={faStickyNote} />
+              )}
+            </ThumbnailWrapper>
           </Label>
         </ImageOverlay>
       </ImageContainer>

@@ -85,7 +85,12 @@ const shouldShowPhotoIcon = (trip: Trip) =>
   trip.media && trip.media.find(medium => medium.type === MediaItemType.Image)
 
 const shouldShowScroll = (trip: Trip) =>
-  trip.media && trip.media.find(medium => medium.type === MediaItemType.Note)
+  trip.media &&
+  trip.media.find(
+    medium =>
+      medium.type === MediaItemType.Note ||
+      (medium.type === MediaItemType.Image && medium.description != null)
+  )
 
 const TripItem = (props: PropsType) => {
   const { trip } = props

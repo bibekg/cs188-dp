@@ -2,22 +2,23 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
-import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
-import { MediaItemType } from '../type-defs/MediaItem'
+import dateFormat from 'dateformat'
 
+import { MediaItemType, ImageMediaItem, NoteMediaItem } from '../type-defs/MediaItem'
 import Text from './Text'
 import Button from './Button'
 import { Trip } from '../type-defs/Trip'
+import { colors } from '../styles';
 
 const Title = styled(Text)`
   margin-bottom: 30px;
 `
 
 const TotalWrapper = styled.div`
-  position: relative;
-  z-index: 0;
+  width: 100vw;
+  height: 100vh;
 `
 
 const BlurBackground = styled.div`
@@ -39,29 +40,63 @@ const BlurBackground = styled.div`
 `
 
 const NoteWrapper = styled.div`
-  height: 100vh;
-  width: 100vw;
-  padding: 20px;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
 `
+
+const NoteText = styled.div`
+  padding: 20px;
+`
+
 const NavigationContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 30px;
   width: 100%;
+  padding: 20px;
+`
+
+const ImageWithDescriptionWrapper = styled(TotalWrapper)`
+  position: relative;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  & > * {
+
+    // Image
+    &:nth-child(1) {
+      height: 50%;
+      position: relative;
+      z-index: 0;
+    }
+
+    // Note text details
+    &:nth-child(2) {
+      position: relative;
+      z-index: 1;
+      background-color: ${colors.white};
+      flex-grow: 1;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 20px;
+    }
+
+    &:nth-child(3) {
+      flex-shrink: 0;
+    }
+  }
 `
 
 const ViewerWrapper = styled.div`
   position: relative;
   z-index: 2;
 
-  width: 100vw;
-  height: 100vh;
-  padding: 30px;
+  width: 100%;
+  height: 100%;
   ${props => (props.image ? `background-image: url(${props.image})` : '')};
   background-size: contain;
   background-repeat: no-repeat;
@@ -71,7 +106,7 @@ const ViewerWrapper = styled.div`
   justify-content: space-between;
 `
 
-const DescriptionSection = styled.div`
+const NoteContentSection = styled.div`
   & > * {
     margin-bottom: 20px;
   }
@@ -82,9 +117,9 @@ const Overlay = styled.div`
   ${Text} {
     color: white;
   }
-  padding: 10px;
+  padding: 20px;
   margin: 10px;
-  box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.5);
+  ${'' /* box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.5); */}
 
   > *:not(:last-child) {
     margin-bottom: 8px;
@@ -117,8 +152,6 @@ class TripViewer extends React.Component<PropsType, StateType> {
     }
     let prevStepIndex = this.state.step - 1
 
-    const currentMedia = this.currentTrip().media
-
     this.setState({
       step: prevStepIndex
     })
@@ -137,8 +170,6 @@ class TripViewer extends React.Component<PropsType, StateType> {
     }
     let nextStepIndex = this.state.step + 1
 
-    const currentMedia = this.currentTrip().media
-
     this.setState({
       step: nextStepIndex
     })
@@ -150,6 +181,79 @@ class TripViewer extends React.Component<PropsType, StateType> {
 
   isOnFirstStep() {
     return this.state.step === 0
+  }
+
+  renderNavigationController() {
+    return (
+        <NavigationContainer>
+          {true && <Button onClick={this.goBack}>Back</Button>}
+          <Button primary onClick={this.goNext}>
+            {this.isOnLastStep() ? 'Finish' : 'Next'}
+          </Button>
+        </NavigationContainer>
+    )
+  }
+
+  renderImageMedium(medium: ImageMediaItem) {
+
+    if (medium.description) {
+      return (
+        <ImageWithDescriptionWrapper>
+          <TotalWrapper>
+            <BlurBackground image={medium.src} />
+            <ViewerWrapper image={medium.src} />
+          </TotalWrapper>
+          <div>
+            <Text bold>{medium.caption}</Text>
+            <Text italic>{dateFormat(medium.dateTime, 'm/d/yy h:MM tt')}</Text>
+            <NoteContentSection>
+              {medium.description.split('\n').map((paragraph, i) => (
+                <Text key={i}>{paragraph}</Text>
+              ))}
+            </NoteContentSection>
+          </div>
+          {this.renderNavigationController()}
+        </ImageWithDescriptionWrapper>
+      )
+    } else {
+      return (
+        <TotalWrapper>
+          <BlurBackground image={medium.src} />
+          <ViewerWrapper image={medium.src}>
+            <Overlay>
+              <Text bold>{medium.caption}</Text>
+              <Text italic>{dateFormat(medium.dateTime, 'm/d/yy h:MM tt')}</Text>
+              {medium.location && medium.location.name && <Text>
+                <FontAwesomeIcon icon={faMapMarkerAlt} size="1x" />{' '}
+                {medium.location.name}
+              </Text>}
+            </Overlay>
+            {this.renderNavigationController()}
+          </ViewerWrapper>
+        </TotalWrapper>
+      )
+    }
+  }
+
+  renderNoteMedium(medium: NoteMediaItem) {
+    return (
+      <TotalWrapper>
+        <NoteWrapper>
+          <NoteText>
+            <Title large bold>
+              {medium.title}
+            </Title>
+            <NoteContentSection>
+              {medium.content &&
+                medium.content
+                  .split('\n')
+                  .map((paragraph, i) => <Text key={i}>{paragraph}</Text>)}
+            </NoteContentSection>
+          </NoteText>
+          {this.renderNavigationController()}
+        </NoteWrapper>
+      </TotalWrapper>
+    )
   }
 
   render() {
@@ -167,55 +271,12 @@ class TripViewer extends React.Component<PropsType, StateType> {
       }
       return 0
     })[this.state.step]
-    const { id, dateTime, type } = step
-    const lastPicture = this.isOnLastStep()
-    const showBackButton = true
-    if (type === MediaItemType.Image) {
-      return (
-        <TotalWrapper>
-          <BlurBackground image={step.src} />
-          <ViewerWrapper image={step.src}>
-            <Overlay>
-              <Text>{step.caption}</Text>
-              <Text>
-                <FontAwesomeIcon icon={faMapMarkerAlt} size="1x" />{' '}
-                {step.location.name}
-              </Text>
-            </Overlay>
-            <div>
-              <NavigationContainer>
-                {showBackButton && <Button onClick={this.goBack}>Back</Button>}
 
-                <Button primary onClick={this.goNext}>
-                  {lastPicture ? 'Finish' : 'Next'}
-                </Button>
-              </NavigationContainer>
-            </div>
-          </ViewerWrapper>
-        </TotalWrapper>
-      )
-    } else if (type === MediaItemType.Note) {
-      return (
-        <NoteWrapper>
-          <div>
-            <Title large bold>
-              {step.title}
-            </Title>
-            <DescriptionSection>
-              {step.content &&
-                step.content
-                  .split('\n')
-                  .map(paragraph => <Text key={paragraph}>{paragraph}</Text>)}
-            </DescriptionSection>
-          </div>
-          <NavigationContainer>
-            {showBackButton && <Button onClick={this.goBack}>Back</Button>}
-            <Button primary onClick={this.goNext}>
-              {lastPicture ? 'Finish' : 'Next'}
-            </Button>
-          </NavigationContainer>
-        </NoteWrapper>
-      )
+  
+    if (step.type === MediaItemType.Image) {
+      return this.renderImageMedium(step)
+    } else if (step.type === MediaItemType.Note) {
+      return this.renderNoteMedium(step)
     }
   }
 }

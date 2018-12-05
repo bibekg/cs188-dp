@@ -20,7 +20,7 @@ import { Trip } from '../type-defs/Trip'
 import { colors } from '../styles'
 import Button from './Button'
 import ExitButton from './ExitButton'
-import { FormikTextInput } from './formik'
+import { FormikTextInput, FormikTextarea } from './formik'
 import TextInput from './TextInput'
 import Text from './Text'
 
@@ -143,6 +143,7 @@ class AddPhoto extends React.Component<PropsType, StateType> {
 
   getInitialFormValues = () => ({
     caption: '',
+    description: '',
     latitude: dotty.get(this.state.photo, 'coordinates.lat') || '',
     longitude: dotty.get(this.state.photo, 'coordinates.lng') || '',
     date: dateFormat(
@@ -181,6 +182,7 @@ class AddPhoto extends React.Component<PropsType, StateType> {
 
     imageMedia.location = locationObj
     imageMedia.caption = values.caption
+    imageMedia.description = values.description
 
     const tripId = this.props.match.params.tripId
     const trip = this.props.trips.find(t => t.id === tripId)
@@ -320,6 +322,15 @@ class AddPhoto extends React.Component<PropsType, StateType> {
                     <ErrorMessage name="date" component={ErrorMessageDiv} />
                     <ErrorMessage name="time" component={ErrorMessageDiv} />
                   </FormRow>
+                  <div>
+                    <Text bold>{fields.description.name}</Text>
+                    <Field
+                      type="textarea"
+                      name="description"
+                      placeholder={fields.description.placeholder}
+                      component={FormikTextarea}
+                    />
+                  </div>
                 </FormContent>
                 <Button
                   type="submit"
