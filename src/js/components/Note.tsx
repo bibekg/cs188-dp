@@ -221,10 +221,9 @@ class Note extends React.Component<PropsType, StateType> {
                 primary
                 noRound
                 disabled={
-                  !medium &&
-                  (Object.keys(touched).length === 0 ||
-                    isSubmitting ||
-                    Object.keys(errors).length > 0)
+                  (!medium && Object.keys(touched).length === 0) ||
+                  isSubmitting ||
+                  Object.keys(errors).length > 0
                 }
               >
                 {medium ? noteUpdateText : noteAddText}
