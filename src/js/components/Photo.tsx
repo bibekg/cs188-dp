@@ -33,7 +33,7 @@ const Title = styled(Text)`
   margin: 20px 0;
 `
 
-const AddPhotoForm = styled.form`
+const PhotoForm = styled.form`
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -95,7 +95,7 @@ interface StateType {
   submitted: boolean
 }
 
-class AddPhoto extends React.Component<PropsType, StateType> {
+class Photo extends React.Component<PropsType, StateType> {
   uploadInput: HTMLInputElement | null = null
 
   static validateForm = (values: any) => {
@@ -258,12 +258,12 @@ class AddPhoto extends React.Component<PropsType, StateType> {
         {this.state.photo && (
           <Formik
             initialValues={this.getInitialFormValues()}
-            validate={AddPhoto.validateForm}
+            validate={Photo.validateForm}
             validateOnChange
             onSubmit={this.handleSubmit}
           >
             {({ touched, errors, isSubmitting, handleSubmit }) => (
-              <AddPhotoForm onSubmit={handleSubmit}>
+              <PhotoForm onSubmit={handleSubmit}>
                 <ImagePreviewWrapper>
                   <img src={this.state.photo.dataURL} />
                   <ReselectLink onClick={this.handleChoosePhotoClick}>
@@ -340,7 +340,7 @@ class AddPhoto extends React.Component<PropsType, StateType> {
                 >
                   {isSubmitting ? 'Uploading...' : photoButtonText}
                 </Button>
-              </AddPhotoForm>
+              </PhotoForm>
             )}
           </Formik>
         )}
@@ -354,4 +354,4 @@ export default connect(
     trips: state.trip
   }),
   { addMedium: actions.addMedium }
-)(AddPhoto)
+)(Photo)

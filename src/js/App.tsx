@@ -10,8 +10,8 @@ import CreateTripPage from './components/CreateTripPage'
 import TripPage from './components/TripPage'
 import TripFeed from './components/TripFeed'
 import TripViewer from './components/TripViewer'
-import AddPhoto from './components/AddPhoto'
-import AddNote from './components/AddNote'
+import Photo from './components/Photo'
+import Note from './components/Note'
 import NotificationView from './components/NotificationView'
 
 import { fonts } from './styles'
@@ -61,8 +61,8 @@ class App extends React.Component<PropsType> {
           <Route exact path="/trip/new" component={CreateTripPage} />
           <Route path="/trip/:tripId/edit" component={TripPage} />
           <Route path="/trip/:tripId/view" component={TripViewer} />
-          <Route path="/trip/:tripId/add-photo" component={AddPhoto} />
-          <Route path="/trip/:tripId/add-note" component={AddNote} />
+          <Route path="/trip/:tripId/add-photo" component={Photo} />
+          <Route path="/trip/:tripId/add-note" component={Note} />
           <Route path="/notification-demo" component={NotificationView} />
         </Switch>
       </BrowserRouter>

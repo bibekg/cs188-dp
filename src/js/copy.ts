@@ -82,6 +82,9 @@ export default {
         },
         date: {
           name: 'Date'
+        },
+        time: {
+          name: 'Time'
         }
       },
       noteButtonText: 'Add Note'
