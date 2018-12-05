@@ -43,7 +43,6 @@ export const getPhotoGeoData = (img: HTMLImageElement): Promise<any> => {
       }
       photo.make = allData.Make
       photo.model = allData.Model
-      console.log({ allData, photo })
 
       const latExif = {
         value: allData.GPSLatitude as number[],

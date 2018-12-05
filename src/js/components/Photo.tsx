@@ -24,6 +24,7 @@ import { FormikTextInput, FormikTextarea } from './formik'
 import TextInput from './TextInput'
 import Text from './Text'
 import LocationSelector from './LocationSelector'
+import OptionalFlag from './OptionalFlag'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -294,7 +295,10 @@ class Photo extends React.Component<PropsType, StateType> {
                 </ImagePreviewWrapper>
                 <FormContent>
                   <div>
-                    <Text bold>{fields.caption.name}</Text>
+                    <Text bold>
+                      {fields.caption.name}
+                      <OptionalFlag />
+                    </Text>
                     <Field
                       type="text"
                       name="caption"
@@ -323,7 +327,10 @@ class Photo extends React.Component<PropsType, StateType> {
                     <ErrorMessage name="time" component={ErrorMessageDiv} />
                   </FormRow>
                   <div>
-                    <Text bold>Where was this photo taken?</Text>
+                    <Text bold>
+                      Where was this photo taken?
+                      <OptionalFlag />
+                    </Text>
                     <LocationSelector
                       photoCoordinates={
                         this.state.photo
@@ -334,7 +341,10 @@ class Photo extends React.Component<PropsType, StateType> {
                     />
                   </div>
                   <div>
-                    <Text bold>{fields.description.name}</Text>
+                    <Text bold>
+                      {fields.description.name}
+                      <OptionalFlag />
+                    </Text>
                     <Field
                       type="textarea"
                       name="description"

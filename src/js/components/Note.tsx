@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Redirect, Link } from 'react-router-dom'
 import uuidv1 from 'uuid/v1'
 import { Formik, Field, ErrorMessage } from 'formik'
-import { FormikTextInput } from './formik'
+import { FormikTextInput, FormikTextarea } from './formik'
 
 import TextInput from './TextInput'
 import TextArea from './TextArea'
@@ -29,8 +29,24 @@ const Title = styled(Text)`
   margin: 20px 0;
 `
 
-const Subtitle = styled(Text)`
-  margin: 20px 0;
+const FormRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  & > * {
+    width: 50%;
+    &:not(:last-child) {
+      margin-right: 5px;
+    }
+  }
+`
+
+const RequiredFlag = styled.span`
+  position: relative;
+  &:after {
+    position: absolute;
+    content: '* Required';
+  }
 `
 
 const ErrorMessageDiv = styled.div`
@@ -164,6 +180,7 @@ class Note extends React.Component<PropsType, StateType> {
             <NoteForm onSubmit={handleSubmit}>
               <div>
                 <Text bold>{fields.title.name}</Text>
+
                 <Field
                   type="text"
                   name="title"
@@ -177,22 +194,24 @@ class Note extends React.Component<PropsType, StateType> {
                 <Field
                   type="textarea"
                   name="note"
-                  component={FormikTextInput}
+                  component={FormikTextarea}
                   placeholder={fields.note.placeholder}
                 />
                 <ErrorMessage name="note" component={ErrorMessageDiv} />
               </div>
-              <div>
-                <Text bold>{fields.date.name}</Text>
-                <Field type="date" name="date" component={FormikTextInput} />
-                <ErrorMessage name="date" component={ErrorMessageDiv} />
-              </div>
+              <FormRow>
+                <div>
+                  <Text bold>{fields.date.name}</Text>
+                  <Field type="date" name="date" component={FormikTextInput} />
+                  <ErrorMessage name="date" component={ErrorMessageDiv} />
+                </div>
 
-              <div>
-                <Text bold>{fields.time.name}</Text>
-                <Field type="time" name="time" component={FormikTextInput} />
-                <ErrorMessage name="time" component={ErrorMessageDiv} />
-              </div>
+                <div>
+                  <Text bold>{fields.time.name}</Text>
+                  <Field type="time" name="time" component={FormikTextInput} />
+                  <ErrorMessage name="time" component={ErrorMessageDiv} />
+                </div>
+              </FormRow>
 
               <Button
                 type="submit"
