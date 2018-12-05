@@ -4,12 +4,13 @@ import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
+import { faMapMarkerAlt, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { MediaItemType } from '../type-defs/MediaItem'
 
 import Text from './Text'
 import Button from './Button'
 import { Trip } from '../type-defs/Trip'
+import { colors } from '../styles'
 
 const Title = styled(Text)`
   margin-bottom: 30px;
@@ -19,7 +20,12 @@ const TotalWrapper = styled.div`
   position: relative;
   z-index: 0;
 `
-
+const ExitButton = styled.div`
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+`
 const BlurBackground = styled.div`
   z-index: 1;
 
@@ -108,6 +114,7 @@ class TripViewer extends React.Component<PropsType, StateType> {
     super(props)
     this.goNext = this.goNext.bind(this)
     this.goBack = this.goBack.bind(this)
+    this.exit = this.exit.bind(this)
   }
 
   goBack() {
@@ -128,6 +135,11 @@ class TripViewer extends React.Component<PropsType, StateType> {
     const { tripId } = this.props.match.params
     const trip = this.props.trips.find(trip => trip.id === tripId)
     return trip!
+  }
+
+  exit() {
+    this.setState({ step: -1 })
+    return
   }
 
   goNext() {
@@ -182,6 +194,9 @@ class TripViewer extends React.Component<PropsType, StateType> {
                 {step.location.name}
               </Text>
             </Overlay>
+            <ExitButton onClick={this.exit}>
+              <FontAwesomeIcon color={colors.red} icon={faTimes} size="2x" />{' '}
+            </ExitButton>
             <div>
               <NavigationContainer>
                 {showBackButton && <Button onClick={this.goBack}>Back</Button>}
@@ -201,6 +216,10 @@ class TripViewer extends React.Component<PropsType, StateType> {
             <Title large bold>
               {step.title}
             </Title>
+            <ExitButton onClick={this.exit}>
+              <FontAwesomeIcon color={colors.red} icon={faTimes} size="2x" />{' '}
+            </ExitButton>
+
             <DescriptionSection>
               {step.description &&
                 step.description
