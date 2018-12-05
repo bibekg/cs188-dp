@@ -8,7 +8,7 @@ const getBackgroundColor = props => {
     return colors.lightGrey
   }
   if (props.warning) {
-    return colors.red
+    return colors.white
   } else return props.primary ? colors.green : colors.white
 }
 
@@ -26,7 +26,7 @@ const getTextColor = props => {
     return colors.white
   }
   if (props.warning) {
-    return colors.white
+    return colors.red
   } else return props.primary ? colors.white : colors.green
 }
 

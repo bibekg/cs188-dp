@@ -3,14 +3,14 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
+import { faMapMarkerAlt, faTimes } from '@fortawesome/free-solid-svg-icons'
 import dateFormat from 'dateformat'
 
 import { MediaItemType, ImageMediaItem, NoteMediaItem } from '../type-defs/MediaItem'
 import Text from './Text'
 import Button from './Button'
 import { Trip } from '../type-defs/Trip'
-import { colors } from '../styles';
+import { colors } from '../styles'
 
 const Title = styled(Text)`
   margin-bottom: 30px;
@@ -19,6 +19,11 @@ const Title = styled(Text)`
 const TotalWrapper = styled.div`
   width: 100vw;
   height: 100vh;
+`
+const ExitButton = styled(Button)
+
+const NavButton = styled(Button)`
+  visibility: ${props => props.invisible ? 'hidden': 'visible'};
 `
 
 const BlurBackground = styled.div`
@@ -143,6 +148,7 @@ class TripViewer extends React.Component<PropsType, StateType> {
     super(props)
     this.goNext = this.goNext.bind(this)
     this.goBack = this.goBack.bind(this)
+    this.exit = this.exit.bind(this)
   }
 
   goBack() {
@@ -161,6 +167,10 @@ class TripViewer extends React.Component<PropsType, StateType> {
     const { tripId } = this.props.match.params
     const trip = this.props.trips.find(trip => trip.id === tripId)
     return trip!
+  }
+
+  exit() {
+    this.setState({ step: -1 })
   }
 
   goNext() {
@@ -185,12 +195,15 @@ class TripViewer extends React.Component<PropsType, StateType> {
 
   renderNavigationController() {
     return (
-        <NavigationContainer>
-          {true && <Button onClick={this.goBack}>Back</Button>}
-          <Button primary onClick={this.goNext}>
-            {this.isOnLastStep() ? 'Finish' : 'Next'}
-          </Button>
-        </NavigationContainer>
+      <NavigationContainer>
+        <NavButton invisible={this.isOnFirstStep()} onClick={this.goBack}>Back</NavButton>
+        <Button warning onClick={this.exit}>
+          Exit
+        </Button>
+        <NavButton primary onClick={this.goNext}>
+          {this.isOnLastStep() ? 'Finish' : 'Next'}
+        </NavButton>
+      </NavigationContainer>
     )
   }
 
