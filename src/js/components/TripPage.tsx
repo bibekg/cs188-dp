@@ -12,7 +12,12 @@ import { colors } from '../styles'
 import { Trip } from '../type-defs/Trip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
-import { MediaItem } from '../type-defs/MediaItem'
+<<<<<<< HEAD
+import { MediaItem, MediaItemType } from '../type-defs/MediaItem'
+import { rgba } from 'polished'
+=======
+import { MediaItem, MediaItemType } from '../type-defs/MediaItem'
+>>>>>>> 3325eca4179e55cd765f31302071fe62f3521505
 
 const TripPageContainer = styled.div`
   display: flex;
@@ -49,6 +54,10 @@ const TripPageAddMemory = styled.div`
   bottom: 0;
   width: 100%;
   text-decoration: none;
+
+  & > :first-child {
+    border-right: 3px solid ${colors.offWhite};
+  }
 `
 
 const TitleBar = styled.div`
@@ -125,8 +134,9 @@ class TripPage extends React.Component<PropsType, StateType> {
               .filter(TripPage.hasLocationFilter)
               .map(loc => ({
                 key: loc.id,
-                title: loc.description,
-                position: loc.location
+                title: loc.type === MediaItemType.Image ? loc.caption : undefined,
+                position: loc.location,
+                icon: loc.type === MediaItemType.Image ? loc.src : undefined
               }))}
             activeMarkerId={this.state.activeMarkerId}
             showRoute

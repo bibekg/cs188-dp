@@ -92,7 +92,7 @@ class AddNote extends React.Component<PropsType, StateType> {
     const media: NoteMediaItem = {
       id: uuid,
       title: titleValue,
-      description: noteValue,
+      content: noteValue,
       type: MediaItemType.Note,
       dateTime: new Date(dateValue)
     }

@@ -17,7 +17,7 @@ import { fonts } from '../styles/index'
 import { rgba } from 'polished'
 
 const ThumbnailWrapper = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   color: ${props => props.color || colors.mostlyBlack};
 `
 
@@ -82,7 +82,7 @@ const MediaItemRow = (props: PropsType) => {
         <ImageOverlay>
           <Label>
             <Text bold color={colors.white}>
-              {imageMedium.description || 'Uncaptioned photo'}
+              {imageMedium.caption || 'Uncaptioned photo'}
             </Text>
             <Text color={colors.white}>
               {dateFormat(imageMedium.dateTime, 'm/d/yy h:MM tt')}

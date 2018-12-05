@@ -180,7 +180,7 @@ class AddPhoto extends React.Component<PropsType, StateType> {
     }
 
     imageMedia.location = locationObj
-    imageMedia.description = values.caption
+    imageMedia.caption = values.caption
 
     const tripId = this.props.match.params.tripId
     const trip = this.props.trips.find(t => t.id === tripId)
