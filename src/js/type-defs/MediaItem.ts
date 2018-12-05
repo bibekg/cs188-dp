@@ -1,15 +1,15 @@
 export enum MediaItemType {
-  Image,
-  Note
+  Image = 'photo',
+  Note = 'note'
 }
 
-export class LocationDetails {
-  lat: number = 0
-  lng: number = 0
+export interface LocationDetails {
+  lat: number
+  lng: number
   name?: string
 }
 
-export class MediaItemLink {
+export interface MediaItemLink {
   type: MediaItemType
   id: string
 }

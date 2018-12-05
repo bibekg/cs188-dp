@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import MapOverview from './MapOverview'
 import MediaItemRow from './MediaItemRow'
 import Text from './Text'
@@ -73,12 +73,15 @@ interface PropsType {
 }
 
 interface StateType {
-  activeMarkerId: string | null
+  clickedMarker: MediaItem | null
 }
 
 class TripPage extends React.Component<PropsType, StateType> {
-  state = {
-    activeMarkerId: null
+  constructor(props: PropsType) {
+    super(props)
+    this.state = {
+      clickedMarker: null
+    }
   }
 
   static hasLocationFilter = (medium: MediaItem) =>
@@ -94,15 +97,16 @@ class TripPage extends React.Component<PropsType, StateType> {
     return 0
   }
 
-  handleTripMediumClick = (id: string) => {
-    this.setState({ activeMarkerId: id })
-  }
-
   render() {
+    const { clickedMarker } = this.state
     const { tripId } = this.props.match.params
     const trip = this.props.trips.find(trip => trip.id === tripId)
     if (!trip) {
       return null
+    }
+
+    if (clickedMarker != null) {
+      return <Redirect to={`/trip/${tripId}/${clickedMarker.type}/${clickedMarker.id}/edit`} />
     }
 
     const tripToRender = {
@@ -134,8 +138,8 @@ class TripPage extends React.Component<PropsType, StateType> {
                   loc.type === MediaItemType.Image ? loc.caption : undefined,
                 position: loc.location,
                 icon: loc.type === MediaItemType.Image ? loc.src : undefined
+                onClick: () => this.setState({ clickedMarker: loc })
               }))}
-            activeMarkerId={this.state.activeMarkerId}
             showRoute
           />
         </TripPageMapWrapper>
