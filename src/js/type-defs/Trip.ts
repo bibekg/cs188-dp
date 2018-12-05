@@ -1,4 +1,5 @@
-import { MediaItem } from './MediaItem'
+import { MediaItem, MediaItemType } from './MediaItem'
+import tripReducer from '../reducers/trip'
 
 export class Trip {
   id: string

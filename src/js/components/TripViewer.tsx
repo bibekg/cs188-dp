@@ -16,7 +16,26 @@ const Title = styled(Text)`
 `
 
 const TotalWrapper = styled.div`
-  background-color: black;
+  position: relative;
+  z-index: 0;
+`
+
+const BlurBackground = styled.div`
+  z-index: 1;
+
+  background: url("${props => props.image}");
+  background-position: center;
+  background-size: cover;
+
+  filter: blur(5px) brightness(0.7);
+  position: absolute;
+
+  // Make the picture larger than its space so the blur radius
+  // edges don't stand out
+  top: -20px;
+  left: -20px;
+  height: calc(100% + 40px);
+  width: calc(100% + 40px);
 `
 
 const NoteWrapper = styled.div`
@@ -37,6 +56,9 @@ const NavigationContainer = styled.div`
 `
 
 const ViewerWrapper = styled.div`
+  position: relative;
+  z-index: 2;
+
   width: 100vw;
   height: 100vh;
   padding: 30px;
@@ -151,6 +173,7 @@ class TripViewer extends React.Component<PropsType, StateType> {
     if (type === MediaItemType.Image) {
       return (
         <TotalWrapper>
+          <BlurBackground image={step.src} />
           <ViewerWrapper image={step.src}>
             <Overlay>
               <Text>{step.description}</Text>
@@ -182,7 +205,7 @@ class TripViewer extends React.Component<PropsType, StateType> {
               {step.description &&
                 step.description
                   .split('\n')
-                  .map(paragraph => <Text>{paragraph}</Text>)}
+                  .map(paragraph => <Text key={paragraph}>{paragraph}</Text>)}
             </DescriptionSection>
           </div>
           <NavigationContainer>
