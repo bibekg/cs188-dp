@@ -12,6 +12,7 @@ import TripFeed from './components/TripFeed'
 import TripViewer from './components/TripViewer'
 import AddPhoto from './components/AddPhoto'
 import AddNote from './components/AddNote'
+import NotificationView from './components/NotificationView'
 
 import { fonts } from './styles'
 import * as actions from './actions'
@@ -62,6 +63,7 @@ class App extends React.Component<PropsType> {
           <Route path="/trip/:tripId/view" component={TripViewer} />
           <Route path="/trip/:tripId/add-photo" component={AddPhoto} />
           <Route path="/trip/:tripId/add-note" component={AddNote} />
+          <Route path="/notification-demo" component={NotificationView} />
         </Switch>
       </BrowserRouter>
     )

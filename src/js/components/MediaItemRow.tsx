@@ -71,7 +71,7 @@ interface PropsType {
   mediaItem: MediaItem
 }
 
-const Memory = (props: PropsType) => {
+const MediaItemRow = (props: PropsType) => {
   const { mediaItem } = props
 
   const renderers: {
@@ -116,4 +116,4 @@ const Memory = (props: PropsType) => {
   return <div>{(renderers[mediaItem.type] || (() => null))(mediaItem)}</div>
 }
 
-export default Memory
+export default MediaItemRow
