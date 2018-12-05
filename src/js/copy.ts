@@ -29,9 +29,11 @@ export default {
   },
   addMedia: {
     photo: {
-      title: 'Add a Photo',
+      newTitle: 'Add Photo',
+      existingTitle: 'Edit Photo',
       subtitle:
         'Please specify the photo you would like to add and provide a description.',
+
       fields: {
         title: {
           name: 'Title',
@@ -59,14 +61,12 @@ export default {
         time: {
           name: 'Time'
         },
-        latitude: {
-          name: 'Latitude'
-        },
-        longitude: {
-          name: 'Longitude'
+        location: {
+          name: 'Where was this photo taken?'
         }
       },
-      photoButtonText: 'Add Photo'
+      newButtonText: 'Add Photo',
+      existingButtonText: 'Edit Photo'
     },
     note: {
       title: 'Add a Note',
@@ -90,7 +90,7 @@ export default {
         }
       },
       noteAddText: 'Add Note',
-      noteUpdateText: 'Update Note'
+      noteUpdateText: 'Edit Note'
     }
   }
 }

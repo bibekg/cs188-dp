@@ -15,7 +15,11 @@ import {
   PhotoDetails
 } from '../util/image'
 import { TIME_REGEXP } from '../util/datetime'
-import { ImageMediaItem, MediaItemType } from '../type-defs/MediaItem'
+import {
+  ImageMediaItem,
+  MediaItemType,
+  MediaItem
+} from '../type-defs/MediaItem'
 import { Trip } from '../type-defs/Trip'
 import { colors } from '../styles'
 import Button from './Button'
@@ -25,6 +29,7 @@ import TextInput from './TextInput'
 import Text from './Text'
 import LocationSelector from './LocationSelector'
 import OptionalFlag from './OptionalFlag'
+import LoadingScreen from './LoadingScreen'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -94,6 +99,7 @@ interface PropsType {
   trips: Trip[]
   match: any
   addMedium: (medium: ImageMediaItem, trip: Trip) => void
+  updateMedium: (medium: ImageMediaItem, trip: Trip) => void
 }
 
 interface StateType {
@@ -104,30 +110,11 @@ interface StateType {
 }
 
 class Photo extends React.Component<PropsType, StateType> {
+  existingMedium: ImageMediaItem | null = null
   uploadInput: HTMLInputElement | null = null
 
   static validateForm = (values: any) => {
     const errors: any = {}
-
-    if (
-      // logical XOR
-      (values.latitude === '' && values.longitude !== '') ||
-      (values.latitude !== '' && values.longitude === '')
-    ) {
-      errors.latitude = 'Either provide complete coordinates or none'
-    } else {
-      if (isNaN(Number(values.latitude))) {
-        errors.latitude = 'Latitude must be a number'
-      } else if (Math.abs(values.latitude) > 90) {
-        errors.latitude = 'Latitude out of range'
-      }
-
-      if (isNaN(Number(values.longitude))) {
-        errors.longitude = 'Longitude must be a number'
-      } else if (Math.abs(values.longitude) > 180) {
-        errors.longitude = 'Longitude out of range'
-      }
-    }
 
     if (new Date(values.date).toString() === 'Invalid Date') {
       errors.date = 'Invalid date'
@@ -141,66 +128,133 @@ class Photo extends React.Component<PropsType, StateType> {
 
   constructor(props: PropsType) {
     super(props)
-
-    this.state = {
+    const initialState: StateType = {
       loadingPhoto: false,
       photo: null,
       coordinates: null,
       submitted: false
     }
+
+    const cm = this.getCurrentMedia(props.trips)
+    if (cm) {
+      const { medium, state: stateUpdate } = cm
+      this.existingMedium = medium
+      this.state = {
+        ...initialState,
+        ...stateUpdate
+      }
+    } else {
+      this.state = initialState
+    }
+  }
+
+  getCurrentMedia(
+    trips: Trip[]
+  ): { medium: ImageMediaItem; state: StateType } | null {
+    const stateUpdate: any = {}
+    const { tripId, mediaId } = this.props.match.params
+    const trip = trips.find(trip => trip.id === tripId)
+    const medium =
+      mediaId && trip && trip.media.find(medium => medium.id === mediaId)
+    if (medium && medium.type === MediaItemType.Image) {
+      stateUpdate.photo = {
+        dataURL: medium.src,
+        dateTime: medium.dateTime
+      }
+      if (medium.location) {
+        stateUpdate.photo.coordinates = medium.location
+        stateUpdate.coordinates = medium.location
+      }
+      return { medium, state: stateUpdate }
+    } else {
+      return null
+    }
+  }
+
+  componentWillReceiveProps(nextProps: PropsType) {
+    // This handles setting existing medium if you land directly on the edit photo route
+    if (!this.existingMedium && nextProps.trips !== this.props.trips) {
+      // Receiving new props, update existing media potentially
+      const cm = this.getCurrentMedia(nextProps.trips)
+      if (cm) {
+        const { medium, state: stateUpdate } = cm
+        this.existingMedium = medium
+        this.setState(stateUpdate)
+      }
+    }
   }
 
   getInitialFormValues = () => ({
-    caption: '',
-    description: '',
-    latitude: dotty.get(this.state.photo, 'coordinates.lat') || '',
-    longitude: dotty.get(this.state.photo, 'coordinates.lng') || '',
+    caption: this.existingMedium ? this.existingMedium.caption || '' : '',
+    description: this.existingMedium
+      ? this.existingMedium.description || ''
+      : '',
     date: dateFormat(
-      dotty.get(this.state.photo, 'dateTime') || '',
+      this.existingMedium
+        ? this.existingMedium.dateTime
+        : dotty.get(this.state.photo, 'dateTime') || '',
       'yyyy-mm-dd'
     ),
-    time: dateFormat(dotty.get(this.state.photo, 'dateTime') || '', 'HH:MM')
+    time: dateFormat(
+      this.existingMedium
+        ? this.existingMedium.dateTime
+        : dotty.get(this.state.photo, 'dateTime') || '',
+      'HH:MM'
+    )
   })
 
   handleSubmit = async (values: any, { setSubmitting }: any) => {
     // @ts-ignore
-    const imageMedia: ImageMediaItem = {}
-    imageMedia.type = MediaItemType.Image
-    imageMedia.id = uuidv1()
-    imageMedia.dateTime =
-      values.date && values.time
-        ? new Date(`${values.date} ${values.time}`)
-        : new Date()
+    const imageMedia: ImageMediaItem = this.existingMedium || {
+      type: MediaItemType.Image,
+      id: uuidv1(),
+      dateTime:
+        values.date && values.time
+          ? new Date(`${values.date} ${values.time}`)
+          : new Date()
+    }
 
     if (this.state.photo == null) {
       return
     }
 
-    // Upload the picture to Cloudinary and wait for the URL to be sent back
-    const cloudinaryResult = (await uploadToCloudinary(
-      this.state.photo.file
-    )) as any
-    imageMedia.src = cloudinaryResult.secure_url
+    // The photo.file will only be there if a new photo was selected
+    if (this.state.photo.file) {
+      console.log('Uploading to Cloudinary')
+      // Upload the picture to Cloudinary and wait for the URL to be sent back
+      const cloudinaryResult = (await uploadToCloudinary(
+        this.state.photo.file
+      )) as any
+      imageMedia.src = cloudinaryResult.secure_url
+    }
 
     // Conditionally build location object based on whether it was provided or not
     const locationObj: any = {}
     if (this.state.coordinates) {
       locationObj.lat = this.state.coordinates.lat
       locationObj.lng = this.state.coordinates.lng
+      imageMedia.location = locationObj
     }
 
-    imageMedia.location = locationObj
     if (values.caption) {
       imageMedia.caption = values.caption
+    } else {
+      delete imageMedia.caption
     }
     if (values.description) {
       imageMedia.description = values.description
+    } else {
+      delete imageMedia.description
     }
 
     const tripId = this.props.match.params.tripId
     const trip = this.props.trips.find(t => t.id === tripId)
 
-    this.props.addMedium(imageMedia, trip!)
+    if (this.existingMedium) {
+      this.props.updateMedium(imageMedia, trip!)
+    } else {
+      this.props.addMedium(imageMedia, trip!)
+    }
 
     setSubmitting(false)
     this.setState({
@@ -230,27 +284,35 @@ class Photo extends React.Component<PropsType, StateType> {
       this.setState({
         photo,
         loadingPhoto: false,
-        coordinates: photo.coordinates
+        coordinates: photo.coordinates || null
       })
     }
   }
 
   render() {
-    const { tripId } = this.props.match.params
+    const { tripId, mediaId } = this.props.match.params
     if (this.state.submitted) {
       return <Redirect to={`/trip/${tripId}/edit`} />
     }
 
-    const { title, subtitle, fields, photoButtonText } = copy.addMedia.photo
+    // The URL says we're editing a medium but we have yet to receive the medium from Redux,
+    // so render a loading screen
+    if (mediaId && !this.existingMedium) {
+      return <LoadingScreen />
+    }
+
+    const { fields: fieldCopy } = copy.addMedia.photo
     return (
       <Wrapper>
         <Link to={`/trip/${tripId}/edit`}>
           <ExitButton />
         </Link>
         <Title medium bold>
-          {title}
+          {this.existingMedium
+            ? copy.addMedia.photo.existingButtonText
+            : copy.addMedia.photo.newTitle}
         </Title>
-        <Title>{subtitle}</Title>
+        <Title>{copy.addMedia.photo.subtitle}</Title>
         {/* Exit button back to current trip catalog */}
 
         {/* Hidden input that we'll click when user hits the real button */}
@@ -276,7 +338,7 @@ class Photo extends React.Component<PropsType, StateType> {
 
         {/* Photo metadata form */}
 
-        {this.state.photo && (
+        {this.state.photo != null && (
           <Formik
             initialValues={this.getInitialFormValues()}
             validate={Photo.validateForm}
@@ -296,19 +358,19 @@ class Photo extends React.Component<PropsType, StateType> {
                 <FormContent>
                   <div>
                     <Text bold>
-                      {fields.caption.name}
+                      {fieldCopy.caption.name}
                       <OptionalFlag />
                     </Text>
                     <Field
                       type="text"
                       name="caption"
                       component={FormikTextInput}
-                      placeholder={fields.caption.placeholder}
+                      placeholder={fieldCopy.caption.placeholder}
                     />
                   </div>
                   <FormRow>
                     <div>
-                      <Text bold>{fields.date.name}</Text>
+                      <Text bold>{fieldCopy.date.name}</Text>
                       <Field
                         type="date"
                         name="date"
@@ -316,7 +378,7 @@ class Photo extends React.Component<PropsType, StateType> {
                       />
                     </div>
                     <div>
-                      <Text bold>{fields.time.name}</Text>
+                      <Text bold>{fieldCopy.time.name}</Text>
                       <Field
                         type="time"
                         name="time"
@@ -328,7 +390,7 @@ class Photo extends React.Component<PropsType, StateType> {
                   </FormRow>
                   <div>
                     <Text bold>
-                      Where was this photo taken?
+                      {fieldCopy.location.name}
                       <OptionalFlag />
                     </Text>
                     <LocationSelector
@@ -342,13 +404,13 @@ class Photo extends React.Component<PropsType, StateType> {
                   </div>
                   <div>
                     <Text bold>
-                      {fields.description.name}
+                      {fieldCopy.description.name}
                       <OptionalFlag />
                     </Text>
                     <Field
                       type="textarea"
                       name="description"
-                      placeholder={fields.description.placeholder}
+                      placeholder={fieldCopy.description.placeholder}
                       component={FormikTextarea}
                     />
                   </div>
@@ -359,7 +421,11 @@ class Photo extends React.Component<PropsType, StateType> {
                   primary
                   disabled={isSubmitting || Object.keys(errors).length > 0}
                 >
-                  {isSubmitting ? 'Uploading...' : photoButtonText}
+                  {isSubmitting
+                    ? 'Uploading...'
+                    : this.existingMedium
+                      ? copy.addMedia.photo.existingButtonText
+                      : copy.addMedia.photo.newButtonText}
                 </Button>
               </PhotoForm>
             )}
@@ -374,5 +440,5 @@ export default connect(
   (state: any) => ({
     trips: state.trip
   }),
-  { addMedium: actions.addMedium }
+  { addMedium: actions.addMedium, updateMedium: actions.updateMedium }
 )(Photo)

@@ -80,33 +80,39 @@ interface PropsType {
 
 const MediaItemRow = (props: PropsType) => {
   const { mediaItem, tripId } = props
+  const { id: mediaId, type } = mediaItem
 
   const renderers: {
     [mit: number]: (mi: any) => React.ReactElement<typeof Container>
   } = {
     [MediaItemType.Image]: (imageMedium: ImageMediaItem) => (
-      <ImageContainer image={imageMedium.src}>
-        <ImageOverlay>
-          <Label>
-            <Text bold color={colors.white}>
-              {imageMedium.caption || 'Uncaptioned photo'}
-            </Text>
-            <Text color={colors.white}>
-              {dateFormat(imageMedium.dateTime, 'm/d/yy h:MM tt')}
-            </Text>
-            <ThumbnailWrapper color={colors.white}>
-              {imageMedium.location && <FontAwesomeIcon icon={faMapPin} />}
-              {imageMedium.description != null && (
-                <FontAwesomeIcon icon={faStickyNote} />
-              )}
-            </ThumbnailWrapper>
-          </Label>
-        </ImageOverlay>
-      </ImageContainer>
+      <Link
+        to={`/trip/${tripId}/photo/${mediaId}`}
+        style={{ textDecoration: 'none' }}
+      >
+        <ImageContainer image={imageMedium.src}>
+          <ImageOverlay>
+            <Label>
+              <Text bold color={colors.white}>
+                {imageMedium.caption || 'Uncaptioned photo'}
+              </Text>
+              <Text color={colors.white}>
+                {dateFormat(imageMedium.dateTime, 'm/d/yy h:MM tt')}
+              </Text>
+              <ThumbnailWrapper color={colors.white}>
+                {imageMedium.location && <FontAwesomeIcon icon={faMapPin} />}
+                {imageMedium.description != null && (
+                  <FontAwesomeIcon icon={faStickyNote} />
+                )}
+              </ThumbnailWrapper>
+            </Label>
+          </ImageOverlay>
+        </ImageContainer>
+      </Link>
     ),
     [MediaItemType.Note]: (noteMedium: NoteMediaItem) => (
       <Link
-        to={`/trip/${tripId}/note/${mediaItem.id}`}
+        to={`/trip/${tripId}/note/${mediaId}`}
         style={{ textDecoration: 'none' }}
       >
         <NoteContainer>

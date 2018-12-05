@@ -66,7 +66,7 @@ export const getTrips = () => async (dispatch: any, getState: any) => {
 export const addMedium = (medium: MediaItem, trip: Trip) => async (
   dispatch: any
 ) => {
-  const response = await fireDb
+  await fireDb
     .collection('trips')
     .doc(trip.id)
     .update({
@@ -79,7 +79,7 @@ export const addMedium = (medium: MediaItem, trip: Trip) => async (
 export const updateMedium = (medium: MediaItem, trip: Trip) => async (
   dispatch: any
 ) => {
-  const response = await fireDb
+  await fireDb
     .collection('trips')
     .doc(trip.id)
     .update({

@@ -67,7 +67,7 @@ const NoteForm = styled.form`
 `
 
 interface PropsType {
-  trips: (trips: Trip) => any
+  trips: Trip[]
   addMedium: (medium: MediaItem, trip: Trip) => any
   updateMedium: (medium: MediaItem, trip: Trip) => any
 }
@@ -143,13 +143,15 @@ class Note extends React.Component<PropsType, StateType> {
     }
 
     const trip = this.props.trips.find(trip => trip.id === tripId)
-    const medium = mediaId && trip.media.find(medium => medium.id === mediaId)
-    const populatedValues = medium && {
-      title: medium.title,
-      note: medium.content,
-      date: dateFormat(medium.dateTime, 'yyyy-mm-dd'),
-      time: dateFormat(medium.dateTime, 'HH:MM')
-    }
+    const medium =
+      mediaId && trip && trip.media.find(medium => medium.id === mediaId)
+    const populatedValues = medium &&
+      medium.type === MediaItemType.Note && {
+        title: medium.title,
+        note: medium.content,
+        date: dateFormat(medium.dateTime, 'yyyy-mm-dd'),
+        time: dateFormat(medium.dateTime, 'HH:MM')
+      }
 
     const {
       title,

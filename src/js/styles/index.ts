@@ -1,3 +1,7 @@
+import * as animations from './animations'
+
+export { animations }
+
 export const colors = {
   green: '#2DA867',
   blue: '#49B5E4',

@@ -16,16 +16,16 @@ export const orientationKeyToCSSTransform: { [num: number]: string } = {
 }
 
 export interface PhotoDetails {
-  file: File
+  file?: File
   dataURL: string
-  dateTime: Date
-  make: string
-  model: string
-  coordinates: {
+  dateTime?: Date
+  make?: string
+  model?: string
+  coordinates?: {
     lat: number
     lng: number
   }
-  orientation: string
+  orientation?: string
 }
 
 export const getPhotoGeoData = (img: HTMLImageElement): Promise<any> => {
