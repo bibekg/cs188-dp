@@ -12,7 +12,7 @@ import { colors } from '../styles'
 import { Trip } from '../type-defs/Trip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
-import { MediaItem } from '../type-defs/MediaItem'
+import { MediaItem, MediaItemType } from '../type-defs/MediaItem'
 
 const TripPageContainer = styled.div`
   display: flex;
@@ -126,7 +126,8 @@ class TripPage extends React.Component<PropsType, StateType> {
               .map(loc => ({
                 key: loc.id,
                 title: loc.description,
-                position: loc.location
+                position: loc.location,
+                icon: loc.type === MediaItemType.Image ? loc.src : undefined
               }))}
             activeMarkerId={this.state.activeMarkerId}
             showRoute

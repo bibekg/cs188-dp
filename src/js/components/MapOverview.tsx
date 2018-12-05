@@ -18,7 +18,7 @@ interface PropsType {
   showRoute: true | undefined
 }
 
-interface StateType {}
+interface StateType { }
 
 class MapOverview extends React.Component<PropsType, StateType> {
   mapReference: google.maps.Map | null
@@ -82,7 +82,11 @@ class MapOverview extends React.Component<PropsType, StateType> {
     return (
       <Map google={this.props.google} onReady={this.handleMapReady}>
         {this.props.markers.map(markerProps => (
-          <Marker {...markerProps} />
+          <Marker {...markerProps} icon={{
+            url: markerProps.icon,
+            anchor: new this.props.google.maps.Point(32, 32),
+            scaledSize: new this.props.google.maps.Size(32, 32)
+          }} />
         ))}
         {this.props.showRoute && (
           <Polyline
