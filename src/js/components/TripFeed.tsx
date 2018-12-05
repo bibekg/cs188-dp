@@ -12,7 +12,7 @@ import copy from '../copy'
 import { colors } from '../styles'
 import { Trip } from '../type-defs/Trip'
 import { averageTripLocation } from '../util/geo'
-import { LocationDetails } from '../type-defs/MediaItem'
+import { LocationDetails, MediaItemType, ImageMediaItem } from '../type-defs/MediaItem'
 import TextInput from './TextInput'
 
 const TitleBar = styled.div`
@@ -70,6 +70,10 @@ interface StateType {
   tripSearchValue: string
 }
 
+interface TripMetaData {
+  avgLoc?: LocationDetails
+  image?: string
+}
 class TripFeed extends React.Component<PropsType, StateType> {
   state = {
     clickedMarker: null,
@@ -111,11 +115,17 @@ class TripFeed extends React.Component<PropsType, StateType> {
       t.name!.toLowerCase().includes(tripSearchValue.toLowerCase())
     )
 
-    const tripsToLocations = filteredTrips.reduce<Map<Trip, LocationDetails>>(
+    const tripsToMetaData = filteredTrips.reduce<Map<Trip, TripMetaData>>(
       (acc, trip) => {
+        const metaData: TripMetaData = {}
         const avgLoc = averageTripLocation(trip) as LocationDetails
         if (avgLoc && avgLoc.lat && avgLoc.lng) {
-          acc.set(trip, avgLoc)
+          metaData.avgLoc = avgLoc
+          const potentialIconImage = trip.media.filter(medium => medium.type === MediaItemType.Image).shift()
+          if (potentialIconImage != null) {
+            metaData.image = (potentialIconImage as ImageMediaItem).src
+          }
+          acc.set(trip, metaData)
         }
         return acc
       },
@@ -131,13 +141,21 @@ class TripFeed extends React.Component<PropsType, StateType> {
         </TitleBar>
         <TripFeedMapWrapper>
           <MapOverview
-            markers={Array.from(tripsToLocations).map(
-              ([innerTrip, averageLocation]) => ({
-                key: innerTrip.id,
-                title: innerTrip.name,
-                position: averageLocation,
-                onClick: () => this.setState({ clickedMarker: innerTrip })
-              })
+            markers={Array.from(tripsToMetaData).map(
+              ([innerTrip, { avgLoc, image }]) => {
+                const props: any = {
+                  key: innerTrip.id,
+                  title: innerTrip.name,
+                  onClick: () => this.setState({ clickedMarker: innerTrip })
+                }
+                if (avgLoc) {
+                  props.position = avgLoc
+                }
+                if (image) {
+                  props.icon = image
+                }
+                return props
+              }
             )}
           />
         </TripFeedMapWrapper>
