@@ -24,8 +24,9 @@ const TitleBar = styled.div`
   ${Text} {
     color: white;
   }
-  padding: 10px 0;
-  height: 70px;
+  padding: 0 10px;
+  height: 50px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;

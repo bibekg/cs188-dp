@@ -8,6 +8,7 @@ import {
 } from 'google-maps-react'
 import { GOOGLE_API_KEY } from '../constants'
 import { colors } from '../styles'
+import LoadingScreen from './LoadingScreen'
 
 interface PropsType {
   markers: any[]
@@ -101,5 +102,6 @@ class MapOverview extends React.Component<PropsType, StateType> {
 }
 
 export default GoogleApiWrapper({
-  apiKey: GOOGLE_API_KEY
+  apiKey: GOOGLE_API_KEY,
+  LoadingContainer: LoadingScreen
 })(MapOverview)

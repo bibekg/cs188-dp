@@ -57,11 +57,13 @@ const TripPageAddMemory = styled.div`
 `
 
 const TitleBar = styled.div`
-  padding: 10px;
+  padding: 0 10px;
+  height: 50px;
+  flex-shrink: 0;
+
   width: 100%;
   text-align: center;
   background-color: ${colors.brown};
-  height: 70px;
   display: flex;
   flex-direction: row;
   align-items: center;
