@@ -70,7 +70,9 @@ export default {
     },
     note: {
       title: 'Add a Note',
+      titleEdit: 'Edit your Note',
       subtitle: 'Please write your note below.',
+      subtitleEdit: 'Please edit your note below.',
       fields: {
         title: {
           name: 'Title',
@@ -87,7 +89,8 @@ export default {
           name: 'Time'
         }
       },
-      noteButtonText: 'Add Note'
+      noteAddText: 'Add Note',
+      noteUpdateText: 'Update Note'
     }
   }
 }

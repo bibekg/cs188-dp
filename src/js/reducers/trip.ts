@@ -24,6 +24,7 @@ const tripReducer = (state = DEFAULT_TRIP_STATE, action: any) => {
         }
         break
       }
+
       case TYPES.UPDATE_MEDIUM_SUCCESS: {
         const { trip, medium } = action.payload
         const currTrip = draft.find(t => t.id === trip.id)

@@ -18,6 +18,7 @@ import * as actions from '../actions'
 import { NoteMediaItem, MediaItem, MediaItemType } from '../type-defs/MediaItem'
 import { Trip } from '../type-defs/Trip'
 import { TIME_REGEXP } from '../util/datetime'
+import dateFormat from 'dateformat'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -52,6 +53,7 @@ const NoteForm = styled.form`
 interface PropsType {
   trips: (trips: Trip) => any
   addMedium: (medium: MediaItem, trip: Trip) => any
+  updateMedium: (medium: MediaItem, trip: Trip) => any
 }
 
 interface StateType {
@@ -99,18 +101,18 @@ class Note extends React.Component<PropsType, StateType> {
 
   handleSubmit = async (values: any, { setSubmitting }: any) => {
     // @ts-ignore
+    const { tripId, mediaId } = this.props.match.params
+    const trip: Trip = this.props.trips.find(trip => trip.id === tripId)
+
     const noteMedia: NoteMediaItem = {}
-    noteMedia.id = uuidv1()
+    noteMedia.id = mediaId ? mediaId : uuidv1()
     noteMedia.type = MediaItemType.Note
 
     noteMedia.title = values.title
     noteMedia.content = values.note
     noteMedia.dateTime = new Date(`${values.date} ${values.time}`)
 
-    const { tripId } = this.props.match.params
-    const trip: Trip = this.props.trips.find(trip => trip.id === tripId)
-
-    this.props.addMedium(noteMedia, trip)
+    this.props.updateMedium(noteMedia, trip)
 
     setSubmitting(false)
     this.setState({
@@ -119,24 +121,41 @@ class Note extends React.Component<PropsType, StateType> {
   }
 
   render() {
-    const { tripId } = this.props.match.params
+    const { tripId, mediaId } = this.props.match.params
     if (this.state.submitted) {
       return <Redirect to={`/trip/${tripId}/edit`} />
     }
 
-    const { title, subtitle, fields, noteButtonText } = copy.addMedia.note
+    const trip = this.props.trips.find(trip => trip.id === tripId)
+    const medium = mediaId && trip.media.find(medium => medium.id === mediaId)
+    const populatedValues = medium && {
+      title: medium.title,
+      note: medium.content,
+      date: dateFormat(medium.dateTime, 'yyyy-mm-dd'),
+      time: dateFormat(medium.dateTime, 'HH:MM')
+    }
+
+    const {
+      title,
+      titleEdit,
+      subtitle,
+      subtitleEdit,
+      fields,
+      noteAddText,
+      noteUpdateText
+    } = copy.addMedia.note
     return (
       <Wrapper>
         <Link to={`/trip/${tripId}/edit`}>
           <ExitButton />
         </Link>
         <Title medium bold>
-          {title}
+          {medium ? titleEdit : title}
         </Title>
-        <Title>{subtitle}</Title>
+        <Title>{medium ? subtitleEdit : subtitle}</Title>
 
         <Formik
-          initialValues={Note.initialValues}
+          initialValues={medium ? populatedValues : Note.initialValues}
           validate={Note.validateForm}
           validateOnBlur
           onSubmit={this.handleSubmit}
@@ -181,12 +200,13 @@ class Note extends React.Component<PropsType, StateType> {
                 primary
                 noRound
                 disabled={
-                  Object.keys(touched).length === 0 ||
-                  isSubmitting ||
-                  Object.keys(errors).length > 0
+                  !medium &&
+                  (Object.keys(touched).length === 0 ||
+                    isSubmitting ||
+                    Object.keys(errors).length > 0)
                 }
               >
-                {noteButtonText}
+                {medium ? noteUpdateText : noteAddText}
               </Button>
             </NoteForm>
           )}
@@ -201,6 +221,7 @@ export default connect(
     trips: state.trip
   }),
   {
-    addMedium: actions.addMedium
+    addMedium: actions.addMedium,
+    updateMedium: actions.updateMedium
   }
 )(Note)
