@@ -21,7 +21,7 @@ const TitleBar = styled.div`
     color: white;
   }
   padding: 10px 0;
-  height: 50px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,12 +43,14 @@ const SearchBarWrapper = styled.div`
 const TripFeedMapWrapper = styled.div`
   position: relative;
   width: 100%;
-  min-height: 30%;
+  height: 40%;
+  flex-shrink: 0;
 `
 
 const TripFeedContent = styled.div`
   flex-grow: 1;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 
   & > * {
     display: block;
@@ -105,7 +107,9 @@ class TripFeed extends React.Component<PropsType, StateType> {
     const { trips } = this.props
     const { tripSearchValue } = this.state
 
-    const filteredTrips = trips.filter(t => t.name!.includes(tripSearchValue))
+    const filteredTrips = trips.filter(t =>
+      t.name!.toLowerCase().includes(tripSearchValue.toLowerCase())
+    )
 
     const tripsToLocations = filteredTrips.reduce<Map<Trip, LocationDetails>>(
       (acc, trip) => {
