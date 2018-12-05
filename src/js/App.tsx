@@ -61,8 +61,8 @@ class App extends React.Component<PropsType> {
           <Route exact path="/trip/new" component={CreateTripPage} />
           <Route path="/trip/:tripId/edit" component={TripPage} />
           <Route path="/trip/:tripId/view" component={TripViewer} />
-          <Route path="/trip/:tripId/add-photo" component={Photo} />
-          <Route path="/trip/:tripId/add-note" component={Note} />
+          <Route path="/trip/:tripId/photo/:mediaId" component={Photo} />
+          <Route path="/trip/:tripId/note/:mediaId" component={Note} />
           <Route path="/notification-demo" component={NotificationView} />
         </Switch>
       </BrowserRouter>

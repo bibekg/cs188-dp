@@ -12,12 +12,8 @@ import { colors } from '../styles'
 import { Trip } from '../type-defs/Trip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
-<<<<<<< HEAD
 import { MediaItem, MediaItemType } from '../type-defs/MediaItem'
 import { rgba } from 'polished'
-=======
-import { MediaItem, MediaItemType } from '../type-defs/MediaItem'
->>>>>>> 3325eca4179e55cd765f31302071fe62f3521505
 
 const TripPageContainer = styled.div`
   display: flex;
@@ -134,7 +130,8 @@ class TripPage extends React.Component<PropsType, StateType> {
               .filter(TripPage.hasLocationFilter)
               .map(loc => ({
                 key: loc.id,
-                title: loc.type === MediaItemType.Image ? loc.caption : undefined,
+                title:
+                  loc.type === MediaItemType.Image ? loc.caption : undefined,
                 position: loc.location,
                 icon: loc.type === MediaItemType.Image ? loc.src : undefined
               }))}
@@ -144,13 +141,13 @@ class TripPage extends React.Component<PropsType, StateType> {
         </TripPageMapWrapper>
         <TripPageContent>
           {tripToRender.media.map(medium => (
-            <MediaItemRow key={medium.id} mediaItem={medium} />
+            <MediaItemRow key={medium.id} tripId={tripId} mediaItem={medium} />
           ))}
         </TripPageContent>
         <TripPageAddMemory>
           <Link
             style={{ textDecoration: 'none', flexGrow: 1 }}
-            to={`/trip/${tripId}/add-photo`}
+            to={`/trip/${tripId}/photo`}
           >
             <RectangularButton primary>
               <Text bold color={colors.white} medium>
@@ -161,7 +158,7 @@ class TripPage extends React.Component<PropsType, StateType> {
 
           <Link
             style={{ textDecoration: 'none', flexGrow: 1 }}
-            to={`/trip/${tripId}/add-note`}
+            to={`/trip/${tripId}/note`}
           >
             <RectangularButton primary>
               <Text bold color={colors.white} medium>

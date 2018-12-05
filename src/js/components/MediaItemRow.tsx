@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStickyNote, faMapPin } from '@fortawesome/free-solid-svg-icons'
@@ -74,10 +75,11 @@ const Label = styled(Media)`
 
 interface PropsType {
   mediaItem: MediaItem
+  tripId: String
 }
 
 const MediaItemRow = (props: PropsType) => {
-  const { mediaItem } = props
+  const { mediaItem, tripId } = props
 
   const renderers: {
     [mit: number]: (mi: any) => React.ReactElement<typeof Container>
@@ -103,17 +105,22 @@ const MediaItemRow = (props: PropsType) => {
       </ImageContainer>
     ),
     [MediaItemType.Note]: (noteMedium: NoteMediaItem) => (
-      <NoteContainer>
-        <Label>
-          <Text bold>Note: {noteMedium.title}</Text>
-          <Text>{dateFormat(noteMedium.dateTime, 'm/d/yy h:MM tt')}</Text>
+      <Link
+        to={`/trip/${tripId}/note/${mediaItem.id}`}
+        style={{ textDecoration: 'none' }}
+      >
+        <NoteContainer>
+          <Label>
+            <Text bold>Note: {noteMedium.title}</Text>
+            <Text>{dateFormat(noteMedium.dateTime, 'm/d/yy h:MM tt')}</Text>
 
-          <ThumbnailWrapper color={colors.mostlyBlack}>
-            <FontAwesomeIcon icon={faStickyNote} />
-            {noteMedium.location && <FontAwesomeIcon icon={faMapPin} />}
-          </ThumbnailWrapper>
-        </Label>
-      </NoteContainer>
+            <ThumbnailWrapper color={colors.mostlyBlack}>
+              <FontAwesomeIcon icon={faStickyNote} />
+              {noteMedium.location && <FontAwesomeIcon icon={faMapPin} />}
+            </ThumbnailWrapper>
+          </Label>
+        </NoteContainer>
+      </Link>
     )
   }
 

@@ -12,7 +12,11 @@ import copy from '../copy'
 import { colors } from '../styles'
 import { Trip } from '../type-defs/Trip'
 import { averageTripLocation } from '../util/geo'
-import { LocationDetails, MediaItemType, ImageMediaItem } from '../type-defs/MediaItem'
+import {
+  LocationDetails,
+  MediaItemType,
+  ImageMediaItem
+} from '../type-defs/MediaItem'
 import TextInput from './TextInput'
 
 const TitleBar = styled.div`
@@ -121,7 +125,9 @@ class TripFeed extends React.Component<PropsType, StateType> {
         const avgLoc = averageTripLocation(trip) as LocationDetails
         if (avgLoc && avgLoc.lat && avgLoc.lng) {
           metaData.avgLoc = avgLoc
-          const potentialIconImage = trip.media.filter(medium => medium.type === MediaItemType.Image).shift()
+          const potentialIconImage = trip.media
+            .filter(medium => medium.type === MediaItemType.Image)
+            .shift()
           if (potentialIconImage != null) {
             metaData.image = (potentialIconImage as ImageMediaItem).src
           }

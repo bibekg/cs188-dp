@@ -21,6 +21,14 @@ export const addMediumSuccess = (medium: MediaItem, trip: Trip) => ({
   }
 })
 
+export const updateMediumSuccess = (medium: MediaItem, trip: Trip) => ({
+  type: TYPES.UPDATE_MEDIUM_SUCCESS,
+  payload: {
+    medium,
+    trip
+  }
+})
+
 /**
  * @name createTrip
  * @param {object} trip should contain at least an id property
@@ -66,4 +74,17 @@ export const addMedium = (medium: MediaItem, trip: Trip) => async (
     })
 
   dispatch(addMediumSuccess(medium, trip))
+}
+
+export const updateMedium = (medium: MediaItem, trip: Trip) => async (
+  dispatch: any
+) => {
+  const response = await fireDb
+    .collection('trips')
+    .doc(trip.id)
+    .update({
+      media: [...trip.media.filter(m => m.id !== medium.id), medium]
+    })
+
+  dispatch(updateMediumSuccess(medium, trip))
 }
