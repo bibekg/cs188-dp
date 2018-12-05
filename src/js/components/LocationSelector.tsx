@@ -61,7 +61,7 @@ const MapWrapper = styled.div`
   width: 100%;
 `
 
-const PHOTO_SELECTION_MODE = { id: 'photo', text: 'From Photo' }
+const PHOTO_SELECTION_MODE = { id: 'photo', text: 'Pull From Photo' }
 const CUSTOM_SELECTION_MODE = { id: 'custom', text: 'Custom' }
 
 interface Coordinate {

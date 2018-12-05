@@ -23,6 +23,7 @@ import ExitButton from './ExitButton'
 import { FormikTextInput, FormikTextarea } from './formik'
 import TextInput from './TextInput'
 import Text from './Text'
+import LocationSelector from './LocationSelector'
 
 const Wrapper = styled.div`
   text-align: center;
@@ -83,6 +84,11 @@ const ErrorMessageDiv = styled.div`
   color: ${colors.red};
 `
 
+interface Coordinates {
+  lat: number
+  lng: number
+}
+
 interface PropsType {
   trips: Trip[]
   match: any
@@ -92,6 +98,7 @@ interface PropsType {
 interface StateType {
   loadingPhoto: boolean
   photo: PhotoDetails | null
+  coordinates: Coordinates | null
   submitted: boolean
 }
 
@@ -137,6 +144,7 @@ class Photo extends React.Component<PropsType, StateType> {
     this.state = {
       loadingPhoto: false,
       photo: null,
+      coordinates: null,
       submitted: false
     }
   }
@@ -175,14 +183,18 @@ class Photo extends React.Component<PropsType, StateType> {
 
     // Conditionally build location object based on whether it was provided or not
     const locationObj: any = {}
-    if (this.state.photo.coordinates) {
-      locationObj.lat = this.state.photo.coordinates.lat
-      locationObj.lng = this.state.photo.coordinates.lng
+    if (this.state.coordinates) {
+      locationObj.lat = this.state.coordinates.lat
+      locationObj.lng = this.state.coordinates.lng
     }
 
     imageMedia.location = locationObj
-    imageMedia.caption = values.caption
-    imageMedia.description = values.description
+    if (values.caption) {
+      imageMedia.caption = values.caption
+    }
+    if (values.description) {
+      imageMedia.description = values.description
+    }
 
     const tripId = this.props.match.params.tripId
     const trip = this.props.trips.find(t => t.id === tripId)
@@ -201,6 +213,10 @@ class Photo extends React.Component<PropsType, StateType> {
     }
   }
 
+  handleNewCoordinates = (coordinates: Coordinates) => {
+    this.setState({ coordinates })
+  }
+
   // When a user selects a photo, update our state with the base64 representation of it
   // to later submit to the Firebase DB
   handleNewFileInput = async (
@@ -210,7 +226,11 @@ class Photo extends React.Component<PropsType, StateType> {
     if (file) {
       this.setState({ loadingPhoto: true })
       const photo = await getPhotoDetails(file)
-      this.setState({ photo, loadingPhoto: false })
+      this.setState({
+        photo,
+        loadingPhoto: false,
+        coordinates: photo.coordinates
+      })
     }
   }
 
@@ -284,26 +304,6 @@ class Photo extends React.Component<PropsType, StateType> {
                   </div>
                   <FormRow>
                     <div>
-                      <Text bold>{fields.latitude.name}</Text>
-                      <Field
-                        type="number"
-                        name="latitude"
-                        component={FormikTextInput}
-                      />
-                    </div>
-                    <div>
-                      <Text bold>{fields.longitude.name}</Text>
-                      <Field
-                        type="number"
-                        name="longitude"
-                        component={FormikTextInput}
-                      />
-                    </div>
-                  </FormRow>
-                  <ErrorMessage name="latitude" component={ErrorMessageDiv} />
-                  <ErrorMessage name="longitude" component={ErrorMessageDiv} />
-                  <FormRow>
-                    <div>
                       <Text bold>{fields.date.name}</Text>
                       <Field
                         type="date"
@@ -322,6 +322,17 @@ class Photo extends React.Component<PropsType, StateType> {
                     <ErrorMessage name="date" component={ErrorMessageDiv} />
                     <ErrorMessage name="time" component={ErrorMessageDiv} />
                   </FormRow>
+                  <div>
+                    <Text bold>Where was this photo taken?</Text>
+                    <LocationSelector
+                      photoCoordinates={
+                        this.state.photo
+                          ? this.state.photo.coordinates
+                          : undefined
+                      }
+                      onNewCoordinates={this.handleNewCoordinates}
+                    />
+                  </div>
                   <div>
                     <Text bold>{fields.description.name}</Text>
                     <Field
