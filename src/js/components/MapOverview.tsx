@@ -4,21 +4,18 @@ import {
   Marker,
   GoogleApiWrapper,
   MapProps,
-  InfoWindow,
   Polyline
 } from 'google-maps-react'
 import { GOOGLE_API_KEY } from '../constants'
-import { Trip } from '../type-defs/Trip'
 import { colors } from '../styles'
 
 interface PropsType {
   markers: any[]
   google: any
-  activeMarkerId: string | null
-  showRoute: true | undefined
+  showRoute?: true | undefined
 }
 
-interface StateType { }
+interface StateType {}
 
 class MapOverview extends React.Component<PropsType, StateType> {
   mapReference: google.maps.Map | null
@@ -74,19 +71,21 @@ class MapOverview extends React.Component<PropsType, StateType> {
   }
 
   render() {
-    const markerToShowInfoFor =
-      this.props.markers.find(m => m.key === this.props.activeMarkerId) || {}
-
-    const markerObject = new google.maps.Marker(markerToShowInfoFor)
-
     return (
       <Map google={this.props.google} onReady={this.handleMapReady}>
         {this.props.markers.map(markerProps => (
-          <Marker {...markerProps} icon={{
-            url: markerProps.icon,
-            anchor: new this.props.google.maps.Point(32, 32),
-            scaledSize: new this.props.google.maps.Size(32, 32)
-          }} />
+          <Marker
+            {...markerProps}
+            icon={
+              markerProps.icon
+                ? {
+                    url: markerProps.icon,
+                    anchor: new this.props.google.maps.Point(32, 32),
+                    scaledSize: new this.props.google.maps.Size(32, 32)
+                  }
+                : undefined
+            }
+          />
         ))}
         {this.props.showRoute && (
           <Polyline
