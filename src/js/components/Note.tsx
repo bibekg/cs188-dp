@@ -217,7 +217,6 @@ class Note extends React.Component<PropsType, StateType> {
 
               <Button
                 type="submit"
-                pinned
                 primary
                 noRound
                 disabled={
